@@ -1,0 +1,42 @@
+.m-contacts {
+    &-list {
+        li {
+            display: flex;
+                align-items: center;
+            a {
+                font-size: .875rem;
+                padding-top: .5rem;
+                padding-bottom: .5rem;
+                color: $blue;
+                transition: .25s;
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+            svg {
+                margin-right: .625rem;
+                path {
+                    stroke: $blue;
+                }
+            }
+        }
+    }
+    @include mq('md') {
+        &-list {
+            li {
+                a {
+                    font-size: 1rem;
+                }
+            }
+        }   
+    }
+    @include mq('xl') {
+        &-list {
+            li {
+                a {
+                    font-size: 1.125rem;
+                }
+            }
+        }   
+    }
+}

@@ -1,0 +1,195 @@
+.m-toolbar {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    transition: 0.25s;
+    z-index: 77;
+    &-nav {
+        background-color: #1c1c1c;
+        border-top: 1px solid rgba(255, 255, 255, 0.35);
+        height: 58px;
+    }
+    &-list {
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+        height: 100%;
+        li {
+            height: 100%;
+            position: relative;
+
+            a {
+                transition: 0.25s;
+                display: flex;
+                height: 100%;
+                align-items: center;
+                padding: 0 0.75rem;
+                justify-content: center;
+                position: relative;
+                img {
+                    width: 34px;
+                    height: 34px;
+                    transition: 0.3s;
+                    object-fit: contain;
+                    filter: grayscale(1);
+                }
+                span {
+                    display: none;
+                }
+
+                &::before {
+                    position: absolute;
+                    left: 50%;
+                    top: -1px;
+                    transform: translateX(-50%);
+                    content: '';
+                    display: block;
+                    background: $gold;
+                    height: 3px;
+                    width: 34px;
+                    transition: 0.25s;
+                    opacity: 0;
+                }
+                &:hover {
+                    img {
+                        filter: grayscale(0);
+                    }
+                    &::before {
+                        opacity: 1;
+                    }
+                }
+                &.active {
+                    img {
+                        filter: grayscale(0);
+                    }
+                    &::before {
+                        opacity: 1;
+                    }
+                }
+            }
+        }
+    }
+    @include mq('sm') {
+        &-nav {
+            height: 60px;
+        }
+        &-list {
+            justify-content: center;
+            li {
+                a {
+                    &::before {
+                        width: 36px;
+                    }
+                    img {
+                        width: 36px;
+                        height: 36px;
+                    }
+                    display: flex;
+                    height: 100%;
+                    align-items: center;
+                    padding: 0 1.5rem;
+                }
+            }
+        }
+    }
+    @include mq('md') {
+        &-nav {
+            height: 64px;
+        }
+        &-list {
+            li {
+                a {
+                    padding: 0 1.5rem;
+                    &::before {
+                        width: 40px;
+                    }
+                    img {
+                        width: 40px;
+                        height: 40px;
+                    }
+                }
+            }
+        }
+    }
+
+    @include mq('lg') {
+        height: 48px;
+        padding: 0;
+        //padding-top: 76px;
+        top: 100px;
+        transition: 0.3s;
+        width: calc(100vw - 17px);
+        &.scroll {
+            position: fixed;
+            top: 68px;
+            height: 40px;
+        }
+        &-nav {
+            background-color: $black;
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.35);
+        }
+        &-list {
+            width: 100%;
+            li {
+                margin-right: 3.5rem;
+                &:last-child {
+                    margin-bottom: 0;
+                }
+                a {
+                    padding: 0.5rem 0;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    border: 1px solid transparent;
+                    img {
+                        display: none;
+                    }
+                    &::before {
+                        width: 100%;
+                        top: auto;
+                        bottom: -1px;
+                    }
+                    span {
+                        display: block;
+                    }
+                    &:hover {
+                        span {
+                            background: $gold;
+                            -webkit-background-clip: text;
+                            -webkit-text-fill-color: transparent;
+                            background-clip: text;
+                        }
+                    }
+                    &.active {
+                        span {
+                            background: $gold;
+                            -webkit-background-clip: text;
+                            -webkit-text-fill-color: transparent;
+                            background-clip: text;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    @include mq('xl') {
+        top: 100px;
+        height: 52px;
+        &-list {
+            li {
+                a {
+                    span {
+                        font-size: 1.125rem;
+                    }
+                }
+            }
+        }
+    }
+    @media only screen and (min-width: 1601px) {
+        top: 108px;
+    }
+}

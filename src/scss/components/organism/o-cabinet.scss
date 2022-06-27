@@ -1,0 +1,15 @@
+.o-cabinet {
+    .a-section-title {
+        border-bottom: 1px solid $gray-light;
+    }
+    padding-bottom: 3rem;
+    @include mq('sm') {
+        padding-bottom: 4rem;
+    }
+    @include mq('md') {
+        padding-bottom: 5rem;
+    }
+    @include mq('lg') {
+        padding-bottom: 6rem;
+    }
+}

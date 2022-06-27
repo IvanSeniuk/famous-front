@@ -1,0 +1,565 @@
+.m-modal {
+    z-index: 122;
+    max-width: 460px;
+    //max-height: 100vh;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    position: fixed;
+    transform: translate(0, 75%);
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.4s;
+    background-color: $black;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    &.active {
+        transform: translate(0, 0);
+        opacity: 1;
+        pointer-events: auto;
+    }
+    &-scroll {
+        overflow: auto;
+        height: 100%;
+    }
+    &-content {
+        padding-top: 1rem;
+        padding-bottom: 1.25rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+    &-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1.5rem 0.75rem 0.75rem 0.75rem;
+        position: relative;
+        z-index: 12;
+        &::after {
+            content: '';
+            position: absolute;
+            display: block;
+            width: 100%;
+            height: 2.5rem;
+            left: 0;
+            top: 98%;
+            pointer-events: none;
+            background: rgb(17, 17, 17);
+            background: linear-gradient(
+                180deg,
+                rgba(17, 17, 17, 1) 0%,
+                rgba(17, 17, 17, 0.72) 50%,
+                rgba(17, 17, 17, 0) 100%
+            );
+        }
+    }
+    .close-modal {
+        cursor: pointer;
+        flex-shrink: 0;
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        position: relative;
+        border: 1px solid rgba(225, 225, 225, 0.3);
+        &::after,
+        &::before {
+            content: '';
+            width: 20px;
+            height: 1px;
+            background: $gold;
+            position: absolute;
+            display: block;
+            left: 0;
+            top: 50%;
+        }
+        &::after {
+            transform: translate(50%, -50%) rotate(45deg);
+        }
+        &::before {
+            transform: translate(50%, -50%) rotate(-45deg);
+        }
+    }
+    &-inner {
+        position: relative;
+        overflow: hidden;
+        background-color: white;
+        border-radius: 20px;
+        padding: 1.25rem 0.875rem;
+        text-align: center;
+        .a-btn {
+            max-width: 220px;
+            margin: auto;
+        }
+        &.m-modal-info {
+            padding: 2rem;
+        }
+    }
+    &-title {
+        font-size: 1.125rem;
+        padding-right: 1rem;
+    }
+    &-payment {
+        .bottom {
+            .m-payment-card-number {
+                background: #1c1c1c;
+                border: 0.5px solid rgba(255, 255, 255, 0.2);
+                box-shadow: 0px 0px 12px rgba(102, 102, 102, 0.06);
+                border-radius: 15px;
+                display: flex;
+                align-items: center;
+                input {
+                    flex: 1;
+                    font-family: 'Circe', sans-serif;
+                    font-size: 1.125rem;
+                    color: white;
+                    width: 100%;
+                    padding: 0;
+                    padding-right: 1rem;
+                    text-align: center;
+                    background: transparent;
+                    border: none;
+                    line-height: 1;
+                    box-sizing: border-box;
+                    box-shadow: 0px 0px 12px rgba(102, 102, 102, 0.06);
+                    border-radius: 0;
+                    outline: none;
+                    padding-left: 1rem;
+                }
+                .copy-card-number {
+                    padding: 0.5rem 0.75rem;
+                }
+            }
+            .m-cart-bottom {
+                background-color: $black;
+                .item {
+                    margin-top: 1rem;
+                    margin-bottom: 1rem;
+                    font-size: 0.875rem;
+
+                    &.total {
+                        font-size: 1rem;
+                    }
+                }
+            }
+            .text-message {
+                text-align: center;
+                font-size: 0.75rem;
+                line-height: 1.5;
+            }
+            .close-modal-text {
+                cursor: pointer;
+                padding-top: 0.875rem;
+                justify-content: center;
+                max-width: 200px;
+                margin: auto;
+                &:hover {
+                    color: $red;
+                }
+            }
+        }
+    }
+    &-pizza {
+        position: relative;
+        z-index: 141;
+        .close-wrapper {
+            position: sticky;
+            z-index: 7;
+            top: 0.875rem;
+            margin-left: auto;
+            margin-right: 3rem;
+            height: 0;
+            width: 0;
+        }
+        .modal-pizza-close {
+            top: 0.875rem;
+
+            margin-left: auto;
+        }
+        .modal-overlay {
+            position: fixed;
+            inset: -1px;
+            background: rgba(34, 34, 34, 0.7);
+
+            animation: show-overlay-pizza 0.3s;
+            @keyframes show-overlay-pizza {
+                from {
+                    opacity: 0;
+                }
+                to {
+                    opacity: 1;
+                    pointer-events: auto;
+                }
+            }
+        }
+        &__bottom {
+            //display: none;
+            z-index: 102;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: $black;
+            position: fixed;
+            //opacity: 0.1;
+            opacity: 1;
+            bottom: 0px;
+            left: 0px;
+            right: 0px;
+            padding: 0.75rem 1rem;
+            max-width: 440px;
+            margin: auto;
+            transition: 450ms cubic-bezier(0, 0, 0.25, 1) 0s;
+            border-top: 1px solid rgba(235, 235, 235, 0.21);
+            //transform: translateY(101%);
+            transform: translateY(0px);
+            animation: show-modal-pizza-bottom 0.4s;
+            @keyframes show-modal-pizza-bottom {
+                from {
+                    transform: translateY(101%);
+                    opacity: 0.1;
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0px);
+                }
+            }
+            &::before {
+                content: '';
+                position: absolute;
+                left: 0;
+                right: 0;
+                bottom: 99%;
+                height: 2rem;
+                width: 100%;
+                z-index: 6;
+                display: block;
+                pointer-events: none;
+                background: rgb(17, 17, 17);
+                background: linear-gradient(
+                    0deg,
+                    rgba(17, 17, 17, 1) 0%,
+                    rgba(17, 17, 17, 0.72) 50%,
+                    rgba(17, 17, 17, 0) 100%
+                );
+            }
+            .quantity {
+                height: 52px;
+                width: 40%;
+                max-width: 160px;
+                input {
+                    flex: 1;
+                }
+                button {
+                    flex: 1;
+                }
+            }
+            .a-btn {
+                width: 52%;
+                max-width: 232px;
+            }
+        }
+        &__card {
+            position: fixed;
+            z-index: 102;
+            bottom: 0;
+            left: 0;
+            //opacity: 0.1;
+            opacity: 1;
+            right: 0;
+            //display: none;
+            display: block;
+            max-width: 440px;
+            margin: auto;
+            max-height: 85%;
+            border-radius: 26px 26px 0px 0px;
+            background-color: $black;
+            padding-left: 1rem;
+            padding-right: 1rem;
+            padding-bottom: 96px;
+            overflow: auto;
+            //transform: translateY(101%);
+            transform: translateY(0px);
+            transition: 450ms cubic-bezier(0, 0, 0.25, 1) 0s;
+            animation: show-modal-pizza 0.4s;
+            @keyframes show-modal-pizza {
+                from {
+                    transform: translateY(101%);
+                    opacity: 0.1;
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0px);
+                }
+            }
+            &::-webkit-scrollbar {
+                width: 0.25em;
+                opacity: 0.25;
+            }
+            &::-webkit-scrollbar-track {
+                background-color: rgba(135, 135, 135, 0.1);
+            }
+            &::-webkit-scrollbar-thumb {
+                background-color: rgba(135, 135, 135, 0.2);
+                border-radius: 10px;
+            }
+            &__inner {
+                position: relative;
+            }
+            .content {
+                padding: 0.75rem 1rem;
+                .head-content {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 0.25rem;
+                    .name {
+                        font-size: 1.25rem;
+                        font-weight: 700;
+                    }
+                    .weight {
+                        font-size: 1.125rem;
+                        color: #bdbdbd;
+                        font-weight: 700;
+                    }
+                }
+                .price {
+                    font-size: 1.125rem;
+                    font-weight: 700;
+                    margin-bottom: 0.25rem;
+                }
+                .desc {
+                    color: #9f9f9f;
+                    font-size: 0.875rem;
+                    margin-bottom: 0.375rem;
+                }
+                .title {
+                    font-size: 1.125rem;
+                    font-weight: 700;
+                    margin-bottom: 0.75rem;
+                }
+                .items {
+                    margin-bottom: 0.625rem;
+                    .item:first-child {
+                        .checkbox {
+                            label {
+                                padding-top: 0;
+                            }
+                        }
+                    }
+                }
+                .item {
+                    border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+                    &-top {
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                    }
+                    &-bottom {
+                        padding-bottom: 0;
+                        height: 0;
+                        overflow: hidden;
+                        opacity: 0;
+                        transition: 0.3s;
+                        &.show {
+                            height: auto;
+                            padding-bottom: 1rem;
+                            opacity: 1;
+                        }
+                    }
+                    .checkbox {
+                        label {
+                            padding-top: 1rem;
+                            padding-bottom: 1rem;
+                            color: white;
+                        }
+                    }
+
+                    &-price {
+                        padding-left: 0.5rem;
+                        flex-shrink: 0;
+                        white-space: nowrap;
+                    }
+                }
+            }
+            .top {
+                position: relative;
+                border-radius: 26px;
+                overflow: hidden;
+                height: 0;
+                width: 100%;
+                padding-bottom: 54%;
+                .img {
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    bottom: 0;
+                    right: 0;
+                    img {
+                        width: 100%;
+                        height: 100%;
+                        object-fit: cover;
+                    }
+                }
+            }
+        }
+    }
+    @include mq('md') {
+        max-height: 90vh;
+        left: 50%;
+        top: 50%;
+        bottom: auto;
+        right: auto;
+        transform: translate(-50%, 0%);
+        border-radius: 22px;
+        &.active {
+            transform: translate(-50%, -50%);
+        }
+        &-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1.5rem 2.75rem 0.75rem 2.75rem;
+            position: relative;
+            z-index: 12;
+        }
+        &-content {
+            padding-bottom: 1.75rem;
+        }
+        &-payment {
+            .bottom {
+                .m-cart-bottom {
+                    padding-left: 2.75rem;
+                    padding-right: 2.75rem;
+                }
+            }
+        }
+        &-pizza {
+            &__card {
+                top: 0;
+                border-radius: 26px;
+                max-width: 65%;
+            }
+            &__bottom {
+                height: fit-content;
+                max-width: 65%;
+                bottom: 7.5%;
+                border-radius: 0 0 26px 26px;
+            }
+        }
+    }
+    @include mq('lg') {
+        &-pizza {
+            &__card {
+                overflow: hidden;
+                max-width: 74%;
+                max-height: 480px;
+                height: 78%;
+                padding: 0;
+                .content {
+                    width: 40%;
+                    overflow: auto;
+                    padding: 1.25rem 1.125rem 6rem;
+                    &::-webkit-scrollbar {
+                        width: 0.375em;
+                    }
+                    &::-webkit-scrollbar-track {
+                        background-color: rgba(135, 135, 135, 0.2);
+                    }
+                    &::-webkit-scrollbar-thumb {
+                        background: $gold;
+                        border-radius: 10px;
+                    }
+                    .head-content {
+                        flex-direction: column;
+                        align-items: flex-start;
+                        .name {
+                            margin-bottom: 0.25rem;
+                        }
+                    }
+                    .price {
+                        display: none;
+                    }
+                }
+                .top {
+                    padding-bottom: 0;
+                    height: auto;
+                    width: 60%;
+                }
+            }
+            &__inner {
+                display: flex;
+                height: 100%;
+            }
+            &__bottom {
+                bottom: 11%;
+                max-width: 29.6%;
+                width: 100%;
+                margin: 0;
+                left: auto;
+                right: 13%;
+                transform: translateY(0%);
+                @keyframes show-modal-pizza-bottom {
+                    from {
+                        transform: translateY(801%);
+                        opacity: 0.1;
+                    }
+                    to {
+                        opacity: 1;
+                        transform: translateY(0px);
+                    }
+                }
+                .a-btn {
+                    font-size: 0.75rem;
+                    font-weight: 700;
+                }
+            }
+            .close-wrapper {
+                position: absolute;
+                right: 1.125rem;
+                top: 1.125rem;
+                width: 38px;
+                height: 38px;
+                margin: 0;
+            }
+        }
+        @media only screen and (min-height: 616px) {
+            &-pizza {
+                &__bottom {
+                    bottom: calc((100vh - 481px) / 2);
+                }
+            }
+        }
+    }
+    @include mq('xxl') {
+        &-pizza {
+            &__card {
+                max-width: 1000px;
+                width: 78%;
+                max-height: 560px;
+                .content {
+                    padding: 1.375rem 1.25rem 6rem;
+                }
+            }
+
+            &__bottom {
+                width: 29.6%;
+                max-width: 400px;
+                margin: 0;
+                left: auto;
+                right: calc((100vw - 1000px) / 2);
+                .a-btn {
+                    font-size: 0.875rem;
+                }
+            }
+        }
+        @media only screen and (min-height: 718px) {
+            &-pizza {
+                &__bottom {
+                    bottom: calc((100vh - 561px) / 2);
+                }
+            }
+        }
+    }
+}

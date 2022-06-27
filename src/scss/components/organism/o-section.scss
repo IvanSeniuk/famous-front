@@ -1,0 +1,20 @@
+.o-section {
+    &-top {
+        margin-bottom: 1.75rem;
+    }
+    @include mq('sm') {
+        &-top {
+            margin-bottom: 2rem;
+        }
+    }
+    @include mq('md') {
+        &-top {
+            margin-bottom: 2.125rem;
+        }
+    }
+    @include mq('lg') {
+        &-top {
+            margin-bottom: 2.375rem;
+        }
+    }
+}

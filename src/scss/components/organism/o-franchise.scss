@@ -1,0 +1,264 @@
+.o-franchise {
+    &-hero {
+        background-color: $blue;
+    }
+    &-section {
+        padding-top: 1.5rem;
+        padding-bottom: 1.5rem;
+    }
+    &-prices {
+        .m-franchise-section__title {
+            text-align: center;
+        }
+    }
+    @include mq('sm') {
+        &-section {
+            padding-top: 1.875rem;
+            padding-bottom: 1.875rem;
+        } 
+        &-benefits {
+            .m-franchise-section__title {
+                position: relative;
+                &::after {
+                    transition: .25s;
+                    display: block;
+                    content: '';
+                    background: url(../../../img/icons/Curved-arr.svg) no-repeat;
+                    transform: translateY(-54%);
+                    background-size: contain;
+                    width: 6rem;
+                    height: 6rem;
+                    position: absolute;
+                    right: calc(100% + 3rem);
+                    top: 0;
+                }
+            }
+        }
+        &-features {
+            
+            .m-franchise-section__title {
+                position: relative;
+                &::after {
+                    transition: .25s;
+                    display: block;
+                    content: '';
+                    background: url(../../../img/icons/Curved-arr.svg) no-repeat;
+                    transform: translateY(-54%) rotateY(180deg);
+                    background-size: contain;
+                    width: 7rem;
+                    height: 7rem;
+                    position: absolute;
+                    left: calc(100% + 3rem);
+                    top: 0;
+                }
+            }
+        }
+        &-prices {
+            .m-franchise-section__title {
+                position: relative;
+                &::after {
+                    transition: .25s;
+                    display: block;
+                    content: '';
+                    background: url(../../../img/icons/Curved-arr.svg) no-repeat;
+                    transform: translateY(-50%);
+                    background-size: contain;
+                    width: 7rem;
+                    height: 7rem;
+                    position: absolute;
+                    right: calc(100% + 1rem);
+                    top: 0;
+                }
+            }
+        }
+        &-feedback {
+            .container {
+                position: relative;
+                &::after {
+                    transition: .25s;
+                    display: block;
+                    content: '';
+                    background: url(../../../img/icons/Curved-arr.svg) no-repeat;
+                    transform: translateY(60%) rotateY(180deg) rotateZ(-14deg);
+                    background-size: contain;
+                    width: 8rem;
+                    height: 8rem;
+                    position: absolute;
+                    right: 3rem;
+                    bottom: 100%;
+                }
+            }
+        }  
+    }
+    @include mq('md') {
+        &-section {
+            padding-top: 2.25rem;
+            padding-bottom: 2.25rem;
+        } 
+        &-benefits {
+            .m-franchise-section__title {
+                &::after {
+                    transform: translateY(-60%) rotateZ(6deg);
+                    background-size: contain;
+                    width: 7rem;
+                    height: 7rem;
+                    position: absolute;
+                    right: calc(100% + 3rem);
+                    top: 0;
+                }
+            }
+        }  
+        &-features {
+            .container {
+                position: relative;
+                &::before {
+                    content: '';
+                    position: absolute;
+                    display: block;
+                    background: url(../../../img/bg-franchise-features.png) no-repeat;
+                    background-size: contain;
+                    top: 0;
+                    right: 0;
+                    width: 300px;
+                    height: 140px;
+                }
+            }
+            .m-franchise-section__title {
+                &::after {
+                    transform: translateY(-54%) rotateY(180deg) rotateZ(4deg);
+                    background-size: contain;
+                    width: 8rem;
+                    height: 8rem;
+                    position: absolute;
+                    left: calc(100% + 3rem);
+                    top: 0;
+                }
+            }
+        }
+        &-prices {
+            .m-franchise-section__title {
+                &::after {
+                    transform: translateY(-50%);
+                    background-size: contain;
+                    width: 8rem;
+                    height: 8rem;
+                    position: absolute;
+                    right: calc(100% + 3rem);
+                    top: 0;
+                }
+            }
+        }
+        &-feedback {
+            .container {
+                &::after {
+                    transform: translateY(60%) rotateY(180deg) rotateZ(-14deg);
+                    width: 9rem;
+                    height: 9rem;
+                    right: 5.5rem;
+                }
+            }
+        } 
+    }
+    @include mq('lg') {
+        &-section {
+            padding-top: 2.625rem;
+            padding-bottom: 2.625rem;
+        } 
+        &-benefits {
+            .m-franchise-section__title {
+                &::after {
+                    transform: translateY(-10%) rotateY(180deg) rotateZ(90deg);
+                    background-size: contain;
+                    width: 7rem;
+                    height: 7rem;
+                    position: absolute;
+                    right: calc(88%);
+                    bottom: calc(100% + 1rem);
+                    top: auto;
+                }
+            }
+        }   
+        &-features {
+            .container {
+                &::before {
+                    width: 400px;
+                    height: 180px;
+                }
+            }
+            .m-franchise-section__title {
+                &::after {
+                    transform: translateY(-74%) rotateY(180deg) rotateZ(14deg);
+                    width: 9rem;
+                    height: 9rem;
+                }
+            }
+        }
+        &-prices {
+            .m-franchise-section__title {
+                &::after {
+                    width: 9rem;
+                    height: 9rem;
+                    right: calc(100% + 4rem);
+                }
+            }
+        } 
+        &-feedback {
+            .container {
+                &::after {
+                    transform: translateY(65%) rotateY(180deg) rotateZ(-14deg);
+                    width: 10rem;
+                    height: 10rem;
+                    right: 8.5rem;
+                }
+            }
+        } 
+    }
+    @include mq('xl') {
+        &-section {
+            padding-top: 3rem;
+            padding-bottom: 3rem;
+        }   
+        &-benefits {
+            .m-franchise-section__title {
+                &::after {
+                    width: 9rem;
+                    height: 9rem;
+                    bottom: calc(100% + 3rem);
+                }
+            }
+        }
+        &-features {
+            .container {
+                &::before {
+                    transform: translateY(-30%);
+                    width: 500px;
+                    height: 280px;
+                }
+            }
+            .m-franchise-section__title {
+                &::after {
+                    transform: translateY(-94%) rotateY(180deg) rotateZ(16deg);
+                    width: 10rem;
+                    height: 10rem;
+                }
+            }
+        }
+        &-prices {
+            .m-franchise-section__title {
+                &::after {
+                    width: 10rem;
+                    height: 10rem;
+                    right: calc(100% + 5rem);
+                }
+            }
+        } 
+        &-feedback {
+            .container {
+                &::after {
+                    transform: translateY(70%) rotateY(180deg) rotateZ(-14deg);
+                    right: 10.5rem;
+                }
+            }
+        } 
+    }
+}

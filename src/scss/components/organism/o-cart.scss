@@ -1,0 +1,24 @@
+.o-cart {
+	position: fixed;
+	z-index: 125;
+	right: -101%;
+	top: 0;
+	width: 100%;
+	transition: 0.7s;
+	background-color: $black;
+	bottom: 0;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	opacity: 0.1;
+	&.active {
+		right: 0;
+		opacity: 1;
+	}
+	@media only screen and (min-width: 440px) {
+		width: 400px;
+	}
+	@include mq("md") {
+		width: 488px;
+	}
+}

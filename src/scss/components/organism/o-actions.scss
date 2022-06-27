@@ -1,0 +1,18 @@
+.o-actions {
+	padding-bottom: 1.625rem;
+	@include mq("sm") {
+		padding-bottom: 1.875rem;
+	}
+	@include mq("md") {
+		padding-bottom: 2.25rem;
+	}
+	@include mq("lg") {
+		padding-bottom: 2.75rem;
+	}
+	@include mq("xl") {
+		padding-bottom: 3.25rem;
+	}
+	@include mq("xxl") {
+		padding-bottom: 3.75rem;
+	}
+}

@@ -1,0 +1,35 @@
+.navbar {
+    position: fixed;
+    left: 16%;
+    right: 0;
+    top: 0;
+    height: 72px;
+    border-bottom: 1px solid gray;
+    bottom: 0;
+    z-index: 10;
+    background-color: #111;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 1rem;
+    .logout {
+        width: 44px;
+        height: 44px;
+        padding: 0.25rem;
+        border-radius: 10px;
+        transition: 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        &:hover {
+            background-color: rgba(255, 255, 255, 0.07);
+        }
+        svg {
+            height: 32px;
+            width: 32px;
+            display: block;
+            object-fit: contain;
+            fill: rgba(218, 165, 32, 0.808);
+        }
+    }
+}

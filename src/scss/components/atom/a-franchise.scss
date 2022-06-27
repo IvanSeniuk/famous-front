@@ -1,0 +1,29 @@
+.a-franchise {
+    &-text {
+        line-height: 1.4;
+        font-size: .75rem;
+        color: $gray;
+        font-weight: 350;
+    }
+    @include mq('sm') {
+        &-text {
+            font-size: .875rem;
+        }   
+    }
+    @include mq('lg') {
+        &-text {
+            font-size: 1rem;
+            &.e--sm {
+                font-size: .875rem;
+            }
+        }   
+    }
+    @include mq('xl') {
+        &-text {
+            font-size: 1.125rem;
+            &.e--sm {
+                font-size: 1rem;
+            }
+        }   
+    }
+}

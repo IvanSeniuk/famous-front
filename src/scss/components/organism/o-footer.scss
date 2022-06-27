@@ -1,0 +1,119 @@
+.o-footer {
+	&-top {
+		padding-top: 2.125rem;
+		.line-bg {
+			width: calc(100% + 1.5rem);
+			transform: translateX(-0.75rem);
+		}
+	}
+	&-bottom {
+		color: rgba(189, 189, 189, 1);
+		.copyright {
+			font-size: 0.75rem;
+		}
+		.dev {
+			font-size: 0.75rem;
+			a {
+				display: flex;
+				align-items: center;
+				text-decoration: none;
+				transition: 0.25s;
+				&:hover {
+					color: $blue-light;
+					svg {
+						path {
+							fill: $blue-light;
+						}
+					}
+				}
+				svg {
+					margin-left: 0.5rem;
+					width: 12px;
+					height: auto;
+					path {
+						transition: 0.25s;
+						fill: rgba(189, 189, 189, 1);
+					}
+				}
+			}
+		}
+	}
+	.social-list {
+		display: flex;
+		li {
+			margin-right: 1rem;
+			a {
+				display: block;
+				svg {
+					display: block;
+					width: 1.75rem;
+					height: 1.75rem;
+					path {
+						transition: 0.25s;
+					}
+				}
+				&:hover {
+					svg {
+						path {
+							fill: $blue-light;
+						}
+					}
+				}
+			}
+			&:last-child {
+				margin-right: 0;
+			}
+		}
+	}
+	@include mq("md") {
+		&-top {
+			padding-top: 2.5rem;
+			.line-bg {
+				display: none;
+			}
+		}
+		&-bottom {
+			padding-top: 1rem;
+			padding-bottom: 0.75rem;
+			text-align: start;
+			.copyright {
+				font-size: 0.75rem;
+				font-weight: 350;
+			}
+			.dev {
+				font-size: 0.75rem;
+				font-weight: 350;
+				a {
+					justify-content: flex-end;
+				}
+			}
+		}
+	}
+	@include mq("lg") {
+		&-top {
+			padding-top: 2.75rem;
+		}
+		&-bottom {
+			padding-top: 1.25rem;
+			padding-bottom: 1.25rem;
+			.copyright {
+				font-size: 0.875rem;
+			}
+			.dev {
+				font-size: 0.875rem;
+				a {
+					justify-content: flex-end;
+				}
+			}
+		}
+	}
+	@include mq("xl") {
+		&-top {
+			padding-top: 3rem;
+		}
+		&-bottom {
+			padding-top: 1.5rem;
+			padding-bottom: 1.5rem;
+		}
+	}
+}

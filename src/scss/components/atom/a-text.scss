@@ -1,0 +1,9 @@
+.a-text {
+    font-size: .875rem;
+    color: $gray;
+    font-weight: 350;
+    line-height: 1.5;
+    @include mq('lg') {
+        font-size: 1rem;
+    }
+}

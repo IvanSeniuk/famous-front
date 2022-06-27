@@ -1,0 +1,265 @@
+.m-delivery {
+	&-top {
+		background-color: #1c1c1c;
+		padding-bottom: 2.75rem;
+		.item {
+			padding-top: 1.5rem;
+			padding-bottom: 1.5rem;
+			border-bottom: 1px solid rgba(225, 225, 225, 0.3);
+			&.green {
+				.title {
+					&::after {
+						content: "";
+						display: block;
+						width: 10px;
+						height: 10px;
+						background-color: #27ae60;
+						border-radius: 50%;
+						margin-left: 0.5rem;
+					}
+				}
+			}
+			&.yellow {
+				.title {
+					&::after {
+						content: "";
+						display: block;
+						width: 10px;
+						height: 10px;
+						background-color: #f2c94c;
+						border-radius: 50%;
+						margin-left: 0.5rem;
+					}
+				}
+			}
+			.title {
+				text-transform: uppercase;
+				font-weight: 700;
+				font-size: 1.125rem;
+				line-height: 1;
+				position: relative;
+				display: flex;
+				align-items: center;
+				margin-bottom: 0.5rem;
+			}
+			.subtitle {
+				color: #bdbdbd;
+			}
+		}
+		.m-map {
+			width: 100%;
+			position: relative;
+			height: 0;
+			padding-bottom: 73%;
+			.map {
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				iframe {
+					width: 100%;
+					height: 100%;
+					object-fit: cover;
+				}
+			}
+		}
+	}
+	&-bottom {
+		.item {
+			&-img {
+				margin-left: auto;
+				.img {
+					position: relative;
+					width: 100%;
+					height: 0;
+					padding-bottom: 65%;
+					border-radius: 0 40px;
+					overflow: hidden;
+					transform: translateY(-1rem);
+					img {
+						position: absolute;
+						left: 0;
+						top: 0;
+						width: 100%;
+						height: 100%;
+						object-fit: cover;
+					}
+				}
+			}
+		}
+	}
+	@include mq("sm") {
+		&-top {
+			padding-bottom: 3.75rem;
+			.item {
+				padding-top: 1.75rem;
+				padding-bottom: 1.75rem;
+				&.green {
+					.title {
+						&::after {
+							width: 13px;
+							height: 13px;
+						}
+					}
+				}
+				&.yellow {
+					.title {
+						&::after {
+							width: 13px;
+							height: 13px;
+						}
+					}
+				}
+				.title {
+					font-size: 1.25rem;
+					margin-bottom: 0.625rem;
+				}
+			}
+			.m-map {
+				padding-bottom: 70%;
+			}
+		}
+		&-bottom {
+			.item {
+				&-text {
+					font-size: 1.125rem;
+				}
+			}
+		}
+	}
+	@include mq("md") {
+		&-top {
+			padding-bottom: 1.75rem;
+			.row {
+				.col-12:first-child {
+					border-right: 1px solid rgba(225, 225, 225, 0.3);
+				}
+			}
+			.item {
+				padding-top: 1.5rem;
+				padding-bottom: 1.5rem;
+				height: 50%;
+				display: flex;
+				flex-direction: column;
+				justify-content: center;
+				&:last-child {
+					border-bottom: none;
+				}
+				&.green {
+					.title {
+						&::after {
+							width: 14px;
+							height: 14px;
+						}
+					}
+				}
+				&.yellow {
+					.title {
+						&::after {
+							width: 14px;
+							height: 14px;
+						}
+					}
+				}
+				.title {
+					font-size: 1.5rem;
+				}
+				.subtitle {
+					font-size: 1.125rem;
+				}
+			}
+			.m-map {
+				padding-bottom: 73%;
+			}
+		}
+		&-bottom {
+			.item {
+				&-img {
+					.img {
+						transform: translateY(0);
+						padding-bottom: 120%;
+					}
+				}
+			}
+		}
+	}
+	@include mq("lg") {
+		&-top {
+			.row {
+				.col-12:first-child {
+					padding-right: 1.25rem;
+				}
+				.col-12:last-child {
+					padding-left: 1.25rem;
+				}
+			}
+			.item {
+				.title {
+					font-size: 1.625rem;
+				}
+				.subtitle {
+					font-size: 1.25rem;
+				}
+			}
+		}
+		&-bottom {
+			.item {
+				&-img {
+					.img {
+						padding-bottom: 130%;
+					}
+				}
+				&-text {
+					font-size: 1.375rem;
+				}
+			}
+		}
+	}
+	@include mq("xl") {
+		&-top {
+			.row {
+				.col-12:first-child {
+					padding-right: 1.375rem;
+				}
+				.col-12:last-child {
+					padding-left: 1.375rem;
+				}
+			}
+			.item {
+				.title {
+					font-size: 1.75rem;
+				}
+				.subtitle {
+					font-size: 1.375rem;
+				}
+			}
+		}
+		&-bottom {
+			.item {
+				&-img {
+					.img {
+						padding-bottom: 135%;
+					}
+				}
+				&-text {
+					font-size: 1.5rem;
+				}
+			}
+		}
+	}
+	@include mq("xl") {
+		&-top {
+			.item {
+				.title {
+					font-size: 1.875rem;
+				}
+			}
+		}
+		&-bottom {
+			.item {
+				&-text {
+					font-size: 1.75rem;
+				}
+			}
+		}
+	}
+}

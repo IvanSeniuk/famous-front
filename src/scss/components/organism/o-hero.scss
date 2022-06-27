@@ -1,0 +1,20 @@
+.o-hero {
+	margin-bottom: 0.5rem;
+	padding-top: 1rem;
+	@include mq("sm") {
+		margin-bottom: 1rem;
+	}
+	@include mq("md") {
+		margin-bottom: 1.25rem;
+	}
+	@include mq("lg") {
+		margin-bottom: 1.5rem;
+	}
+	@include mq("xl") {
+		margin-bottom: 2rem;
+		padding-top: 1.125rem;
+	}
+	@include mq("xxl") {
+		margin-bottom: 2.5rem;
+	}
+}

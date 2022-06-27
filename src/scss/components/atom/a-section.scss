@@ -1,0 +1,34 @@
+.a-section {
+	&-title {
+		transition: 0.25s;
+		font-size: 1.5rem;
+		font-weight: 700;
+		padding-bottom: 0.75rem;
+		text-transform: uppercase;
+	}
+	@include mq("sm") {
+		&-title {
+			font-size: 1.875rem;
+		}
+	}
+	@include mq("md") {
+		&-title {
+			font-size: 2.125rem;
+		}
+	}
+	@include mq("lg") {
+		&-title {
+			font-size: 2.375rem;
+		}
+	}
+	@include mq("xl") {
+		&-title {
+			font-size: 2.625rem;
+		}
+	}
+	@include mq("xxl") {
+		&-title {
+			font-size: 2.875rem;
+		}
+	}
+}

@@ -1,0 +1,18 @@
+.o-text-block {
+    padding-top: .875rem;
+    padding-bottom: 1rem;
+    
+    @include mq('sm') {
+        padding-top: 1rem;
+        padding-bottom: 1.5rem;
+    }
+    @include mq('md') {
+        padding-bottom: 1.75rem;
+    }
+    @include mq('lg') {
+        padding-bottom: 2rem;
+    }
+    @include mq('xl') {
+        padding-bottom: 2.25rem;
+    }
+}

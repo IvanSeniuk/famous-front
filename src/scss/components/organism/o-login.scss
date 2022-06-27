@@ -1,0 +1,82 @@
+.o-login {
+    position: fixed;
+    z-index: 125;
+    right: 0;
+    top: 0;
+    width: 100%;
+    transition: 0.7s;
+    background-color: $black;
+    bottom: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    opacity: 1;
+    padding: 1.5rem 1rem;
+    padding-right: 0.5rem;
+    animation: login-show 0.7s;
+    @keyframes login-show {
+        from {
+            right: -101%;
+            opacity: 0.1;
+        }
+        to {
+            right: 0;
+            opacity: 1;
+        }
+    }
+    &::after {
+        content: '';
+        position: absolute;
+        display: block;
+        width: 100%;
+        height: 1.5rem;
+        left: 0;
+        bottom: 1.375rem;
+        pointer-events: none;
+        background: rgb(17, 17, 17);
+        background: linear-gradient(
+            0deg,
+            rgba(17, 17, 17, 1) 0%,
+            rgba(17, 17, 17, 0.72) 50%,
+            rgba(17, 17, 17, 0) 100%
+        );
+    }
+    &.active {
+        right: 0;
+        opacity: 1;
+    }
+    @media only screen and (min-width: 440px) {
+        padding: 1.75rem 1.5rem;
+        padding-right: 1rem;
+        &::after {
+            bottom: 1.625rem;
+        }
+    }
+    @media only screen and (min-width: 480px) {
+        width: 420px;
+    }
+    @include mq('md') {
+        width: 500px;
+        padding: 3.5rem 3rem;
+        padding-right: 2.5rem;
+        &::after {
+            bottom: 3.375rem;
+        }
+    }
+    @include mq('lg') {
+        width: 600px;
+        padding: 4.25rem 4rem;
+        padding-right: 3.5rem;
+        &::after {
+            bottom: 4.125rem;
+        }
+    }
+    @include mq('xl') {
+        width: 640px;
+        padding: 4.75rem 4.5rem;
+        padding-right: 4rem;
+        &::after {
+            bottom: 4.625rem;
+        }
+    }
+}

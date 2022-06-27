@@ -1,0 +1,32 @@
+$red: #ff4c3b;
+$blue: #bf922d;
+$blue-dark: #ad7712;
+// $blue-light: #9FC4D3;
+$blue-light: #d8b847;
+$green: #26a94b;
+$gray: #777777;
+$gray-dark: #3a3a3a;
+$gray-light: #c4c4c4;
+$white-grey: #e7e7e7e7;
+
+$white: white;
+$black: #111111;
+$black-light: #1c1c1c;
+$black-transparent: rgba(225, 225, 225, 0.2);
+$gold: linear-gradient(
+	118.17deg,
+	#af7912 -73.76%,
+	#ad7712 -69.39%,
+	#a26914 -32.41%,
+	#9e6414 -0.48%,
+	#a36c19 14.33%,
+	#b28126 36.88%,
+	#c9a33b 64.19%,
+	#e0c44f 86.34%,
+	#dec14d 107.4%,
+	#d8b847 122.37%,
+	#cea83c 135.48%,
+	#bf922d 147.43%,
+	#b78624 152.69%
+);
+$gold-border: linear-gradient(118.17deg, #af7912 -73.76%, #dec14d 107.4%);

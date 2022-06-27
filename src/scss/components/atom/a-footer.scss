@@ -1,0 +1,33 @@
+.a-footer {
+	&-logo {
+		a {
+			display: block;
+			& > * {
+				max-width: 160px;
+				width: 50%;
+				height: auto;
+			}
+			.desktop {
+				display: none;
+			}
+		}
+	}
+	@include mq("sm") {
+		&-logo {
+			a {
+				& > * {
+					width: 90%;
+				}
+			}
+		}
+	}
+	@include mq("xl") {
+		&-logo {
+			a {
+				& > * {
+					max-width: 180px;
+				}
+			}
+		}
+	}
+}

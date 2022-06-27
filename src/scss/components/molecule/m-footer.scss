@@ -1,0 +1,102 @@
+.m-footer {
+	&-nav {
+		ul {
+			display: flex;
+			flex-direction: column;
+			li {
+				margin-bottom: 1.5rem;
+				a {
+					font-size: 1rem;
+					font-weight: 700;
+					padding: 0.5rem;
+					padding-left: 0;
+					text-transform: uppercase;
+					text-decoration: none;
+					transition: 0.25s;
+					&:hover {
+						color: $blue-light;
+					}
+				}
+				&:last-child {
+					margin-bottom: 0;
+				}
+			}
+		}
+	}
+	&-phone {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		a {
+			text-decoration: none;
+			padding: 0.25rem;
+			padding-left: 0;
+			transition: 0.25s;
+			font-size: 1.125rem;
+			&:hover {
+				color: $blue-light;
+			}
+		}
+		p {
+			margin-top: 0.5rem;
+			font-size: 0.75rem;
+			color: $gray;
+		}
+	}
+	@include mq("sm") {
+		&-nav {
+			ul {
+				flex-wrap: wrap;
+				flex-direction: row;
+				li {
+					width: 50%;
+					&:nth-last-child(2) {
+						margin-bottom: 0;
+					}
+				}
+			}
+		}
+	}
+	@include mq("md") {
+		&-nav {
+		}
+		&-phone {
+			border: none;
+			align-items: flex-start;
+			p {
+				font-size: 0.875rem;
+			}
+		}
+	}
+	@include mq("lg") {
+		&-nav {
+			ul {
+				justify-content: center;
+				li {
+					a {
+						padding: 0.625rem;
+					}
+				}
+			}
+		}
+		&-phone {
+			a {
+				font-size: 1.125rem;
+				&:first-child {
+					padding-top: 0;
+				}
+			}
+		}
+	}
+	@include mq("xl") {
+		&-nav {
+			ul {
+				li {
+					a {
+						padding: 0.75rem;
+					}
+				}
+			}
+		}
+	}
+}

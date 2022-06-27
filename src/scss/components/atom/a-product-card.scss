@@ -1,0 +1,217 @@
+.a-product-card {
+	&__weight {
+		position: absolute;
+		left: 0;
+		top: 0;
+		width: 50%;
+		margin-bottom: 1rem;
+		color: $gray;
+		font-weight: 350;
+		display: flex;
+		align-items: center;
+		&::before {
+			content: "";
+			display: block;
+			width: 6px;
+			height: 6px;
+			border-radius: 50%;
+			background-color: $blue;
+			margin-right: 0.5rem;
+		}
+	}
+	&__btn {
+		.add-to-cart {
+			.done {
+				//display: none;
+				transition: 0.5s;
+				transform: scale(0);
+				width: 0;
+				height: 0;
+			}
+			&.active {
+				background-color: $blue;
+				pointer-events: none;
+				.done {
+					display: block;
+					transform: scale(1);
+					width: auto;
+					height: auto;
+					path {
+						fill: white;
+						stroke: transparent;
+					}
+				}
+				.basket {
+					display: none;
+				}
+			}
+		}
+	}
+	&__markers {
+		margin-bottom: 1rem;
+		width: 100%;
+		display: flex;
+		justify-content: flex-end;
+		li {
+			a {
+				display: block;
+				svg {
+					path {
+						transition: 0.25s;
+					}
+				}
+				&:hover {
+					svg {
+						path {
+							fill: $blue;
+							fill-opacity: 1;
+						}
+					}
+				}
+				&.active {
+					svg {
+						path {
+							fill: $blue;
+							fill-opacity: 1;
+						}
+					}
+				}
+				&.delete-card {
+					&:hover {
+						svg {
+							path {
+								fill: $red;
+								fill-opacity: 1;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	&__img {
+		width: 33.333%;
+		transition: 0.25s;
+		max-width: 132px;
+		display: block;
+		.img {
+			margin: auto;
+			transition: 0.25s;
+			width: 100%;
+			position: relative;
+			height: 0;
+			padding-bottom: 81%;
+			img {
+				margin: auto;
+				transition: 0.25s;
+				width: 100%;
+				height: 100%;
+				left: 0;
+				top: 0;
+				position: absolute;
+				object-fit: contain;
+				transition: 0.3s;
+				&:nth-child(2) {
+					opacity: 0;
+				}
+			}
+		}
+	}
+	&__title {
+		text-align: center;
+		width: 66.334%;
+		padding-left: 0.75rem;
+		color: $black;
+		font-size: 0.875rem;
+	}
+	&__desc {
+		text-align: center;
+		width: 100%;
+		color: $gray;
+		font-weight: 350;
+		font-size: 0.875rem;
+		padding-top: 1.5rem;
+		border-top: 1px solid $gray-light;
+		margin-top: 1.5rem;
+		margin-bottom: 1.5rem;
+	}
+	&__bottom {
+		width: 100%;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		align-self: flex-end;
+	}
+	&__price {
+		.price {
+			display: flex;
+			flex-direction: column;
+			font-size: 1.5rem;
+			color: $black;
+			white-space: nowrap;
+			font-weight: 700;
+			del {
+				color: $gray;
+				font-size: 1rem;
+			}
+			ins {
+				color: $red;
+				text-decoration: none;
+				font-weight: 700;
+				font-size: 1.5rem;
+			}
+		}
+	}
+	@media (min-width: 374px) and (max-width: 577px) {
+		&__img {
+			max-width: 172px;
+			width: 100%;
+			margin: auto;
+			margin-bottom: 1rem;
+		}
+		&__title {
+			width: 100%;
+			margin-bottom: 1rem;
+			padding: 0;
+		}
+		&__desc {
+			flex: 1;
+			padding-top: 0;
+			border-top: 0;
+			margin-top: 0;
+			margin-bottom: 1rem;
+		}
+	}
+	@include mq("sm") {
+		// &__weight {
+		//     position: static;
+
+		//     margin-left: .625rem;
+		//     margin-bottom: 0;
+		// }
+		&__markers {
+			width: 100%;
+			margin-bottom: 0.125rem;
+		}
+		&__img {
+			max-width: 252px;
+			width: 100%;
+			margin: auto;
+			margin-bottom: 1rem;
+		}
+		&__title {
+			width: 100%;
+			padding-left: 0;
+			margin-bottom: 1rem;
+			flex: 1;
+			font-size: 1rem;
+		}
+		&__desc {
+			flex: 1;
+			padding-top: 0;
+			border-top: 0;
+			margin-top: 0;
+			margin-bottom: 1rem;
+		}
+	}
+}

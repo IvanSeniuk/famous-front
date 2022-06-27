@@ -1,0 +1,64 @@
+.button-callback {
+    display: none;
+    &__inner {
+        cursor: pointer;
+        transition: .3s;
+        svg {
+            path {
+                transition: .3s;
+            }
+        }
+        &:hover {
+            background-color: white;
+            svg {
+                path {
+                    fill: $blue;
+                }
+            }
+        }
+    }
+    &.mobile {
+        display: block;
+        .button-callback__inner {
+            svg {
+                width: 22px;
+                height: 22px;
+            }
+        }
+    }
+    @include mq('lg') {
+        position: fixed;
+        z-index: 100;
+        right: .75rem;
+        bottom: 2rem;
+        display: block;
+        &__inner {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: $blue;
+            cursor: pointer;
+            border: 1px solid $blue;
+            transition: .3s;
+            svg {
+                path {
+                    transition: .3s;
+                }
+            }
+            &:hover {
+                background-color: white;
+                svg {
+                    path {
+                        fill: $blue;
+                    }
+                }
+            }
+        }
+        &.mobile {
+            display: none;
+        }
+    }
+}

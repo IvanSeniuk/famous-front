@@ -1,0 +1,15 @@
+.o-cashback {
+    padding-bottom: 1.5rem;
+    @include mq('sm') {
+        padding-bottom: 2.5rem;
+    }
+    @include mq('md') {
+        padding-bottom: 3.25rem;
+    }
+    @include mq('lg') {
+        padding-bottom: 4rem;
+    }
+    @include mq('xl') {
+        padding-bottom: 4.75rem;
+    }
+}

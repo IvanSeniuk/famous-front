@@ -1,0 +1,28 @@
+.a-link {
+    &-text {
+        display: flex;
+        text-decoration: none;
+        align-items: center;
+        font-size: .75rem;
+        padding-top: .625rem;
+        padding-bottom: .625rem;
+        transition: .25s;
+        color: $gray;
+        &:hover {
+            color: $blue;
+        }
+        svg {
+            margin-left: .5rem;
+        }
+    }
+    @include mq('sm') {
+        &-text {
+            font-size: .875rem;
+        }
+    }
+    @include mq('lg') {
+        &-text {
+            font-size: 1rem;
+        }
+    }
+}

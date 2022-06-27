@@ -1,0 +1,42 @@
+.m-breadcrumbs {
+	&-list {
+		display: flex;
+		align-items: center;
+		font-size: 0.875rem;
+		color: white;
+		padding-top: 1.5rem;
+		padding-bottom: 1.5rem;
+		overflow: auto;
+		white-space: nowrap;
+		a {
+			color: rgba(255, 255, 255, 0.45);
+			font-weight: 350;
+			padding-right: 0.875rem;
+			margin-right: 0.5rem;
+			position: relative;
+			display: block;
+			transition: 0.25s;
+			&:hover {
+				color: rgba(255, 255, 255, 0.719);
+			}
+			&::after {
+				position: absolute;
+				content: "";
+				display: block;
+				background: $gold;
+				background-size: contain;
+				width: 0.375rem;
+				height: 0.375rem;
+				border-radius: 50%;
+				right: 0;
+				top: 50%;
+				transform: translateY(-50%);
+			}
+		}
+	}
+	@include mq("lg") {
+		&-list {
+			font-size: 1rem;
+		}
+	}
+}

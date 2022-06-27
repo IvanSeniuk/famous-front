@@ -1,0 +1,656 @@
+.m-franchise {
+    &-hero {
+        &__left {
+            .description {
+                padding-top: 1.5rem;
+                padding-bottom: 1.5rem;
+                .a-btn {
+                    max-width: 460px;
+                    &:hover {
+                        border: 1px solid $white;
+                    }
+                }
+            }
+        }
+        &__right {
+            padding-left: 0;
+            padding-right: 0;
+            .img {
+                width: 100%;
+                height: 0;
+                padding-bottom: 78.36%;
+                position: relative;
+                img {
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    object-fit: cover;
+                    height: 100%;
+                    width: 100%;
+                }
+            }
+        }
+        &__title {
+            transition: .25s;
+            font-size: 1.375rem;
+            font-weight: 500;
+            color: white;
+            text-transform: uppercase;
+        }
+        &__text {
+            transition: .25s;
+            font-size: .875rem;
+            color: #B1E1F4;
+            max-width: 430px;
+        }
+    }
+    &-section {
+        &__title {
+            transition: .25s;
+            font-size: 1.5rem;
+            color: $blue;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+        &__top {
+            transition: .25s;
+            border-bottom: 1px solid $blue-light;
+        }
+    }
+    &-about {
+        &__right {
+            .img {
+                padding-bottom: 45%;
+                width: 100%;
+                height: 0;
+                position: relative;
+                img {
+                    border-radius: 10px;
+                    width: 100%;
+                    height: 100%;
+                    left: 0;
+                    top: 0;
+                    object-fit: cover;
+                    position: absolute;
+                }
+            }
+        }
+    }
+    &-benefits {
+        &__left {
+            display: none;
+        }
+        &__item {
+            transition: .25s;
+            padding-top: .75rem;
+            padding-bottom: .75rem;
+        }
+    }
+    &-features {
+        &__items {
+            margin-top: -.5rem;
+            margin-bottom: -.5rem;
+        }
+        &__item {
+            transition: .25s;
+            padding-top: .5rem;
+            padding-bottom: .5rem;
+            &__inner {
+                .img {
+                    width: 100%;
+                    height: 0;
+                    position: relative;
+                    margin-bottom: .5rem;
+                    padding-bottom: 75.8%;
+                    img {
+                        width: 100%;
+                        height: 100%;
+                        left: 0;
+                        top: 0;
+                        position: absolute;
+                        object-fit: cover;
+                        border-radius: 10px;
+                    }
+                }
+                .title {
+                    font-weight: 500;
+                    line-height: 1.35;
+                    font-size: .75rem;
+                    text-transform: uppercase;
+                    color: $black;
+                }
+            }
+        }
+    }
+    &-prices {
+        &__item {
+            padding-top: .875rem;
+            padding-bottom: .875rem;
+            .title {
+                color: $blue-light;
+                text-transform: uppercase;
+                font-weight: 700;
+                font-size: 2.375rem;
+            }
+            .sub-title {
+                color: $black;
+                text-transform: uppercase;
+                font-size: 1.125rem;
+                margin-bottom: .375rem;
+            }
+            &__img {
+                .img {
+                    width: 100%;
+                    position: relative;
+                    padding-bottom: 48%;
+                    height: 0;
+                    img {
+                        width: 100%;
+                        height: 100%;
+                        left: 0;
+                        top: 0;
+                        position: absolute;
+                        object-fit: cover;
+                        border-radius: 10px;
+                    }
+                }
+            }
+        }
+    }
+    &-feedback {
+        &__form {
+            &__inner {
+                border: 0.3px solid rgba(135, 135, 135, 0.4);
+                box-sizing: border-box;
+                border-radius: 10px;
+                padding: 1.25rem .75rem;
+                .input {
+                    margin-bottom: .5rem;
+                    label {
+                        color: $black;
+                        input {
+                            border: 1px solid #D2D6DA;
+                        }
+                    }
+                }
+                .a-btn {
+                    margin-top: 1.25rem;
+                }
+            }
+        }
+        &__contacts {
+            .title {
+                text-transform: uppercase;
+                font-size: 1.125rem;
+                color: $black;
+                margin-bottom: .75rem;
+            }
+            .m-contacts-list {
+                li {
+                    font-size: .875rem;
+                    padding-top: .5rem;
+                    padding-bottom: .5rem;
+                    svg {
+                        path {
+                            fill: $gray;
+                        }
+                    }
+                    &.email {
+                        svg {
+                            path {
+                                stroke: $gray;
+                                fill: transparent;
+                            }
+                        }                        
+                    }
+                    color: $gray;
+                    font-weight: 350;
+                    a {
+                        font-weight: 350;
+                        color: $gray;
+                    }
+                }
+            }
+            .m-social-list {
+                border-top: 1px solid $blue-light;
+                display: flex;
+                align-items: center;
+                li {
+                    margin-right: 1rem;
+                    a {
+                        padding-top: .5rem;
+                        padding-bottom: .5rem;
+                        display: block;
+                        svg {
+                            transition: .25s;
+                            width: 36px;
+                            height: 36px;
+                            object-fit: contain;
+                        }
+                    }
+                    &:last-child {
+                        margin-right: 0;
+                    }
+                }
+            }
+        }
+    }
+    @include mq('sm') {
+        &-hero {
+            &__title {
+                font-size: 1.625rem;
+            }
+            &__left {
+                .description {
+                    .a-btn {
+                        max-width: 260px;
+                    }
+                }
+            }
+        }
+        &-section {
+            &__title {
+                font-size: 1.875rem;
+            }
+        }
+        
+        &__item {
+            padding-top: .875rem;
+            padding-bottom: .875rem;
+        }
+        &-benefits {
+            &__left {
+                display: block;
+                position: relative;
+                height: 0;
+                width: 41.66667%;
+                padding-bottom: 61%;
+                .img {
+                    position: absolute;
+                    right: 0;
+                    top: 0;
+                    width: 122%;
+                    height: 0;
+                    height: 100%;
+                    transform: translateX(-12%);
+                    img {
+                        width: 100%;
+                        height: 100%;
+                        left: 0;
+                        top: 0;
+                        position: absolute;
+                        object-fit: contain;
+                    }
+                }
+            }
+        }
+        &-features {
+            &__items {
+                margin-top: -.75rem;
+                margin-bottom: -.75rem;
+            }
+            &__item {
+                padding-top: .75rem;
+                padding-bottom: .75rem;
+                &__inner {
+                    .img {
+                        margin-bottom: .625rem;
+                    }
+                }
+            }
+        }
+        &-prices {
+            &__item {
+                padding-top: 1rem;
+                padding-bottom: 1rem;
+                &:nth-child(odd) {
+                    flex-direction: row-reverse;
+                }
+                .title {
+                    font-size: 2.75rem;
+                }
+                .sub-title {
+                    margin-bottom: .5rem;
+                }
+                &__img {
+                    align-self: stretch;
+                    .img {
+                        width: 100%;
+                        position: relative;
+                        padding-bottom: 0;
+                        height: 100%;
+                        min-height: 220px;
+                        img {
+                            width: 100%;
+                            height: 100%;
+                            left: 0;
+                            top: 0;
+                            position: absolute;
+                            object-fit: cover;
+                            border-radius: 10px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    @include mq('md') {
+        &-hero {
+            &__title {
+                font-size: 2rem;
+            }
+            &__text {
+                font-size: 1rem;
+            }
+            &__right {
+                padding-left: 0;
+                padding-right: 0;
+            }
+        }
+        &-about {
+            &__right {
+                align-self: stretch;
+                .img {
+                    padding-bottom: 0;
+                    width: 100%;
+                    height: 100%;
+                    position: relative;
+                    min-height: 260px;
+                    img {
+                        border-radius: 10px;
+                        width: 100%;
+                        height: 100%;
+                        left: 0;
+                        top: 0;
+                        object-fit: cover;
+                        position: absolute;
+                    }
+                }
+            }
+        }
+        &-section {
+            &__title {
+                font-size: 2.25rem;
+                margin-bottom: 1.25rem;
+            }
+        }
+        &-benefits {
+            &__left {
+                position: relative;
+                height: 0;
+                width: 50%;
+                padding-bottom: 61%;
+                .img {
+                    position: absolute;
+                    right: 0;
+                    top: 0;
+                    width: 122%;
+                    height: 0;
+                    height: 100%;
+                    transform: translateX(-12%);
+                    img {
+                        width: 100%;
+                        height: 100%;
+                        left: 0;
+                        top: 0;
+                        position: absolute;
+                        object-fit: contain;
+                    }
+                }
+            }
+            &__item {
+                padding-top: 1rem;
+                padding-bottom: 1rem;
+            }
+        }
+        &-features {
+            &__items {
+                margin-top: -1rem;
+                margin-bottom: -1rem;
+            }
+            &__item {
+                padding-top: 1rem;
+                padding-bottom: 1rem;
+                &__inner {
+                    .img {
+                        margin-bottom: .75rem;
+                    }
+                    .title {
+                        font-size: .875rem;
+                    }
+                }
+            }
+        }
+        &-prices {
+            &__item {
+                padding-top: 1.125rem;
+                padding-bottom: 1.125rem;
+                .title {
+                    font-size: 3.5rem;
+                }
+                .sub-title {
+                    font-size: 1.25rem;
+                    margin-bottom: .625rem;
+                }
+            }
+        }
+        &-feedback {
+            &__left {
+                max-width: 400px;
+            }
+            &__right {
+                max-width: 526px;
+            }
+            &__form {
+                &__inner {
+                    padding: 1.375rem 1rem;
+                    .input {
+                        margin-bottom: .625rem;
+                        label {
+                            font-weight: 700;
+                        }
+                    }
+                    .a-btn {
+                        margin-top: 1.375rem;
+                    }
+                }
+            }
+            &__contacts {
+                .title {
+                    font-size: 1.25rem;
+                    margin-bottom: .875rem;
+                }
+                .m-contacts-list {
+                    li {
+                        font-size: 1rem;
+                    }
+                }
+                .m-social-list {
+                    li {
+                        margin-right: 1.125rem;
+                        a {
+                            padding-top: .625rem;
+                            padding-bottom: .625rem;
+                            svg {
+                                width: 40px;
+                                height: 40px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    @include mq('lg') {
+        &-hero {
+            &__title {
+                font-size: 2.25rem;
+            }
+            &__text {
+                font-size: 1.125rem;
+            }
+            &__left {
+                .description {
+                    .a-btn {
+                        max-width: 220px;
+                    }
+                }
+            }
+        }
+        &-section {
+            &__title {
+                font-size: 2.625rem;
+                margin-bottom: 1.5rem;
+            }
+        }
+        &-benefits {
+            &__item {
+                padding-top: 1.25rem;
+                padding-bottom: 1.25rem;
+            }
+        }
+        &-features {
+            &__items {
+                margin-top: -1.25rem;
+                margin-bottom: -1.25rem;
+            }
+            &__item {
+                padding-top: 1.25rem;
+                padding-bottom: 1.25rem;
+                &__inner {
+                    .img {
+                        margin-bottom: .875rem;
+                    }
+                    .title {
+                        font-size: 1rem;
+                    }
+                }
+            }
+        }
+        &-prices {
+            &__item {
+                padding-top: 1.25rem;
+                padding-bottom: 1.25rem;
+                .title {
+                    font-size: 4.5rem;
+                }
+                .sub-title {
+                    margin-bottom: .875rem;
+                }
+            }
+        }
+        &-feedback {
+            &__left {
+                max-width: 366px;
+            }
+            &__form {
+                &__inner {
+                    padding: 1.75rem 1.5rem;
+                    .input {
+                        margin-bottom: .75rem;
+                    }
+                    .a-btn {
+                        margin-top: 1.5rem;
+                    }
+                }
+            }
+            &__contacts {
+                .title {
+                    font-size: 1.375rem;
+                    margin-bottom: 1rem;
+                }
+                .m-social-list {
+                    li {
+                        margin-right: 1.25rem;
+                        padding-top: .625rem;
+                        padding-bottom: .625rem;
+                        a {
+                            padding-top: .75rem;
+                            padding-bottom: .75rem;
+                            svg {
+                                width: 44px;
+                                height: 44px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    @include mq('xl') {
+        &-hero {
+            &__title {
+                font-size: 2.5rem;
+            }
+        }
+        &-section {
+            &__title {
+                font-size: 3rem;
+            }
+        }
+        &-benefits {
+            &__item {
+                padding-top:    1.5rem;
+                padding-bottom: 1.5rem;
+            }
+        }
+        &-features {
+            &__items {
+                margin-top: -1.5rem;
+                margin-bottom: -1.5rem;
+            }
+            &__item {
+                padding-top: 1.5rem;
+                padding-bottom: 1.5rem;
+                &__inner {
+                    .title {
+                        font-size: 1.125rem;
+                    }
+                }
+            }
+        }
+        &-prices {
+            &__item {
+                padding-top: 1.5rem;
+                padding-bottom: 1.5rem;
+                .title {
+                    font-size: 6rem;
+                }
+                .sub-title {
+                    font-size: 1.375rem;
+                    margin-bottom: 1.125rem;
+                }
+            }
+        }
+        &-feedback {
+            &__form {
+                &__inner {
+                    padding: 2.5rem 1.875rem;
+                }
+            }
+            &__contacts {
+                .title {
+                    font-size: 1.5rem;
+                    margin-bottom: 1.125rem;
+                }
+                .m-contacts-list {
+                    li {
+                        font-size: 1.125rem;
+                    }
+                }
+                .m-social-list {
+                    li {
+                        margin-right: 1.5rem;
+                        a {
+                            svg {
+                                width: 48px;
+                                height: 48px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

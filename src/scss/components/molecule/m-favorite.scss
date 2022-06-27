@@ -1,0 +1,66 @@
+.m-favorite {
+    @include mq('sm') {
+        &__card {
+            margin-bottom: 1.25rem;
+            padding: 1rem;
+            .title {
+                font-size: .875rem;               
+            }
+            .a-product-card__price {
+                padding-right: .75rem;
+                .price {
+                    font-size: 1.25rem;
+                    del {
+                        font-size: 1rem;
+                    }
+                    ins {
+                        font-size: 1.25rem;
+                    }
+                }
+            }
+            .delete-card {
+                padding-left: 1rem;
+                
+            }
+        }
+    }
+    @include mq('md') {
+        &__card {
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            .title {
+                font-size: 1rem;               
+            }
+            .a-product-card__price {
+                padding-right: .75rem;
+                .price {
+                    font-size: 1.375rem;
+                    ins {
+                        font-size: 1.375rem;
+                    }
+                }
+            }
+        }
+    }
+    @include mq('md') {
+        &__card {
+            margin-bottom: 1.75rem;
+            padding: 1rem;
+            .title {
+                font-size: 1.125rem;               
+            }
+            .a-product-card__price {
+                padding-right: 1rem;
+                .price {
+                    font-size: 1.5rem;
+                    ins {
+                        font-size: 1.5rem;
+                    }
+                }
+            }
+            .weight {
+                font-size: 1rem;
+            }
+        }
+    }
+}

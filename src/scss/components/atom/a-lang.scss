@@ -1,0 +1,97 @@
+.a-lang {
+    &.mobile {
+        border-top: 1px solid $gray-light;
+        padding: .5rem;
+    }
+    &-list {
+        display: flex;
+        align-items: center;
+        li {
+            a {
+                color: $gray;
+                text-decoration: none;
+                padding: .375rem;
+                display: block;
+                &.active {
+                    color: $black;
+                    font-weight: 500;
+                }
+            }
+        }
+    }
+    @include mq('lg') {
+        position: relative;
+        &-title {
+            cursor: pointer;
+            position: relative;
+            padding: .25rem .75rem .25rem .25rem;
+            font-size: .875rem;
+            transition: .25s;
+            &::after {
+                content: '';
+                display: block;
+                right: 0;
+                top: 50%;
+                transform: translateY(-50%);
+                transition: .25s;
+                background: url(../../../img/icons/chevron-down-sharp.svg) no-repeat;
+                width: .625rem;
+                height: .625rem;
+                background-size: contain;
+                position: absolute;
+                transition: .25s;
+            }
+            &.active {
+                &::after {
+                    transform: translateY(-50%) rotate(180deg);
+                }
+            }
+        }
+        &-list {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            box-shadow: 0px 0px 12px rgba(102, 102, 102, 0.06);
+            background-color: white;
+            li {
+                a {
+                    font-size: .875rem;
+                    padding: .5rem .75rem .5rem .25rem;
+                    transition: .25s;
+                    transition: .25s;
+                    &:hover {
+                        color: $black;
+                    }
+                }
+            }
+        }
+    }
+    @include mq('xl') {
+        &-title {
+            padding: .5rem 1.25rem .5rem .5rem;
+            font-size: 1rem;
+            &::after {
+                width: .875rem;
+                height: .875rem;
+            }
+        }
+        &-list {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            box-shadow: 0px 0px 12px rgba(102, 102, 102, 0.06);
+            background-color: white;
+            li {
+                a {
+                    font-size: 1rem;
+                    padding: .5rem 1.25rem .5rem .5rem;
+                    &:hover {
+                        color: $black;
+                    }
+                }
+            }
+        }
+    }
+}

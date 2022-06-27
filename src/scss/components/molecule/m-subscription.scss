@@ -1,0 +1,40 @@
+.m-subscription {
+	&-center {
+		display: none;
+	}
+	&-top {
+		margin-bottom: 1.5rem;
+		.text {
+			color: rgba(189, 189, 189, 1);
+		}
+	}
+	&-bottom {
+		max-width: 420px;
+	}
+	@include mq("md") {
+		justify-content: space-between;
+		&-top {
+			width: 33%;
+			padding-right: 1rem;
+		}
+		&-center {
+			display: block;
+			width: 25%;
+			.img {
+				img {
+					margin: auto;
+				}
+			}
+		}
+		&-bottom {
+			width: 33%;
+			padding-left: 1rem;
+		}
+	}
+	@include mq("lg") {
+		&-center {
+			display: block;
+			width: 33%;
+		}
+	}
+}
