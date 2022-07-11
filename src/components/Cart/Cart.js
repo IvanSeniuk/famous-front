@@ -4,6 +4,7 @@ import AdditionCartItem from './AdditionCartItem/AdditionCartItem'
 import ProductsObj from '../../ProductsArray/ProductsObj.json'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import SwiperCore, { Navigation } from 'swiper'
+import { Link } from 'react-router-dom'
 import { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 
@@ -133,9 +134,9 @@ const Cart = () => {
                                             count={item.count}
                                             image={item.image}
                                             indexCart={i}
-                                            id={item.id}
+                                            product_id={item.product_id}
                                             weight={item.weight}
-                                            name={item.name}
+                                            product_name={item.product_name}
                                             price={item.price}
                                             size={item.size}
                                             side={item.side}
@@ -472,12 +473,15 @@ const Cart = () => {
                                             {totalPrice} грн
                                         </div>
 
-                                        <a
-                                            href="../checkout.html"
+                                        <Link
+                                            onClick={() => {
+                                                dispatch(toggleCart())
+                                            }}
+                                            to="/checkout"
                                             className="a-btn e--gold"
                                         >
                                             Оформити замовлення
-                                        </a>
+                                        </Link>
                                     </div>
                                     <div className="promocode">
                                         <input
@@ -548,12 +552,15 @@ const Cart = () => {
                                             {totalPrice} грн
                                         </div>
                                     </div>
-                                    <a
-                                        href="../checkout.html"
+                                    <Link
+                                        onClick={() => {
+                                            dispatch(toggleCart())
+                                        }}
+                                        to="/checkout"
                                         className="a-btn e--gold"
                                     >
                                         Оформити замовлення
-                                    </a>
+                                    </Link>
                                 </div>
                             </div>
                         </div>

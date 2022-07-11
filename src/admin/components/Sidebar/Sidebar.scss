@@ -74,4 +74,22 @@
             }
         }
     }
+    @media screen and (max-width: 992px) {
+        .center {
+            ul {
+                li {
+                    a {
+                        justify-content: center;
+                        svg {
+                            width: 46px;
+                            height: 46px;
+                        }
+                        span {
+                            display: none;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

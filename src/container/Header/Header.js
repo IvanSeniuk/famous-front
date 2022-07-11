@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { toggleCart } from '../../redux/slices/ui/uiSlice'
 //import PropTypes from 'prop-types'
 import HeaderMenu from '../../components/Header/HeaderMenu'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useState, useEffect, useRef } from 'react'
 import { logoutUser } from '../../redux/slices/auth/authSlice'
 
@@ -14,6 +14,7 @@ const Header = () => {
     } else {
         document.body.classList.remove('hidden')
     }
+    const navigate = useNavigate()
     const { totalCount, items } = useSelector((state) => state.cart)
     const auth = useSelector((state) => state.auth)
     const dispatch = useDispatch()
@@ -21,6 +22,9 @@ const Header = () => {
     let location = useLocation()
     const isMounted = useRef(false)
 
+    useEffect(() => {
+        setBurgerActive(false)
+    }, [navigate])
     useEffect(() => {
         if (isMounted.current) {
             const json = JSON.stringify(items)

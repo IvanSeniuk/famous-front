@@ -1,4 +1,7 @@
 import { Link } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
+import { useEffect } from 'react'
+import { fetchBanners } from '../../redux/slices/banners/bannersSlice'
 import SwiperCore, {
     EffectFade,
     Navigation,
@@ -22,6 +25,13 @@ import ButtonLeft from '../Icons/ButtonLeft.svg'
 import ButtonRight from '../Icons/ButtonRight.svg'
 
 const Hero = () => {
+    const banners = useSelector((state) => state.banners)
+    console.log(banners)
+    const dispatch = useDispatch()
+    useEffect(() => {
+        dispatch(fetchBanners())
+    }, [dispatch])
+
     return (
         <section className="o-hero">
             <div className="container">
@@ -74,47 +84,37 @@ const Hero = () => {
                     }}
                     modules={[EffectFade, Navigation, Pagination, Autoplay]}
                 >
-                    <SwiperSlide className="swiper-slide m-hero-slide">
-                        <div className="m-hero-slide__inner">
-                            <Link to="#">
-                                <img
-                                    src="/image/products/Пепперони_300dpi-thumbnail-960x960-70.jpg"
-                                    alt=""
-                                />
-                            </Link>
-                        </div>
-                    </SwiperSlide>
-                    <SwiperSlide className="swiper-slide m-hero-slide">
-                        <div className="m-hero-slide__inner">
-                            <Link to="#">
-                                <img
-                                    src="/image/products/all_all_big-t1542018571-r1w768h425q90zc1.jpg"
-                                    alt=""
-                                />
-                            </Link>
-                        </div>
-                    </SwiperSlide>
-                    <SwiperSlide className="swiper-slide m-hero-slide">
-                        <div className="m-hero-slide__inner">
-                            <Link to="#">
-                                <img
-                                    src="/image/products/d3279e438d7607d83093d1f9465e0e9c.jpg"
-                                    alt=""
-                                />
-                            </Link>
-                        </div>
-                    </SwiperSlide>
-
-                    <SwiperSlide className="swiper-slide m-hero-slide">
-                        <div className="m-hero-slide__inner">
-                            <Link to="#">
-                                <img
-                                    src="/image/products/a94cbe799b9d259f1cf39317ade0c7d3.jpg"
-                                    alt=""
-                                />
-                            </Link>
-                        </div>
-                    </SwiperSlide>
+                    {banners.status === 'loaded' ? (
+                        banners.items.map((banner) => (
+                            <SwiperSlide
+                                className="swiper-slide m-hero-slide"
+                                key={banner.id}
+                            >
+                                <div className="m-hero-slide__inner">
+                                    <Link to="#">
+                                        <img
+                                            src={
+                                                process.env.REACT_APP_API_URL +
+                                                banner.img
+                                            }
+                                            alt={`banner${banner.id}`}
+                                        />
+                                    </Link>
+                                </div>
+                            </SwiperSlide>
+                        ))
+                    ) : (
+                        <SwiperSlide className="swiper-slide m-hero-slide">
+                            <div className="m-hero-slide__inner">
+                                <Link to="#">
+                                    <img
+                                        src="/image/placeholder.webp"
+                                        alt="img1"
+                                    />
+                                </Link>
+                            </div>
+                        </SwiperSlide>
+                    )}
 
                     <div className="a-slider-nav">
                         <div className="a-slider-prev">

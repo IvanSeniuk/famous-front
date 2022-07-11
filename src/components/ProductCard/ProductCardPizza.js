@@ -1,23 +1,21 @@
 import PropTypes from 'prop-types'
 //import React from 'react'
-import { useState } from 'react'
+//import { useState } from 'react'
 //import { useDispatch } from 'react-redux'
 import { useSearchParams } from 'react-router-dom'
 //import { addItem } from '../../redux/slices/cart/cartSlice'
 //import { toggleModalPizza } from '../../redux/slices/ui/uiSlice'
 
 const ProductCardPizza = ({
-    id,
-    image,
-    image2,
+    photo_origin,
+    product_name,
     price,
-    composition,
-    name,
-    weight,
-    config,
+    product_id,
+    out,
+    ingredients,
 }) => {
-    const [activeType, setActiveType] = useState(0)
-    const [activeSide, setActiveSide] = useState(0)
+    //const [activeType, setActiveType] = useState(0)
+    //const [activeSide, setActiveSide] = useState(0)
     //const [activeType, setactiveType] = React.useState(0)
     //const [activeSide, setactiveSide] = React.useState(0)
     //const location = useLocation()
@@ -46,13 +44,11 @@ const ProductCardPizza = ({
     //    }
     //    dispatch(addItem(item))
     //}
-    const checkComposition = composition
-        ? composition.join(', ').trim()
-        : composition
+
     let [searchParams, setSearchParams] = useSearchParams()
     searchParams.get('product')
     const handleParams = () => {
-        setSearchParams({ product: id })
+        setSearchParams({ product: product_id })
     }
     return (
         <>
@@ -61,8 +57,14 @@ const ProductCardPizza = ({
                     <div className="m-product-card__inner d-flex flex-wrap flex-sm-column">
                         <div className="m-product-card__item left image">
                             <div className="m-product-card__img">
-                                <img src={image} alt={name} />
-                                <img src={image2} alt={name} />
+                                <img
+                                    src={
+                                        process.env.REACT_APP_POSTER_API_URL +
+                                        photo_origin
+                                    }
+                                    alt={product_name}
+                                />
+                                {/*<img src={image2} alt={name} />*/}
                             </div>
                         </div>
                         <div className="m-product-card__item right desc">
@@ -82,21 +84,21 @@ const ProductCardPizza = ({
                                         />
                                     </svg>
                                 </button>
-                                <div className="name">{name}</div>
+                                <div className="name">{product_name}</div>
                                 <div className="weight">
-                                    {Math.round(
-                                        weight * config.sideWeight[activeSide] +
-                                            weight *
-                                                config.sizeWeight[activeType]
-                                    )}
+                                    {out}
                                     {''}
                                     г.
                                 </div>
                             </div>
                             <div className="description">
-                                {checkComposition}
+                                {ingredients.map((item) => (
+                                    <span key={item.ingredient_id}>
+                                        {item.ingredient_name},{' '}
+                                    </span>
+                                ))}
                             </div>
-                            <div className="sides m-product-card__options">
+                            {/*<div className="sides m-product-card__options">
                                 <ul>
                                     {config.sides.map((side, i) => (
                                         <li
@@ -116,10 +118,10 @@ const ProductCardPizza = ({
                                         </li>
                                     ))}
                                 </ul>
-                            </div>
+                            </div>*/}
                         </div>
 
-                        <div className="m-product-card__item bottom left">
+                        {/*<div className="m-product-card__item bottom left">
                             <div className="sizes m-product-card__options">
                                 <ul>
                                     {config.size.map((size, i) => (
@@ -141,17 +143,16 @@ const ProductCardPizza = ({
                                     ))}
                                 </ul>
                             </div>
-                        </div>
+                        </div>*/}
                         <div className="m-product-card__item bottom right">
                             <div className="m-product-card__bottom">
                                 <div className="price">
-                                    {price +
-                                        config.sidePrice[activeSide] +
-                                        config.sizePrice[activeType]}
+                                    {price['1'] / 100}
                                     грн
                                 </div>
                                 <div className="add-to-cart">
                                     <button
+                                        type="button"
                                         onClick={handleParams}
                                         //to={{
                                         //    path: location.pathname,
@@ -242,15 +243,12 @@ const ProductCardPizza = ({
 }
 
 ProductCardPizza.propTypes = {
-    name: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-    weight: PropTypes.number.isRequired,
-    image2: PropTypes.string,
-    productType: PropTypes.string,
-    id: PropTypes.string,
-    config: PropTypes.object,
-    image: PropTypes.string,
-    composition: PropTypes.array,
+    photo_origin: PropTypes.string,
+    product_name: PropTypes.string,
+    price: PropTypes.object,
+    product_id: PropTypes.string,
+    out: PropTypes.number,
+    ingredients: PropTypes.array,
 }
 
 export default ProductCardPizza

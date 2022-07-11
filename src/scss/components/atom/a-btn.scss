@@ -64,6 +64,26 @@
         justify-content: center;
         align-items: center;
     }
+    &.update {
+        background: $black;
+        transition: 0.3s;
+        background: $gold;
+        padding: 2px;
+        position: fixed;
+        right: 2rem;
+        top: 100px;
+        z-index: 63;
+        .a-btn-inner {
+            padding: 0.5rem 1rem;
+            background: $black;
+            transition: 0.3s;
+        }
+        &:hover {
+            .a-btn-inner {
+                background: $black-light;
+            }
+        }
+    }
     @include mq('sm') {
         background: rgba(225, 225, 225, 0.2);
         font-size: 0.875rem;

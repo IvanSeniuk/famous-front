@@ -1,40 +1,45 @@
 //import React from 'react'
 import PropTypes from 'prop-types'
-//import { NavLink } from 'react-router-dom'
+import { NavLink, Link } from 'react-router-dom'
 
-const Categories = ({ product, onChangeCategory, value }) => {
-    const activeIndex = value
-    const categories = product.categories
+const Categories = ({ categories, value }) => {
+    const categoriesList = categories.items
+    console.log(categoriesList)
     //const onClickCategory = (index) => {
     //    setActiveIndex(index)
     //}
     return (
         <div className="m-tabs categories">
             <ul className="m-tabs-list">
-                {categories.map((item, i) => (
-                    <li
-                        key={i}
-                        onClick={() => {
-                            //onClickCategory(i)
-                            onChangeCategory(i)
-                        }}
-                        className={activeIndex === i ? 'active' : ''}
+                <li>
+                    <Link
+                        to={`/${value}`}
+                        className={`${
+                            location.pathname === `/${value}` ? 'active' : ''
+                        }`}
                     >
-                        {/*<NavLink to={`/${product.value}/${item.category}`}>
-                            <button>{item.categoryName}</button>
-                        </NavLink>*/}
-                        <button>{item.categoryName}</button>
-                    </li>
-                ))}
+                        <button>Всі</button>
+                    </Link>
+                </li>
+                {categoriesList
+                    .filter((item) => item.parent_category === value)
+                    .map((item) => (
+                        <li key={item.category_id}>
+                            <NavLink
+                                to={`/${item.parent_category}/${item.category_id}`}
+                            >
+                                <button>{item.category_name}</button>
+                            </NavLink>
+                        </li>
+                    ))}
             </ul>
         </div>
     )
 }
 
 Categories.propTypes = {
-    product: PropTypes.object,
-    onChangeCategory: PropTypes.func,
-    value: PropTypes.number,
+    categories: PropTypes.object,
+    value: PropTypes.string,
 }
 
 export default Categories

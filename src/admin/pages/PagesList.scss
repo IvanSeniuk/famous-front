@@ -1,0 +1,59 @@
+.pages {
+    &-list {
+        display: flex;
+        flex-wrap: wrap;
+        .item {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            border-radius: 10px;
+            width: 20%;
+            border: 0.5px solid rgba(135, 135, 135, 0.2);
+            box-shadow: 0px 0px 12px rgba(102, 102, 102, 0.06);
+            font-size: 1.5rem;
+            opacity: 0.75;
+            transition: 0.3s;
+            margin-bottom: 1rem;
+            &:active {
+                transform: scale(0.9);
+            }
+            &:hover {
+                opacity: 1;
+            }
+            span {
+                display: flex;
+                align-items: center;
+            }
+            svg {
+                margin-right: 0.75rem;
+                width: 40px;
+                height: 40px;
+                display: block;
+                object-fit: contain;
+                path {
+                    fill: rgba(218, 165, 32, 0.808);
+                }
+            }
+            margin-right: 1.5rem;
+            &:last-child {
+                margin-right: 0;
+            }
+        }
+    }
+    @media screen and (max-width: 992px) {
+        &-list {
+            .item {
+                width: 50%;
+            }
+        }
+    }
+    @media screen and (max-width: 560px) {
+        &-list {
+            .item {
+                width: 100%;
+                margin-right: 0;
+            }
+        }
+    }
+}

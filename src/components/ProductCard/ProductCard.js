@@ -4,31 +4,26 @@ import { useDispatch, useSelector } from 'react-redux'
 import { addItem } from '../../redux/slices/cart/cartSlice'
 
 const ProductCard = ({
-    id,
-    image,
-    image2,
+    photo_origin,
+    product_name,
     price,
-    composition,
-    name,
-    weight,
-    productType,
+    product_id,
+    out,
+    ingredients,
 }) => {
     const dispatch = useDispatch()
     const cartItem = useSelector((state) =>
-        state.cart.items.find((obj) => obj.id === id)
+        state.cart.items.find((obj) => obj.id === product_id)
     )
-    const checkComposition = composition
-        ? composition.join(', ').trim()
-        : composition
+
     const addedCount = cartItem ? cartItem.count : 0
     const onClickAdd = () => {
         const item = {
-            id,
-            name,
-            weight,
-            price,
-            image,
-            productType,
+            product_id,
+            product_name,
+            weight: out,
+            price: price['1'] / 100,
+            image: photo_origin,
         }
         dispatch(addItem(item))
     }
@@ -38,8 +33,13 @@ const ProductCard = ({
                 <div className="m-product-card__inner d-flex flex-wrap flex-sm-column">
                     <div className="m-product-card__item left image">
                         <div className="m-product-card__img">
-                            <img src={image} alt="" />
-                            <img src={image2} alt="" />
+                            <img
+                                src={
+                                    process.env.REACT_APP_POSTER_API_URL +
+                                    photo_origin
+                                }
+                                alt={product_name}
+                            />
                         </div>
                     </div>
                     <div className="m-product-card__item right desc">
@@ -59,12 +59,18 @@ const ProductCard = ({
                                     />
                                 </svg>
                             </button>
-                            <div className="name">{name}</div>
-                            <div className="weight">{weight} г.</div>
+                            <div className="name">{product_name}</div>
+                            <div className="weight">{out} г.</div>
                         </div>
-                        <div className="description">{checkComposition}</div>
+                        <div className="description">
+                            {ingredients.map((item) => (
+                                <span key={item.ingredient_id}>
+                                    {item.ingredient_name},{' '}
+                                </span>
+                            ))}
+                        </div>
                         <div className="m-product-card__bottom">
-                            <div className="price">{price} грн</div>
+                            <div className="price">{price['1'] / 100} грн</div>
                             <div className="add-to-cart">
                                 <button
                                     className="a-btn add-to-cart-btn"
@@ -114,14 +120,12 @@ const ProductCard = ({
 }
 
 ProductCard.propTypes = {
-    name: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-    weight: PropTypes.number.isRequired,
-    id: PropTypes.string,
-    productType: PropTypes.string,
-    image: PropTypes.string,
-    image2: PropTypes.string,
-    composition: PropTypes.array,
+    product_id: PropTypes.string,
+    photo_origin: PropTypes.string,
+    price: PropTypes.string,
+    out: PropTypes.string,
+    product_name: PropTypes.string,
+    ingredients: PropTypes.string,
 }
 
 export default ProductCard

@@ -22,8 +22,8 @@ export const cartSlice = createSlice({
             let check = true
             state.items.forEach((obj) => {
                 if (
-                    obj.id === action.payload.id &&
-                    obj.name === action.payload.name
+                    obj.product_id === action.payload.product_id &&
+                    obj.product_name === action.payload.product_name
                 ) {
                     obj.count++
                     obj.alikePrice += action.payload.price
@@ -78,9 +78,11 @@ export const cartSlice = createSlice({
                     //})
                 }
                 if (
-                    obj.id === action.payload.id &&
-                    obj.side === action.payload.side &&
-                    obj.size === action.payload.size &&
+                    obj.product_id === action.payload.product_id &&
+                    obj.side.dish_modification_id ===
+                        action.payload.side.dish_modification_id &&
+                    obj.size.dish_modification_id ===
+                        action.payload.size.dish_modification_id &&
                     add
                 ) {
                     obj.count = obj.count + action.payload.count

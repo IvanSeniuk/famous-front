@@ -7,10 +7,10 @@ import PropTypes from 'prop-types'
 import { useDispatch } from 'react-redux'
 
 const CartItem = ({
-    id,
+    product_id,
     count,
     image,
-    name,
+    product_name,
     side,
     size,
     weight,
@@ -22,21 +22,21 @@ const CartItem = ({
 
     const onClickMinus = () => {
         const itemMinus = {
-            id,
+            product_id,
             indexCart: indexCart,
         }
         dispatch(minusItem(itemMinus))
     }
     const onClickPlus = () => {
         const itemPlus = {
-            id,
+            product_id,
             indexCart: indexCart,
         }
         dispatch(plusItem(itemPlus))
     }
     const onClickRemove = () => {
         const itemRemove = {
-            id,
+            product_id,
             indexCart: indexCart,
         }
         dispatch(removeItem(itemRemove))
@@ -60,14 +60,18 @@ const CartItem = ({
             <div className="m-cart-item__inner">
                 <div className="m-cart-item__img">
                     <div className="img">
-                        <img src={image} alt="" />
+                        <img
+                            src={process.env.REACT_APP_POSTER_API_URL + image}
+                            alt={product_name}
+                        />
                     </div>
                 </div>
                 <div className="m-cart-item__desc">
-                    <div className="m-cart-item__title">{name}</div>
+                    <div className="m-cart-item__title">{product_name}</div>
                     {side || size ? (
                         <div className="weight">
-                            {side ? `${side} ` : ''} {size ? `${size} см` : ''}
+                            {side ? `${side.name} ` : ''}{' '}
+                            {size ? `${size.name}` : ''}
                         </div>
                     ) : (
                         ''
@@ -76,8 +80,8 @@ const CartItem = ({
                     {additions && additions.length > 0 ? (
                         <div className="weight">
                             {additions.map((item) => (
-                                <span key={item.title}>
-                                    +{item.title}
+                                <span key={item.dish_modification_id}>
+                                    +{item.name}
                                     {item.count > 1 ? `(${item.count}x) ` : ' '}
                                 </span>
                             ))}
@@ -115,16 +119,16 @@ const CartItem = ({
 }
 
 CartItem.propTypes = {
-    name: PropTypes.string.isRequired,
+    product_name: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
     weight: PropTypes.number.isRequired,
     additions: PropTypes.object,
     count: PropTypes.number,
     indexCart: PropTypes.number,
     image: PropTypes.string,
-    id: PropTypes.string,
-    side: PropTypes.string,
-    size: PropTypes.string,
+    product_id: PropTypes.string,
+    side: PropTypes.object,
+    size: PropTypes.object,
 }
 
 export default CartItem

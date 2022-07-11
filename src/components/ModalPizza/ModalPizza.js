@@ -5,15 +5,13 @@ import { useSearchParams } from 'react-router-dom'
 import { addItemPizza } from '../../redux/slices/cart/cartSlice'
 
 const ModalPizza = ({
-    additions,
-    id,
-    name,
+    photo_origin,
+    product_name,
     price,
-    weight,
-    config,
-    img,
-    composition,
-    productType,
+    group_modifications,
+    product_id,
+    out,
+    ingredients,
 }) => {
     useEffect(() => {
         const modalPizza = document.querySelector('.m-modal-pizza__card')
@@ -109,7 +107,7 @@ const ModalPizza = ({
             //    this.removeEventListener('touchend')
         })
     })
-
+    console.log(price)
     const [activeType, setActiveType] = useState(0)
     const [activeSide, setActiveSide] = useState(0)
     const [count, setCount] = useState(1)
@@ -125,29 +123,43 @@ const ModalPizza = ({
     //    _checked[index] = event.target.checked
     //    setActiveCheckbox(_checked)
     //}
-    const checkComposition = composition
-        ? composition.join(', ').trim()
-        : composition
-    const [countAdd, setCountAdd] = useState(additions)
+    //const checkComposition = composition
+    //    ? composition.join(', ').trim()
+    //    : composition
+
+    const [countAdd, setCountAdd] = useState(
+        group_modifications[2].modifications.map((item) => ({
+            ...item,
+            check: false,
+            count: 1,
+        }))
+    )
+
     console.log(countAdd)
-    const incrementCountAdd = (title) => {
+    const incrementCountAdd = (dish_modification_id) => {
         setCountAdd(
             countAdd.map((item) =>
-                item.title === title ? { ...item, count: item.count + 1 } : item
+                item.dish_modification_id === dish_modification_id
+                    ? { ...item, count: item.count + 1 }
+                    : item
             )
         )
     }
-    const decrementCountAdd = (title) => {
+    const decrementCountAdd = (dish_modification_id) => {
         setCountAdd(
             countAdd.map((item) =>
-                item.title === title ? { ...item, count: item.count - 1 } : item
+                item.dish_modification_id === dish_modification_id
+                    ? { ...item, count: item.count - 1 }
+                    : item
             )
         )
     }
-    const checkCountAdd = (title) => {
+    const checkCountAdd = (id) => {
         setCountAdd(
             countAdd.map((item) =>
-                item.title === title ? { ...item, check: !item.check } : item
+                item.dish_modification_id === id
+                    ? { ...item, check: !item.check }
+                    : item
             )
         )
     }
@@ -168,7 +180,9 @@ const ModalPizza = ({
     //searchParams.delete('product')
     console.log(searchParams)
     const dispatch = useDispatch()
-    countAdd.filter((item) => item.check === true)
+
+    //countAdd.filter((item) => item.check === true)
+
     //const adds =
     //    config.sidePrice[activeSide] +
     //    config.sizePrice[activeType] +
@@ -177,37 +191,52 @@ const ModalPizza = ({
     //        .reduce(function (sum, item) {
     //            return sum + item.price * item.count
     //        }, 0)
+
     const onClickAdd = () => {
         const adds =
-            config.sidePrice[activeSide] +
-            config.sizePrice[activeType] +
+            group_modifications[1].modifications[activeSide].price +
+            group_modifications[0].modifications[activeType].price +
             countAdd
                 .filter((item) => item.check === true)
                 .reduce(function (sum, item) {
                     return sum + item.price * item.count
                 }, 0)
         const addsWeight =
-            weight * config.sideWeight[activeSide] +
-            weight * config.sizeWeight[activeType] +
+            out +
+            group_modifications[1].modifications[activeSide].brutto +
+            group_modifications[0].modifications[activeType].brutto +
             countAdd
                 .filter((item) => item.check === true)
                 .reduce(function (sum, item) {
-                    return sum + item.weight * item.count
+                    return sum + item.brutto * item.count
                 }, 0)
+        const additions = countAdd.filter((item) => item.check === true)
+        const modifications = countAdd.filter((item) => item.check === true)
+        const size = {
+            ...group_modifications[0].modifications[activeType],
+            count: 1,
+        }
+        const side = {
+            ...group_modifications[1].modifications[activeType],
+            count: 1,
+        }
+        modifications.push(side)
+        modifications.push(size)
         const item = {
-            id: id,
-            name: name,
+            product_id: product_id,
+            product_name: product_name,
             weight: addsWeight,
-            weightSide: config.sideWeight[activeSide],
-            weightSize: config.sideWeight[activeType],
-            priceSide: config.sidePrice[activeSide],
-            priceSize: config.sizePrice[activeType],
-            additions: countAdd.filter((item) => item.check === true),
-            price: price + adds,
-            image: img,
-            productType: productType,
-            size: config.size[activeType],
-            side: config.sides[activeSide],
+            side: side,
+            size: size,
+            //priceSide: config.sidePrice[activeSide],
+            //priceSize: config.sizePrice[activeType],
+            additions: additions,
+            modifications: modifications,
+            price: price['1'] / 100 + adds,
+            image: photo_origin,
+            //productType: productType,
+            //size: config.size[activeType],
+            //side: config.sides[activeSide],
             count: count,
         }
 
@@ -249,17 +278,27 @@ const ModalPizza = ({
 
                         <div className="top">
                             <div className="img">
-                                <img src={img} alt="" />
+                                <img
+                                    src={
+                                        process.env.REACT_APP_POSTER_API_URL +
+                                        photo_origin
+                                    }
+                                    alt={product_name}
+                                />
                             </div>
                         </div>
                         <div className="content">
                             <div className="head-content">
-                                <div className="name">{name}</div>
+                                <div className="name">{product_name}</div>
                                 <div className="weight">
                                     {Math.round(
-                                        weight * config.sideWeight[activeSide] +
-                                            weight *
-                                                config.sizeWeight[activeType] +
+                                        out +
+                                            group_modifications[1]
+                                                .modifications[activeSide]
+                                                .brutto +
+                                            group_modifications[0]
+                                                .modifications[activeType]
+                                                .brutto +
                                             countAdd
                                                 .filter(
                                                     (item) =>
@@ -268,7 +307,7 @@ const ModalPizza = ({
                                                 .reduce(function (sum, item) {
                                                     return (
                                                         sum +
-                                                        item.weight * item.count
+                                                        item.brutto * item.count
                                                     )
                                                 }, 0)
                                     )}
@@ -276,32 +315,138 @@ const ModalPizza = ({
                                 </div>
                             </div>
 
-                            <div className="price">
+                            {/*<div className="price">
                                 {price +
                                     config.sidePrice[activeSide] +
                                     config.sizePrice[activeType]}{' '}
+                                {price['1'] / 100}
                                 грн
+                            </div>*/}
+                            <div className="desc">
+                                {ingredients.map((item) => (
+                                    <span key={item.ingredient_id}>
+                                        {item.ingredient_name},{' '}
+                                    </span>
+                                ))}
                             </div>
-                            <div className="desc">{checkComposition}</div>
-                            <div className="title">Додадки</div>
+                            <div
+                                className="title"
+                                style={{ marginTop: '1.25rem' }}
+                            >
+                                Обрати розмір
+                            </div>
+                            <div className="sizes m-product-card__options">
+                                <ul>
+                                    {/*{config.size.map((size, i) => (
+                                        <li
+                                            onClick={() => {
+                                                {
+                                                    setActiveType(i)
+                                                }
+                                            }}
+                                            key={i}
+                                            className={
+                                                activeType === i ? 'active' : ''
+                                            }
+                                        >
+                                            <span className="inner">
+                                                {size} см.
+                                            </span>
+                                        </li>
+                                    ))}*/}
+                                    {group_modifications[0].modifications.map(
+                                        (size, i) => (
+                                            <li
+                                                onClick={() => {
+                                                    {
+                                                        setActiveType(i)
+                                                    }
+                                                }}
+                                                key={size.dish_modification_id}
+                                                className={
+                                                    activeType === i
+                                                        ? 'active'
+                                                        : ''
+                                                }
+                                            >
+                                                <span className="inner">
+                                                    {size.name}
+                                                </span>
+                                            </li>
+                                        )
+                                    )}
+                                </ul>
+                            </div>
+                            <div
+                                className="title"
+                                style={{ marginTop: '1.25rem' }}
+                            >
+                                Обрати бортик
+                            </div>
+                            <div className="sides m-product-card__options">
+                                <ul>
+                                    {/*{config.sides.map((side, i) => (
+                                        <li
+                                            onClick={() => {
+                                                setActiveSide(i)
+                                            }}
+                                            key={i}
+                                            className={`${
+                                                activeSide === i ? 'active' : ''
+                                            }`}
+                                        >
+                                            <span className="inner">
+                                                {side}
+                                            </span>
+                                        </li>
+                                    ))}*/}
+                                    {group_modifications[1].modifications.map(
+                                        (side, i) => (
+                                            <li
+                                                onClick={() => {
+                                                    {
+                                                        setActiveSide(i)
+                                                    }
+                                                }}
+                                                key={side.dish_modification_id}
+                                                className={
+                                                    activeSide === i
+                                                        ? 'active'
+                                                        : ''
+                                                }
+                                            >
+                                                <span className="inner">
+                                                    {side.name}
+                                                </span>
+                                            </li>
+                                        )
+                                    )}
+                                </ul>
+                            </div>
+                            <div
+                                className="title"
+                                style={{ marginTop: '1.25rem' }}
+                            >
+                                Додадки
+                            </div>
                             <div className="items">
                                 {countAdd.map(
                                     (
-                                        { title, weight, price, count, check },
-                                        i
+                                        //{ title, weight, price, count, check },
+                                        item
                                     ) => (
                                         <div
                                             className="item"
-                                            key={`${title}_${i}`}
+                                            key={item.dish_modification_id}
                                         >
                                             <div className="item-top">
-                                                {check}
+                                                {/*{check}*/}
                                                 <div className="checkbox">
                                                     <label>
                                                         <input
                                                             type="checkbox"
-                                                            name={title}
-                                                            checked={check}
+                                                            name={item.name}
+                                                            checked={item.check}
                                                             //onChange={(
                                                             //    event
                                                             //) => {
@@ -310,44 +455,50 @@ const ModalPizza = ({
                                                             //        i
                                                             //    )
                                                             //}}
+
                                                             onClick={() => {
                                                                 checkCountAdd(
-                                                                    title
+                                                                    item.dish_modification_id
                                                                 )
                                                             }}
                                                             id=""
                                                         />
                                                         <span></span>
                                                         <p>
-                                                            {title}
+                                                            {item.name}
 
-                                                            {count > 0 &&
+                                                            {item.count > 0 &&
                                                                 `(${
-                                                                    weight *
-                                                                    count
+                                                                    item.brutto *
+                                                                    item.count
                                                                 }г.)`}
                                                         </p>
                                                     </label>
                                                 </div>
-                                                {count > 0 && (
+                                                {item.count > 0 && (
                                                     <div className="item-price">
-                                                        +{price * count} грн.
+                                                        +
+                                                        {item.price *
+                                                            item.count}{' '}
+                                                        грн.
                                                     </div>
                                                 )}
                                             </div>
                                             <div
                                                 className={`item-bottom ${
-                                                    check ? 'show' : ''
+                                                    item.check ? 'show' : ''
                                                 }`}
                                             >
                                                 <div className="quantity e--border">
                                                     <button
                                                         onClick={() => {
                                                             decrementCountAdd(
-                                                                title
+                                                                item.dish_modification_id
                                                             )
                                                         }}
-                                                        disabled={count <= 1}
+                                                        disabled={
+                                                            item.count <= 1
+                                                        }
                                                     >
                                                         -
                                                     </button>
@@ -371,12 +522,12 @@ const ModalPizza = ({
                                                             textAlign: 'center',
                                                         }}
                                                     >
-                                                        {count}
+                                                        {item.count}
                                                     </span>
                                                     <button
                                                         onClick={() => {
                                                             incrementCountAdd(
-                                                                title
+                                                                item.dish_modification_id
                                                             )
                                                         }}
                                                     >
@@ -387,49 +538,6 @@ const ModalPizza = ({
                                         </div>
                                     )
                                 )}
-                            </div>
-                            <div className="title">Обрати бортик</div>
-                            <div className="sides m-product-card__options">
-                                <ul>
-                                    {config.sides.map((side, i) => (
-                                        <li
-                                            onClick={() => {
-                                                setActiveSide(i)
-                                            }}
-                                            key={i}
-                                            className={`${
-                                                activeSide === i ? 'active' : ''
-                                            }`}
-                                        >
-                                            <span className="inner">
-                                                {side}
-                                            </span>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                            <div className="title"></div>
-                            <div className="title">Обрати розмір</div>
-                            <div className="sizes m-product-card__options">
-                                <ul>
-                                    {config.size.map((size, i) => (
-                                        <li
-                                            onClick={() => {
-                                                {
-                                                    setActiveType(i)
-                                                }
-                                            }}
-                                            key={i}
-                                            className={
-                                                activeType === i ? 'active' : ''
-                                            }
-                                        >
-                                            <span className="inner">
-                                                {size} см.
-                                            </span>
-                                        </li>
-                                    ))}
-                                </ul>
                             </div>
                         </div>
                     </div>
@@ -455,15 +563,17 @@ const ModalPizza = ({
                         onClick={onClickAdd}
                     >
                         Додати{' '}
-                        {(price +
-                            config.sidePrice[activeSide] +
-                            config.sizePrice[activeType] +
+                        {price['1'] / 100 +
+                            group_modifications[1].modifications[activeSide]
+                                .price +
+                            group_modifications[0].modifications[activeType]
+                                .price +
                             countAdd
                                 .filter((item) => item.check === true)
                                 .reduce(function (sum, item) {
                                     return sum + item.price * item.count
-                                }, 0)) *
-                            count}{' '}
+                                }, 0) *
+                                count}{' '}
                         грн
                     </button>
                 </div>
@@ -474,15 +584,23 @@ const ModalPizza = ({
 
 ModalPizza.propTypes = {
     modalPizzaVisible: PropTypes.bool,
-    additions: PropTypes.object,
-    id: PropTypes.string,
-    name: PropTypes.string,
-    price: PropTypes.number,
-    weight: PropTypes.number,
-    config: PropTypes.object,
-    composition: PropTypes.array,
-    img: PropTypes.string,
-    productType: PropTypes.string,
+
+    photo_origin: PropTypes.string,
+    product_name: PropTypes.string,
+    price: PropTypes.array,
+    product_id: PropTypes.string,
+    out: PropTypes.string,
+    ingredients: PropTypes.array,
+    group_modifications: PropTypes.array,
+    //additions: PropTypes.object,
+    //id: PropTypes.string,
+    //name: PropTypes.string,
+    //price: PropTypes.number,
+    //weight: PropTypes.number,
+    //config: PropTypes.object,
+    //composition: PropTypes.array,
+    //img: PropTypes.string,
+    //productType: PropTypes.string,
 }
 
 export default ModalPizza

@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 //import { setHeaders } from '../../../http/userAPI'
-import jwtDecode from 'jwt-decode'
+
 import { $authHost } from '../../../http'
 import axios from '../../../http/axios'
 
@@ -15,8 +15,6 @@ export const fetchProduct = createAsyncThunk(
 export const updateProduct = createAsyncThunk(
     'product/updateProduct',
     async (product) => {
-        const role = jwtDecode(localStorage.getItem('token')).role
-        console.log(role)
         try {
             const { data } = await $authHost.put(
                 `api/product_p/${product.id}`,
@@ -33,8 +31,8 @@ export const updateProduct = createAsyncThunk(
 
 const initialState = {
     item: {},
-    status: 'loading',
-    statusUpdate: 'loading',
+    status: '',
+    statusUpdate: '',
 }
 
 const productSlice = createSlice({

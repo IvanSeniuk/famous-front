@@ -1,53 +1,52 @@
 import Categories from '../Categories/Categories'
 import ProductCard from '../ProductCard/ProductCard'
-import ProductsObj from '../../ProductsArray/ProductsObj.json'
-import { useParams } from 'react-router-dom'
+//import ProductsObj from '../../ProductsArray/ProductsObj.json'
+import { Navigate, useParams } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import ProductCardPizza from '../ProductCard/ProductCardPizza'
 import { useDispatch, useSelector } from 'react-redux'
-import { setCategoryId } from '../../redux/slices/pizzaFilters/pizzaFiltersSlice'
+import { useEffect } from 'react'
+import { fetchProductsPoster } from '../../redux/slices/poster/productsSlice/ProductsSlice'
+import { fetchCategoriesPoster } from '../../redux/slices/poster/productsSlice/CategoriesSlice'
 
-const getProductsObj = (array) => {
-    return array.reduce(
-        (object, product) => ({
-            ...object,
-            [product.value]: product,
-        }),
-        {}
-    )
-}
-//const products = []
-//fetch('https://6294d433a7203b3ed0721c1d.mockapi.io/products')
-//    .then((res) => {
-//        return res.json()
-//    })
-//    .then((products) => {
-//        console.log('Масив', products[0].sushi)
-//    })
-
-const obj = ProductsObj.productsTypes
-
-const ProductsList = ({ productsObj = getProductsObj(obj) }) => {
-    const { productstype } = useParams()
-    //const { category } = useParams()
-
-    const product = productsObj[productstype]
-
-    const categoryId = useSelector((state) => state.filter.categoryId)
+const ProductsList = () => {
+    const { category } = useParams()
+    const { subcategory } = useParams()
     const dispatch = useDispatch()
-    const onChangeCategory = (id) => {
-        dispatch(setCategoryId(id))
-    }
+    const products = useSelector((state) => state.productsPoster)
+    //console.log(activeCat)
+    useEffect(() => {
+        dispatch(fetchProductsPoster())
+    }, [dispatch])
+    const categories = useSelector((state) => state.categoriesPoster)
 
-    const productCat =
-        productsObj[productstype]['categories'][categoryId].category
+    useEffect(() => {
+        dispatch(fetchCategoriesPoster())
+    }, [dispatch])
+    const categoryObj =
+        categories.status === 'loaded' &&
+        categories.items.find(
+            (item) =>
+                item.category_id === category && item.parent_category === '0'
+        )
+    const subcategoryObj =
+        subcategory != undefined &&
+        categories.status === 'loaded' &&
+        categories.items.find(
+            (item) =>
+                item.category_id === subcategory &&
+                item.parent_category === category
+        )
+    if (categoryObj === undefined || subcategoryObj === undefined) {
+        return <Navigate to="/" />
+    }
 
     return (
         <section className="o-products">
             <div className="container-sm">
                 <div className="m-section-top">
                     <div className="a-section-title">
-                        <h1>{product.title}</h1>
+                        <h1>{categoryObj.category_name}</h1>
                     </div>
                     <div className="m-sort"></div>
                 </div>
@@ -55,9 +54,9 @@ const ProductsList = ({ productsObj = getProductsObj(obj) }) => {
             <div className="line-bg"></div>
             <div className="container-sm">
                 <Categories
-                    product={product}
-                    value={categoryId}
-                    onChangeCategory={onChangeCategory}
+                    categories={categories}
+                    value={category}
+                    //onChangeCategory={onChangeCategory}
                 />
             </div>
             <div className="container">
@@ -65,71 +64,80 @@ const ProductsList = ({ productsObj = getProductsObj(obj) }) => {
                     <div className="o-products-list">
                         <div className="m-products-list">
                             <div className="row m-products-list__row ">
-                                {categoryId === 0
-                                    ? productstype === 'pizza'
-                                        ? ProductsObj[productstype].map(
-                                              (obj) => (
+                                {!subcategory &&
+                                    (category === '4'
+                                        ? categories.items
+                                              .filter(
+                                                  (cat) =>
+                                                      cat.parent_category ===
+                                                      category
+                                              )
+                                              .map((catAll) =>
+                                                  products.items
+                                                      .filter(
+                                                          (item) =>
+                                                              item.menu_category_id ===
+                                                              catAll.category_id
+                                                      )
+
+                                                      .map((obj) => (
+                                                          <ProductCardPizza
+                                                              key={
+                                                                  obj.product_id
+                                                              }
+                                                              {...obj}
+                                                          />
+                                                      ))
+                                              )
+                                        : categories.items
+                                              .filter(
+                                                  (cat) =>
+                                                      cat.parent_category ===
+                                                      category
+                                              )
+                                              .map((catAll) =>
+                                                  products.items
+                                                      .filter(
+                                                          (item) =>
+                                                              item.menu_category_id ===
+                                                              catAll.category_id
+                                                      )
+
+                                                      .map((obj) => (
+                                                          <ProductCard
+                                                              key={
+                                                                  obj.product_id
+                                                              }
+                                                              {...obj}
+                                                          />
+                                                      ))
+                                              ))}
+                                {subcategory &&
+                                    (category === '4'
+                                        ? products.items
+                                              .filter(
+                                                  (item) =>
+                                                      item.menu_category_id ===
+                                                      subcategory
+                                              )
+                                              .map((obj) => (
                                                   <ProductCardPizza
-                                                      key={obj.id}
-                                                      name={obj.name}
-                                                      price={obj.price}
-                                                      image={obj.img}
-                                                      image2={obj.img2}
-                                                      composition={
-                                                          obj.composition
-                                                      }
-                                                      weight={obj.weight}
-                                                      config={obj.config}
+                                                      key={obj.product_id}
+                                                      {...obj}
                                                   />
+                                              ))
+                                        : products.items
+                                              .filter(
+                                                  (item) =>
+                                                      item.menu_category_id ===
+                                                      subcategory
                                               )
-                                          )
-                                        : ProductsObj[productstype].map(
-                                              (obj) => (
+                                              .map((obj) => (
                                                   <ProductCard
-                                                      key={obj.id}
-                                                      name={obj.name}
-                                                      price={obj.price}
-                                                      image={obj.img}
-                                                      composition={
-                                                          obj.composition
-                                                      }
-                                                      weight={obj.weight}
+                                                      key={obj.product_id}
+                                                      {...obj}
                                                   />
-                                              )
-                                          )
-                                    : productstype === 'pizza'
-                                    ? ProductsObj[productstype]
-                                          .filter(
-                                              (item) =>
-                                                  item.category === productCat
-                                          )
-                                          .map((obj) => (
-                                              <ProductCardPizza
-                                                  key={obj.id}
-                                                  name={obj.name}
-                                                  price={obj.price}
-                                                  image={obj.img}
-                                                  image2={obj.img2}
-                                                  composition={obj.composition}
-                                                  weight={obj.weight}
-                                                  config={obj.config}
-                                              />
-                                          ))
-                                    : ProductsObj[productstype]
-                                          .filter(
-                                              (item) =>
-                                                  item.category === productCat
-                                          )
-                                          .map((obj) => (
-                                              <ProductCard
-                                                  key={obj.id}
-                                                  name={obj.name}
-                                                  price={obj.price}
-                                                  image={obj.img}
-                                                  composition={obj.composition}
-                                                  weight={obj.weight}
-                                              />
-                                          ))}
+                                              )))}
                             </div>
                         </div>
                     </div>

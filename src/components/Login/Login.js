@@ -15,6 +15,15 @@ const Login = () => {
         email: '',
         password: '',
     })
+    const [passwordRepeat, setPasswordRepeat] = useState({
+        password: '',
+        statusPassword: true,
+    })
+    const [passwordShow, setPasswordShow] = useState({
+        loginPassword: false,
+        registrationPassword: false,
+        repeatPassword: false,
+    })
     const [login, setLogin] = useState({ email: '', password: '' })
     let [searchParams, setSearchParams] = useSearchParams()
     const handleDeleteParams = () => {
@@ -41,7 +50,11 @@ const Login = () => {
     //}
     const handleSubmitReg = (e) => {
         e.preventDefault()
-        dispatch(registerUser(user))
+        if (passwordRepeat.password === user.password) {
+            dispatch(registerUser(user))
+        } else {
+            setPasswordRepeat({ ...passwordRepeat, statusPassword: false })
+        }
     }
     const handleSubmitLog = (e) => {
         e.preventDefault()
@@ -134,22 +147,39 @@ const Login = () => {
                             </div>
                             <div className="input">
                                 <label>
-                                    <input
-                                        type="password"
-                                        value={login.password}
-                                        className={`${
-                                            login.password.length > 0
-                                                ? 'filled'
-                                                : ''
-                                        }`}
-                                        onChange={(e) =>
-                                            setLogin({
-                                                ...login,
-                                                password: e.target.value,
-                                            })
-                                        }
-                                    />
-                                    <span className="label">Пароль</span>
+                                    <div className="input-inner">
+                                        <input
+                                            type={
+                                                passwordShow.loginPassword
+                                                    ? 'text'
+                                                    : 'password'
+                                            }
+                                            value={login.password}
+                                            className={`${
+                                                login.password.length > 0
+                                                    ? 'filled'
+                                                    : ''
+                                            }`}
+                                            onChange={(e) =>
+                                                setLogin({
+                                                    ...login,
+                                                    password: e.target.value,
+                                                })
+                                            }
+                                        />
+                                        <span className="label">Пароль</span>
+                                        <button
+                                            type="button"
+                                            className="password-control"
+                                            onClick={() =>
+                                                setPasswordShow({
+                                                    ...passwordShow,
+                                                    loginPassword:
+                                                        !passwordShow.loginPassword,
+                                                })
+                                            }
+                                        ></button>
+                                    </div>
                                 </label>
                             </div>
                             <div className="m-login-forms__bottom">
@@ -167,7 +197,7 @@ const Login = () => {
                                     : ' Увійти'}
                             </button>
                             {auth.loginStatus === 'rejected' ? (
-                                <p>{auth.loginError}</p>
+                                <p className="login-error">{auth.loginError}</p>
                             ) : null}
                         </form>
                         <form
@@ -217,31 +247,81 @@ const Login = () => {
                             </div>
                             <div className="input">
                                 <label>
-                                    <input
-                                        type="password"
-                                        value={user.password}
-                                        className={`${
-                                            user.password.length > 0
-                                                ? 'filled'
-                                                : ''
-                                        }`}
-                                        onChange={(e) =>
-                                            setUser({
-                                                ...user,
-                                                password: e.target.value,
-                                            })
-                                        }
-                                    />
-                                    <span className="label">Пароль</span>
+                                    <div className="input-inner">
+                                        <input
+                                            type={
+                                                passwordShow.registrationPassword
+                                                    ? 'text'
+                                                    : 'password'
+                                            }
+                                            value={user.password}
+                                            className={`${
+                                                user.password.length > 0
+                                                    ? 'filled'
+                                                    : ''
+                                            }`}
+                                            onChange={(e) =>
+                                                setUser({
+                                                    ...user,
+                                                    password: e.target.value,
+                                                })
+                                            }
+                                        />
+                                        <span className="label">Пароль</span>
+                                        <button
+                                            type="button"
+                                            className="password-control"
+                                            onClick={() =>
+                                                setPasswordShow({
+                                                    ...passwordShow,
+                                                    registrationPassword:
+                                                        !passwordShow.registrationPassword,
+                                                })
+                                            }
+                                        ></button>
+                                    </div>
                                 </label>
                             </div>
 
                             <div className="input">
                                 <label>
-                                    <input type="password" />
-                                    <span className="label">
-                                        Повторити пароль
-                                    </span>
+                                    <div className="input-inner">
+                                        <input
+                                            type={
+                                                passwordShow.repeatPassword
+                                                    ? 'text'
+                                                    : 'password'
+                                            }
+                                            required
+                                            value={passwordRepeat.password}
+                                            className={`${
+                                                passwordRepeat.password.length >
+                                                0
+                                                    ? 'filled'
+                                                    : ''
+                                            }`}
+                                            onChange={(e) =>
+                                                setPasswordRepeat({
+                                                    statusPassword: true,
+                                                    password: e.target.value,
+                                                })
+                                            }
+                                        />
+                                        <span className="label">
+                                            Повторити пароль
+                                        </span>
+                                        <button
+                                            type="button"
+                                            className="password-control"
+                                            onClick={() =>
+                                                setPasswordShow({
+                                                    ...passwordShow,
+                                                    repeatPassword:
+                                                        !passwordShow.repeatPassword,
+                                                })
+                                            }
+                                        ></button>
+                                    </div>
                                 </label>
                             </div>
                             <div className="m-login-forms__bottom">
@@ -266,8 +346,15 @@ const Login = () => {
                                     ? 'Відправлення'
                                     : ' Реєстрація'}
                             </button>
+                            {!passwordRepeat.statusPassword ? (
+                                <p className="login-error">
+                                    Паролі не збігаються
+                                </p>
+                            ) : null}
                             {auth.registerStatus === 'rejected' ? (
-                                <p>{auth.registerError}</p>
+                                <p className="login-error">
+                                    {auth.registerError}
+                                </p>
                             ) : null}
                         </form>
                     </div>

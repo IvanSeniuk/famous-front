@@ -83,6 +83,9 @@ export const authSlice = createSlice({
                     role: user.role,
                     name: user.name,
                     email: user.email,
+                    phone: user.phone,
+                    loginError: '',
+                    registerError: '',
                     userLoaded: true,
                 }
             }
@@ -94,6 +97,7 @@ export const authSlice = createSlice({
                 name: '',
                 email: '',
                 id: '',
+                phone: '',
                 role: '',
                 registerStatus: '',
                 registerError: '',
@@ -131,8 +135,10 @@ export const authSlice = createSlice({
                     id: user.id,
                     role: user.role,
                     name: user.name,
+                    phone: '',
                     email: user.email,
                     registerStatus: 'success',
+                    userLoaded: true,
                 }
             } else {
                 return state
@@ -156,6 +162,7 @@ export const authSlice = createSlice({
                     token: action.payload,
                     id: user.id,
                     role: user.role,
+                    phone: user.phone,
                     name: user.name,
                     email: user.email,
                     loginStatus: 'success',
@@ -182,6 +189,7 @@ export const authSlice = createSlice({
             return {
                 ...state,
                 name: user.name,
+                phone: user.phone,
                 email: user.email,
                 updateStatus: 'success',
             }

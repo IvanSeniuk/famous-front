@@ -2,6 +2,7 @@
 //import Footer from './Footer/Footer'
 //import PropTypes from 'prop-types'
 //import { useEffect } from 'react'
+import { useLocation } from 'react-router-dom'
 import Main from './Main/Main'
 //import ToolBarr from '../components/ToolBar/ToolBar'
 //import Cart from '../components/Cart/Cart'
@@ -35,6 +36,14 @@ const App = () => {
                 }
             }
         })
+    })
+    const location = useLocation()
+    useEffect(() => {
+        if (location.pathname.includes('/admin', 0)) {
+            document.body.classList.add('admin-page')
+        } else {
+            document.body.classList.remove('admin-page')
+        }
     })
     return (
         <>

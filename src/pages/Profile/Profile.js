@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
+import NumberFormat from 'react-number-format'
 //import axios from '../../http/axios'
 import { changeUser } from '../../redux/slices/auth/authSlice'
 import { useState } from 'react'
@@ -7,12 +8,33 @@ import { useState } from 'react'
 const Profile = () => {
     const auth = useSelector((state) => state.auth)
     const dispatch = useDispatch()
+    const [passwordRepeat, setPasswordRepeat] = useState({
+        passwordRepeat: '',
+        statusPassword: true,
+    })
+    const [passwordShow, setPasswordShow] = useState({
+        //oldPassword: false,
+        newPassword: false,
+        repeatPassword: false,
+    })
+    const [userChange, setUserChange] = useState({
+        id: auth.id,
+        name: auth.name,
+        email: auth.email,
+        password: '',
+        phone: auth.phone,
+    })
 
-    const [userChange, setUserChange] = useState(auth)
+    console.log(userChange)
     const handleChangeUser = async (e) => {
         e.preventDefault()
-        dispatch(changeUser(userChange))
+        if (passwordRepeat.passwordRepeat === userChange.password) {
+            dispatch(changeUser(userChange))
+        } else {
+            setPasswordRepeat({ ...passwordRepeat, statusPassword: false })
+        }
     }
+
     return (
         <>
             <div className="m-breadcrumbs">
@@ -48,14 +70,14 @@ const Profile = () => {
                                     <div className="col-12 col-md-5 col-lg-4 info pb-5 pb-md-0">
                                         <div className="info-block">
                                             <div className="title">
-                                                {userChange.name}
+                                                {auth.name}
                                             </div>
                                             <div className="info-item phone">
                                                 <div className="label">
                                                     Номер телефону
                                                 </div>
                                                 <div className="value">
-                                                    + 380 68 65 78 365
+                                                    {auth.phone}
                                                 </div>
                                             </div>
                                             <div className="info-item email">
@@ -81,11 +103,12 @@ const Profile = () => {
                                                                 name="name"
                                                                 type="text"
                                                                 required
-                                                                defaultValue={
-                                                                    auth.name
+                                                                value={
+                                                                    userChange.name
                                                                 }
                                                                 className={`${
-                                                                    auth.name
+                                                                    userChange
+                                                                        .name
                                                                         .length >
                                                                     0
                                                                         ? 'filled'
@@ -121,14 +144,16 @@ const Profile = () => {
 
                                                     <div className="input">
                                                         <label>
-                                                            <input
-                                                                type="text"
+                                                            <NumberFormat
+                                                                format="+38 (###) ### ## ##"
+                                                                mask="_"
                                                                 required
                                                                 defaultValue={
-                                                                    auth.phone
+                                                                    userChange.phone
                                                                 }
                                                                 className={`${
-                                                                    auth.phone
+                                                                    userChange
+                                                                        .phone
                                                                         .length >
                                                                     0
                                                                         ? 'filled phone'
@@ -145,6 +170,7 @@ const Profile = () => {
                                                                     )
                                                                 }
                                                             />
+
                                                             <span className="label">
                                                                 Номер телефону
                                                             </span>
@@ -155,11 +181,12 @@ const Profile = () => {
                                                             <input
                                                                 type="email"
                                                                 required
-                                                                defaultValue={
-                                                                    auth.email
+                                                                value={
+                                                                    userChange.email
                                                                 }
                                                                 className={`${
-                                                                    auth.email
+                                                                    userChange
+                                                                        .email
                                                                         .length >
                                                                     0
                                                                         ? 'filled'
@@ -183,48 +210,149 @@ const Profile = () => {
                                                     </div>
                                                 </div>
                                                 <div className="col-12 col-sm-6 col-md-12 col-lg-6 edit-info-col">
-                                                    <div className="input">
+                                                    {/*<div className="input">
                                                         <label>
                                                             <div className="input-inner">
-                                                                <input type="password" />
+                                                                <input
+                                                                    type={
+                                                                        passwordShow.oldPassword
+                                                                            ? 'text'
+                                                                            : 'password'
+                                                                    }
+                                                                    className={`${
+                                                                        auth
+                                                                            .email
+                                                                            .length >
+                                                                        0
+                                                                            ? 'filled'
+                                                                            : ''
+                                                                    }`}
+                                                                />
                                                                 <span className="label">
                                                                     Старий
                                                                     пароль
                                                                 </span>
-                                                                <a
-                                                                    href="#"
+                                                                <button
                                                                     className="password-control"
-                                                                ></a>
+                                                                    onClick={() =>
+                                                                        setPasswordShow(
+                                                                            {
+                                                                                ...passwordShow,
+                                                                                oldPassword:
+                                                                                    !passwordShow.oldPassword,
+                                                                            }
+                                                                        )
+                                                                    }
+                                                                ></button>
                                                             </div>
                                                         </label>
-                                                    </div>
+                                                    </div>*/}
                                                     <div className="input">
                                                         <label>
                                                             <div className="input-inner">
-                                                                <input type="password" />
+                                                                <input
+                                                                    type={
+                                                                        passwordShow.newPassword
+                                                                            ? 'text'
+                                                                            : 'password'
+                                                                    }
+                                                                    value={
+                                                                        userChange.password
+                                                                    }
+                                                                    className={`${
+                                                                        userChange
+                                                                            .password
+                                                                            .length >
+                                                                        0
+                                                                            ? 'filled'
+                                                                            : ''
+                                                                    }`}
+                                                                    onChange={(
+                                                                        e
+                                                                    ) =>
+                                                                        setUserChange(
+                                                                            {
+                                                                                ...userChange,
+                                                                                password:
+                                                                                    e
+                                                                                        .target
+                                                                                        .value,
+                                                                            }
+                                                                        )
+                                                                    }
+                                                                />
                                                                 <span className="label">
                                                                     Новий пароль
                                                                 </span>
-                                                                <a
-                                                                    href="#"
+                                                                <button
+                                                                    type="button"
                                                                     className="password-control"
-                                                                ></a>
+                                                                    onClick={() =>
+                                                                        setPasswordShow(
+                                                                            {
+                                                                                ...passwordShow,
+                                                                                newPassword:
+                                                                                    !passwordShow.newPassword,
+                                                                            }
+                                                                        )
+                                                                    }
+                                                                ></button>
                                                             </div>
                                                         </label>
                                                     </div>
                                                     <div className="input">
                                                         <label>
                                                             <div className="input-inner">
-                                                                <input type="password" />
+                                                                <input
+                                                                    type={
+                                                                        passwordShow.repeatPassword
+                                                                            ? 'text'
+                                                                            : 'password'
+                                                                    }
+                                                                    value={
+                                                                        passwordRepeat.passwordRepeat
+                                                                    }
+                                                                    className={`${
+                                                                        passwordRepeat
+                                                                            .passwordRepeat
+                                                                            .length >
+                                                                        0
+                                                                            ? 'filled'
+                                                                            : ''
+                                                                    }`}
+                                                                    onChange={(
+                                                                        e
+                                                                    ) =>
+                                                                        setPasswordRepeat(
+                                                                            {
+                                                                                ...passwordRepeat,
+                                                                                statusPassword: true,
+                                                                                passwordRepeat:
+                                                                                    e
+                                                                                        .target
+                                                                                        .value,
+                                                                            }
+                                                                        )
+                                                                    }
+                                                                />
                                                                 <span className="label">
                                                                     Підтвердження
                                                                     нового
                                                                     паролю
                                                                 </span>
-                                                                <a
-                                                                    href="#"
+                                                                <button
+                                                                    type="button"
                                                                     className="password-control"
-                                                                ></a>
+                                                                    onClick={() =>
+                                                                        setPasswordShow(
+                                                                            {
+                                                                                ...passwordShow,
+                                                                                repeatPassword:
+                                                                                    !passwordShow.repeatPassword,
+                                                                            }
+                                                                        )
+                                                                    }
+                                                                ></button>
                                                             </div>
                                                         </label>
                                                     </div>
@@ -237,6 +365,11 @@ const Profile = () => {
                                                             Змінити
                                                         </button>
                                                     </div>
+                                                    {!passwordRepeat.statusPassword ? (
+                                                        <p className="login-error">
+                                                            Паролі не збігаються
+                                                        </p>
+                                                    ) : null}
                                                 </div>
                                             </div>
                                         </form>
@@ -328,7 +461,7 @@ const Profile = () => {
                                                             <div className="quantity">
                                                                 <input
                                                                     type="text"
-                                                                    value="1"
+                                                                    defaultValue="1"
                                                                 />
                                                             </div>
                                                         </div>
@@ -420,7 +553,7 @@ const Profile = () => {
                                                             <div className="quantity">
                                                                 <input
                                                                     type="text"
-                                                                    value="1"
+                                                                    defaultValue="1"
                                                                 />
                                                             </div>
                                                         </div>
@@ -512,7 +645,7 @@ const Profile = () => {
                                                             <div className="quantity">
                                                                 <input
                                                                     type="text"
-                                                                    value="1"
+                                                                    defaultValue="1"
                                                                 />
                                                             </div>
                                                         </div>
@@ -604,7 +737,7 @@ const Profile = () => {
                                                             <div className="quantity">
                                                                 <input
                                                                     type="text"
-                                                                    value="1"
+                                                                    defaultValue="1"
                                                                 />
                                                             </div>
                                                         </div>
@@ -728,7 +861,7 @@ const Profile = () => {
                                                             <div className="quantity">
                                                                 <input
                                                                     type="text"
-                                                                    value="1"
+                                                                    defaultValue="1"
                                                                 />
                                                             </div>
                                                         </div>
@@ -852,7 +985,7 @@ const Profile = () => {
                                                             <div className="quantity">
                                                                 <input
                                                                     type="text"
-                                                                    value="1"
+                                                                    defaultValue="1"
                                                                 />
                                                             </div>
                                                         </div>
@@ -976,7 +1109,7 @@ const Profile = () => {
                                                             <div className="quantity">
                                                                 <input
                                                                     type="text"
-                                                                    value="1"
+                                                                    defaultValue="1"
                                                                 />
                                                             </div>
                                                         </div>
@@ -1100,7 +1233,7 @@ const Profile = () => {
                                                             <div className="quantity">
                                                                 <input
                                                                     type="text"
-                                                                    value="1"
+                                                                    defaultValue="1"
                                                                 />
                                                             </div>
                                                         </div>
@@ -1192,7 +1325,7 @@ const Profile = () => {
                                                                 <div className="quantity e--border">
                                                                     <input
                                                                         type="text"
-                                                                        value="1"
+                                                                        defaultValue="1"
                                                                     />
                                                                 </div>
                                                             </div>
@@ -1234,7 +1367,7 @@ const Profile = () => {
                                                                 <div className="quantity e--border">
                                                                     <input
                                                                         type="text"
-                                                                        value="1"
+                                                                        defaultValue="1"
                                                                     />
                                                                 </div>
                                                             </div>
@@ -1276,7 +1409,7 @@ const Profile = () => {
                                                                 <div className="quantity e--border">
                                                                     <input
                                                                         type="text"
-                                                                        value="1"
+                                                                        defaultValue="1"
                                                                     />
                                                                 </div>
                                                             </div>
@@ -1318,250 +1451,7 @@ const Profile = () => {
                                                                 <div className="quantity e--border">
                                                                     <input
                                                                         type="text"
-                                                                        value="1"
-                                                                    />
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="show-more">
-                                                <a
-                                                    href="#!"
-                                                    className="show-more-btn"
-                                                >
-                                                    <span className="show">
-                                                        Детальніше
-                                                    </span>
-                                                    <span className="hide">
-                                                        Приховати
-                                                    </span>
-                                                    <svg
-                                                        width="16"
-                                                        height="17"
-                                                        viewBox="0 0 16 17"
-                                                        fill="none"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                    >
-                                                        <path
-                                                            d="M3.5 6.41943L8 10.9194L12.5 6.41943"
-                                                            stroke="#878787"
-                                                            strokeWidth="2"
-                                                            strokeMiterlimit="10"
-                                                            strokeLinecap="square"
-                                                        ></path>
-                                                    </svg>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="m-history-item">
-                                        <div className="top">
-                                            <div className="order-info d-flex flex-md-row align-items-center justify-content-between">
-                                                <div className="number d-flex justify-content-between align-items-center pb-2 pt-2">
-                                                    Замовлення:
-                                                    <span className="count ps-2">
-                                                        01577
-                                                    </span>
-                                                </div>
-                                                <div className="date item">
-                                                    11.05.2021
-                                                </div>
-                                            </div>
-                                            <div className="amount d-flex justify-content-between align-items-center pt-2 pb-2">
-                                                <div className="amount-positions">
-                                                    Кількість позицій:
-                                                    <span className="count">
-                                                        20
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="center prices pt-2 pb-2">
-                                            <div className="discount d-flex justify-content-between pb-2">
-                                                <div className="label">
-                                                    Знижка
-                                                </div>
-                                                <div className="value">
-                                                    <del>141&#8372;</del>
-                                                </div>
-                                            </div>
-                                            <div className="total d-flex justify-content-between">
-                                                <div className="label">
-                                                    РАЗОМ:
-                                                </div>
-                                                <div className="value">
-                                                    1041&#8372;
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="bottom">
-                                            <div className="m-history-cards">
-                                                <div className="m-history-cards__list row">
-                                                    <div className="m-cart-item col-12 col-sm-6 col-lg-4 col-xxl-3">
-                                                        <div className="m-cart-item__inner">
-                                                            <div className="m-cart-item__img">
-                                                                <div className="img">
-                                                                    <img
-                                                                        src="../img/products/Пепперони_300dpi-thumbnail-960x960-70.jpg"
-                                                                        alt=""
-                                                                    />
-                                                                </div>
-                                                            </div>
-                                                            <div className="m-cart-item__desc">
-                                                                <div className="m-cart-item__title">
-                                                                    Fuze Tea
-                                                                    чорний чай
-                                                                    зі смаком
-                                                                    лимона
-                                                                </div>
-                                                                <div className="weight">
-                                                                    200гр.
-                                                                </div>
-
-                                                                <div className="a-product-card__price">
-                                                                    <div className="price">
-                                                                        <span className="price-sale">
-                                                                            108
-                                                                            &#8372;
-                                                                        </span>
-                                                                        <span className="price-old">
-                                                                            324
-                                                                            &#8372;
-                                                                        </span>
-                                                                    </div>
-                                                                </div>
-                                                                <div className="quantity e--border">
-                                                                    <input
-                                                                        type="text"
-                                                                        value="1"
-                                                                    />
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div className="m-cart-item col-12 col-sm-6 col-lg-4 col-xxl-3">
-                                                        <div className="m-cart-item__inner">
-                                                            <div className="m-cart-item__img">
-                                                                <div className="img">
-                                                                    <img
-                                                                        src="../img/products/Пепперони_300dpi-thumbnail-960x960-70.jpg"
-                                                                        alt=""
-                                                                    />
-                                                                </div>
-                                                            </div>
-                                                            <div className="m-cart-item__desc">
-                                                                <div className="m-cart-item__title">
-                                                                    Fuze Tea
-                                                                    чорний чай
-                                                                    зі смаком
-                                                                    лимона
-                                                                </div>
-                                                                <div className="weight">
-                                                                    200гр.
-                                                                </div>
-
-                                                                <div className="a-product-card__price">
-                                                                    <div className="price">
-                                                                        <span className="price-sale">
-                                                                            108
-                                                                            &#8372;
-                                                                        </span>
-                                                                        <span className="price-old">
-                                                                            324
-                                                                            &#8372;
-                                                                        </span>
-                                                                    </div>
-                                                                </div>
-                                                                <div className="quantity e--border">
-                                                                    <input
-                                                                        type="text"
-                                                                        value="1"
-                                                                    />
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div className="m-cart-item col-12 col-sm-6 col-lg-4 col-xxl-3">
-                                                        <div className="m-cart-item__inner">
-                                                            <div className="m-cart-item__img">
-                                                                <div className="img">
-                                                                    <img
-                                                                        src="../img/products/Пепперони_300dpi-thumbnail-960x960-70.jpg"
-                                                                        alt=""
-                                                                    />
-                                                                </div>
-                                                            </div>
-                                                            <div className="m-cart-item__desc">
-                                                                <div className="m-cart-item__title">
-                                                                    Fuze Tea
-                                                                    чорний чай
-                                                                    зі смаком
-                                                                    лимона
-                                                                </div>
-                                                                <div className="weight">
-                                                                    200гр.
-                                                                </div>
-
-                                                                <div className="a-product-card__price">
-                                                                    <div className="price">
-                                                                        <span className="price-sale">
-                                                                            108
-                                                                            &#8372;
-                                                                        </span>
-                                                                        <span className="price-old">
-                                                                            324
-                                                                            &#8372;
-                                                                        </span>
-                                                                    </div>
-                                                                </div>
-                                                                <div className="quantity e--border">
-                                                                    <input
-                                                                        type="text"
-                                                                        value="1"
-                                                                    />
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div className="m-cart-item col-12 col-sm-6 col-lg-4 col-xxl-3">
-                                                        <div className="m-cart-item__inner">
-                                                            <div className="m-cart-item__img">
-                                                                <div className="img">
-                                                                    <img
-                                                                        src="../img/products/Пепперони_300dpi-thumbnail-960x960-70.jpg"
-                                                                        alt=""
-                                                                    />
-                                                                </div>
-                                                            </div>
-                                                            <div className="m-cart-item__desc">
-                                                                <div className="m-cart-item__title">
-                                                                    Fuze Tea
-                                                                    чорний чай
-                                                                    зі смаком
-                                                                    лимона
-                                                                </div>
-                                                                <div className="weight">
-                                                                    200гр.
-                                                                </div>
-
-                                                                <div className="a-product-card__price">
-                                                                    <div className="price">
-                                                                        <span className="price-sale">
-                                                                            108
-                                                                            &#8372;
-                                                                        </span>
-                                                                        <span className="price-old">
-                                                                            324
-                                                                            &#8372;
-                                                                        </span>
-                                                                    </div>
-                                                                </div>
-                                                                <div className="quantity e--border">
-                                                                    <input
-                                                                        type="text"
-                                                                        value="1"
+                                                                        defaultValue="1"
                                                                     />
                                                                 </div>
                                                             </div>
@@ -1678,7 +1568,7 @@ const Profile = () => {
                                                                 <div className="quantity e--border">
                                                                     <input
                                                                         type="text"
-                                                                        value="1"
+                                                                        defaultValue="1"
                                                                     />
                                                                 </div>
                                                             </div>
@@ -1720,7 +1610,7 @@ const Profile = () => {
                                                                 <div className="quantity e--border">
                                                                     <input
                                                                         type="text"
-                                                                        value="1"
+                                                                        defaultValue="1"
                                                                     />
                                                                 </div>
                                                             </div>
@@ -1762,7 +1652,7 @@ const Profile = () => {
                                                                 <div className="quantity e--border">
                                                                     <input
                                                                         type="text"
-                                                                        value="1"
+                                                                        defaultValue="1"
                                                                     />
                                                                 </div>
                                                             </div>
@@ -1804,7 +1694,7 @@ const Profile = () => {
                                                                 <div className="quantity e--border">
                                                                     <input
                                                                         type="text"
-                                                                        value="1"
+                                                                        defaultValue="1"
                                                                     />
                                                                 </div>
                                                             </div>
@@ -1921,7 +1811,7 @@ const Profile = () => {
                                                                 <div className="quantity e--border">
                                                                     <input
                                                                         type="text"
-                                                                        value="1"
+                                                                        defaultValue="1"
                                                                     />
                                                                 </div>
                                                             </div>
@@ -1963,7 +1853,7 @@ const Profile = () => {
                                                                 <div className="quantity e--border">
                                                                     <input
                                                                         type="text"
-                                                                        value="1"
+                                                                        defaultValue="1"
                                                                     />
                                                                 </div>
                                                             </div>
@@ -2005,7 +1895,7 @@ const Profile = () => {
                                                                 <div className="quantity e--border">
                                                                     <input
                                                                         type="text"
-                                                                        value="1"
+                                                                        defaultValue="1"
                                                                     />
                                                                 </div>
                                                             </div>
@@ -2047,7 +1937,250 @@ const Profile = () => {
                                                                 <div className="quantity e--border">
                                                                     <input
                                                                         type="text"
-                                                                        value="1"
+                                                                        defaultValue="1"
+                                                                    />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="show-more">
+                                                <a
+                                                    href="#!"
+                                                    className="show-more-btn"
+                                                >
+                                                    <span className="show">
+                                                        Детальніше
+                                                    </span>
+                                                    <span className="hide">
+                                                        Приховати
+                                                    </span>
+                                                    <svg
+                                                        width="16"
+                                                        height="17"
+                                                        viewBox="0 0 16 17"
+                                                        fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg"
+                                                    >
+                                                        <path
+                                                            d="M3.5 6.41943L8 10.9194L12.5 6.41943"
+                                                            stroke="#878787"
+                                                            strokeWidth="2"
+                                                            strokeMiterlimit="10"
+                                                            strokeLinecap="square"
+                                                        ></path>
+                                                    </svg>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="m-history-item">
+                                        <div className="top">
+                                            <div className="order-info d-flex flex-md-row align-items-center justify-content-between">
+                                                <div className="number d-flex justify-content-between align-items-center pb-2 pt-2">
+                                                    Замовлення:
+                                                    <span className="count ps-2">
+                                                        01577
+                                                    </span>
+                                                </div>
+                                                <div className="date item">
+                                                    11.05.2021
+                                                </div>
+                                            </div>
+                                            <div className="amount d-flex justify-content-between align-items-center pt-2 pb-2">
+                                                <div className="amount-positions">
+                                                    Кількість позицій:
+                                                    <span className="count">
+                                                        20
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="center prices pt-2 pb-2">
+                                            <div className="discount d-flex justify-content-between pb-2">
+                                                <div className="label">
+                                                    Знижка
+                                                </div>
+                                                <div className="value">
+                                                    <del>141&#8372;</del>
+                                                </div>
+                                            </div>
+                                            <div className="total d-flex justify-content-between">
+                                                <div className="label">
+                                                    РАЗОМ:
+                                                </div>
+                                                <div className="value">
+                                                    1041&#8372;
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="bottom">
+                                            <div className="m-history-cards">
+                                                <div className="m-history-cards__list row">
+                                                    <div className="m-cart-item col-12 col-sm-6 col-lg-4 col-xxl-3">
+                                                        <div className="m-cart-item__inner">
+                                                            <div className="m-cart-item__img">
+                                                                <div className="img">
+                                                                    <img
+                                                                        src="../img/products/Пепперони_300dpi-thumbnail-960x960-70.jpg"
+                                                                        alt=""
+                                                                    />
+                                                                </div>
+                                                            </div>
+                                                            <div className="m-cart-item__desc">
+                                                                <div className="m-cart-item__title">
+                                                                    Fuze Tea
+                                                                    чорний чай
+                                                                    зі смаком
+                                                                    лимона
+                                                                </div>
+                                                                <div className="weight">
+                                                                    200гр.
+                                                                </div>
+
+                                                                <div className="a-product-card__price">
+                                                                    <div className="price">
+                                                                        <span className="price-sale">
+                                                                            108
+                                                                            &#8372;
+                                                                        </span>
+                                                                        <span className="price-old">
+                                                                            324
+                                                                            &#8372;
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                                <div className="quantity e--border">
+                                                                    <input
+                                                                        type="text"
+                                                                        defaultValue="1"
+                                                                    />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="m-cart-item col-12 col-sm-6 col-lg-4 col-xxl-3">
+                                                        <div className="m-cart-item__inner">
+                                                            <div className="m-cart-item__img">
+                                                                <div className="img">
+                                                                    <img
+                                                                        src="../img/products/Пепперони_300dpi-thumbnail-960x960-70.jpg"
+                                                                        alt=""
+                                                                    />
+                                                                </div>
+                                                            </div>
+                                                            <div className="m-cart-item__desc">
+                                                                <div className="m-cart-item__title">
+                                                                    Fuze Tea
+                                                                    чорний чай
+                                                                    зі смаком
+                                                                    лимона
+                                                                </div>
+                                                                <div className="weight">
+                                                                    200гр.
+                                                                </div>
+
+                                                                <div className="a-product-card__price">
+                                                                    <div className="price">
+                                                                        <span className="price-sale">
+                                                                            108
+                                                                            &#8372;
+                                                                        </span>
+                                                                        <span className="price-old">
+                                                                            324
+                                                                            &#8372;
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                                <div className="quantity e--border">
+                                                                    <input
+                                                                        type="text"
+                                                                        defaultValue="1"
+                                                                    />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="m-cart-item col-12 col-sm-6 col-lg-4 col-xxl-3">
+                                                        <div className="m-cart-item__inner">
+                                                            <div className="m-cart-item__img">
+                                                                <div className="img">
+                                                                    <img
+                                                                        src="../img/products/Пепперони_300dpi-thumbnail-960x960-70.jpg"
+                                                                        alt=""
+                                                                    />
+                                                                </div>
+                                                            </div>
+                                                            <div className="m-cart-item__desc">
+                                                                <div className="m-cart-item__title">
+                                                                    Fuze Tea
+                                                                    чорний чай
+                                                                    зі смаком
+                                                                    лимона
+                                                                </div>
+                                                                <div className="weight">
+                                                                    200гр.
+                                                                </div>
+
+                                                                <div className="a-product-card__price">
+                                                                    <div className="price">
+                                                                        <span className="price-sale">
+                                                                            108
+                                                                            &#8372;
+                                                                        </span>
+                                                                        <span className="price-old">
+                                                                            324
+                                                                            &#8372;
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                                <div className="quantity e--border">
+                                                                    <input
+                                                                        type="text"
+                                                                        defaultValue="1"
+                                                                    />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div className="m-cart-item col-12 col-sm-6 col-lg-4 col-xxl-3">
+                                                        <div className="m-cart-item__inner">
+                                                            <div className="m-cart-item__img">
+                                                                <div className="img">
+                                                                    <img
+                                                                        src="../img/products/Пепперони_300dpi-thumbnail-960x960-70.jpg"
+                                                                        alt=""
+                                                                    />
+                                                                </div>
+                                                            </div>
+                                                            <div className="m-cart-item__desc">
+                                                                <div className="m-cart-item__title">
+                                                                    Fuze Tea
+                                                                    чорний чай
+                                                                    зі смаком
+                                                                    лимона
+                                                                </div>
+                                                                <div className="weight">
+                                                                    200гр.
+                                                                </div>
+
+                                                                <div className="a-product-card__price">
+                                                                    <div className="price">
+                                                                        <span className="price-sale">
+                                                                            108
+                                                                            &#8372;
+                                                                        </span>
+                                                                        <span className="price-old">
+                                                                            324
+                                                                            &#8372;
+                                                                        </span>
+                                                                    </div>
+                                                                </div>
+                                                                <div className="quantity e--border">
+                                                                    <input
+                                                                        type="text"
+                                                                        defaultValue="1"
                                                                     />
                                                                 </div>
                                                             </div>
