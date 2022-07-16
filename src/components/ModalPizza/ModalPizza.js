@@ -563,7 +563,7 @@ const ModalPizza = ({
                         onClick={onClickAdd}
                     >
                         Додати{' '}
-                        {price['1'] / 100 +
+                        {(price['1'] / 100 +
                             group_modifications[1].modifications[activeSide]
                                 .price +
                             group_modifications[0].modifications[activeType]
@@ -572,8 +572,8 @@ const ModalPizza = ({
                                 .filter((item) => item.check === true)
                                 .reduce(function (sum, item) {
                                     return sum + item.price * item.count
-                                }, 0) *
-                                count}{' '}
+                                }, 0)) *
+                            count}{' '}
                         грн
                     </button>
                 </div>

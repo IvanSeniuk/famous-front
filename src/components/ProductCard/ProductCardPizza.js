@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types'
 //import React from 'react'
-//import { useState } from 'react'
+import { useState } from 'react'
 //import { useDispatch } from 'react-redux'
 import { useSearchParams } from 'react-router-dom'
 //import { addItem } from '../../redux/slices/cart/cartSlice'
@@ -13,9 +13,10 @@ const ProductCardPizza = ({
     product_id,
     out,
     ingredients,
+    group_modifications,
 }) => {
-    //const [activeType, setActiveType] = useState(0)
-    //const [activeSide, setActiveSide] = useState(0)
+    const [activeType, setActiveType] = useState(0)
+    const [activeSide, setActiveSide] = useState(0)
     //const [activeType, setactiveType] = React.useState(0)
     //const [activeSide, setactiveSide] = React.useState(0)
     //const location = useLocation()
@@ -86,7 +87,13 @@ const ProductCardPizza = ({
                                 </button>
                                 <div className="name">{product_name}</div>
                                 <div className="weight">
-                                    {out}
+                                    {out +
+                                        group_modifications[1].modifications[
+                                            activeSide
+                                        ].brutto +
+                                        group_modifications[0].modifications[
+                                            activeType
+                                        ].brutto}
                                     {''}
                                     г.
                                 </div>
@@ -98,56 +105,70 @@ const ProductCardPizza = ({
                                     </span>
                                 ))}
                             </div>
-                            {/*<div className="sides m-product-card__options">
+                            <div className="sides m-product-card__options">
                                 <ul>
-                                    {config.sides.map((side, i) => (
-                                        <li
-                                            onClick={() => {
-                                                {
-                                                    setActiveSide(i)
+                                    {group_modifications[1].modifications.map(
+                                        (side, i) => (
+                                            <li
+                                                onClick={() => {
+                                                    {
+                                                        setActiveSide(i)
+                                                    }
+                                                }}
+                                                key={side.dish_modification_id}
+                                                className={
+                                                    activeSide === i
+                                                        ? 'active'
+                                                        : ''
                                                 }
-                                            }}
-                                            key={i}
-                                            className={`${
-                                                activeSide === i ? 'active' : ''
-                                            }`}
-                                        >
-                                            <span className="inner">
-                                                {side}
-                                            </span>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>*/}
-                        </div>
-
-                        {/*<div className="m-product-card__item bottom left">
-                            <div className="sizes m-product-card__options">
-                                <ul>
-                                    {config.size.map((size, i) => (
-                                        <li
-                                            onClick={() => {
-                                                {
-                                                    setActiveType(i)
-                                                }
-                                            }}
-                                            key={i}
-                                            className={
-                                                activeType === i ? 'active' : ''
-                                            }
-                                        >
-                                            <span className="inner">
-                                                {size} см.
-                                            </span>
-                                        </li>
-                                    ))}
+                                            >
+                                                <span className="inner">
+                                                    {side.name}
+                                                </span>
+                                            </li>
+                                        )
+                                    )}
                                 </ul>
                             </div>
-                        </div>*/}
+                        </div>
+
+                        <div className="m-product-card__item bottom left">
+                            <div className="sizes m-product-card__options">
+                                <ul>
+                                    {group_modifications[0].modifications.map(
+                                        (size, i) => (
+                                            <li
+                                                onClick={() => {
+                                                    {
+                                                        setActiveType(i)
+                                                    }
+                                                }}
+                                                key={size.dish_modification_id}
+                                                className={
+                                                    activeType === i
+                                                        ? 'active'
+                                                        : ''
+                                                }
+                                            >
+                                                <span className="inner">
+                                                    {size.name}
+                                                </span>
+                                            </li>
+                                        )
+                                    )}
+                                </ul>
+                            </div>
+                        </div>
                         <div className="m-product-card__item bottom right">
                             <div className="m-product-card__bottom">
                                 <div className="price">
-                                    {price['1'] / 100}
+                                    {price['1'] / 100 +
+                                        group_modifications[1].modifications[
+                                            activeSide
+                                        ].price +
+                                        group_modifications[0].modifications[
+                                            activeType
+                                        ].price}
                                     грн
                                 </div>
                                 <div className="add-to-cart">
@@ -249,6 +270,7 @@ ProductCardPizza.propTypes = {
     product_id: PropTypes.string,
     out: PropTypes.number,
     ingredients: PropTypes.array,
+    group_modifications: PropTypes.array,
 }
 
 export default ProductCardPizza
