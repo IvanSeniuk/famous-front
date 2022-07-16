@@ -1,0 +1,97 @@
+.promocode {
+    &-list {
+        border: 0.5px solid rgba(135, 135, 135, 0.2);
+        box-shadow: 0px 0px 12px rgba(102, 102, 102, 0.06);
+        .item {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 0.5rem;
+            height: 62px;
+            border-bottom: 0.5px solid rgba(135, 135, 135, 0.2);
+            cursor: context-menu;
+            &.title {
+                pointer-events: none;
+            }
+            &:hover {
+                background-color: rgba(255, 255, 255, 0.027);
+            }
+
+            & > * {
+                border-right: 0.5px solid rgba(135, 135, 135, 0.2);
+                display: flex;
+                align-items: center;
+                height: 100%;
+                padding: 0 0.75rem;
+                &:first-child {
+                    flex: 5;
+                }
+                &:last-child {
+                    width: fit-content;
+                    border-right: 0;
+                    flex: 3;
+                }
+                &:nth-child(2) {
+                    flex: 3;
+                }
+                &:nth-child(3) {
+                    flex: 4;
+                }
+            }
+            &.item-sub {
+                .name {
+                    span {
+                        padding-left: 1.25rem;
+                        color: rgba(255, 255, 255, 0.76);
+                    }
+                }
+            }
+        }
+    }
+}
+
+button {
+    padding: 0.5rem 0.75rem;
+    margin-right: 0.75rem;
+    background-color: transparent;
+    border: none;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    border-radius: 6px;
+    transition: 0.3s;
+    &:disabled {
+        opacity: 0.45;
+        pointer-events: none;
+    }
+    &.delete {
+        color: rgba(255, 0, 0, 0.678);
+        border: 1px solid rgba(255, 0, 0, 0.678);
+        &:hover {
+            background-color: rgba(255, 0, 0, 0.178);
+        }
+    }
+    &.update {
+        color: rgba(255, 187, 0, 0.678);
+        border: 1px solid rgba(255, 187, 0, 0.678);
+        &:hover {
+            background-color: rgba(255, 187, 0, 0.178);
+        }
+    }
+    &.create {
+        margin-top: 1rem;
+        color: rgba(94, 255, 0, 0.678);
+        border: 1px solid rgba(94, 255, 0, 0.678);
+        &:hover {
+            background-color: rgba(94, 255, 0, 0.178);
+        }
+    }
+    &.upload-file {
+        color: rgba(22, 97, 235, 0.678);
+        border: 1px solid rgba(22, 97, 235, 0.678);
+        &:hover {
+            background-color: rgba(22, 97, 235, 0.178);
+        }
+    }
+    &:active {
+        opacity: 0.6;
+    }
+}

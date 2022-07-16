@@ -27,7 +27,7 @@ const Layout = () => {
     useEffect(() => {
         dispatch(fetchProductPoster(params))
     }, [dispatch, params])
-    console.log(product)
+    //console.log(product)
     //const product = productsPizza.find((item) => item.id == params)
     const paramsAuth = searchParams.get('auth')
     //const paramsAuthLogin = searchParams.get('login')

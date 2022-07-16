@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
 import { addItem } from '../../redux/slices/cart/cartSlice'
 
@@ -10,13 +10,14 @@ const ProductCard = ({
     product_id,
     out,
     ingredients,
+    menu_category_id,
 }) => {
     const dispatch = useDispatch()
-    const cartItem = useSelector((state) =>
-        state.cart.items.find((obj) => obj.id === product_id)
-    )
+    //const cartItem = useSelector((state) =>
+    //    state.cart.items.find((obj) => obj.id === product_id)
+    //)
 
-    const addedCount = cartItem ? cartItem.count : 0
+    //const addedCount = cartItem ? cartItem.count : 0
     const onClickAdd = () => {
         const item = {
             product_id,
@@ -24,6 +25,7 @@ const ProductCard = ({
             weight: out,
             price: price['1'] / 100,
             image: photo_origin,
+            menu_category_id,
         }
         dispatch(addItem(item))
     }
@@ -60,10 +62,18 @@ const ProductCard = ({
                                 </svg>
                             </button>
                             <div className="name">{product_name}</div>
-                            <div className="weight">{out} г.</div>
+
+                            <div className="weight">
+                                {out > 0 && <span>{out} г</span>}
+                                {/*{() => {
+                                    if (out != null) {
+                                        return out + ' г.'
+                                    }
+                                }}*/}
+                            </div>
                         </div>
                         <div className="description">
-                            {ingredients.map((item) => (
+                            {ingredients?.map((item) => (
                                 <span key={item.ingredient_id}>
                                     {item.ingredient_name},{' '}
                                 </span>
@@ -104,12 +114,12 @@ const ProductCard = ({
                                         <span>в кошик</span>
                                     </span>
                                 </button>
-                                <div className="quantity">
+                                {/*<div className="quantity">
                                     <button>-</button>
                                     <input type="text" value={addedCount} />
 
                                     <button>+</button>
-                                </div>
+                                </div>*/}
                             </div>
                         </div>
                     </div>
@@ -122,10 +132,11 @@ const ProductCard = ({
 ProductCard.propTypes = {
     product_id: PropTypes.string,
     photo_origin: PropTypes.string,
-    price: PropTypes.string,
-    out: PropTypes.string,
+    price: PropTypes.object,
+    out: PropTypes.number,
     product_name: PropTypes.string,
-    ingredients: PropTypes.string,
+    ingredients: PropTypes.array,
+    menu_category_id: PropTypes.string,
 }
 
 export default ProductCard

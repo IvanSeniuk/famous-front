@@ -8,27 +8,37 @@ import 'swiper/swiper-bundle.min.css'
 // swiper core styles
 import 'swiper/swiper.min.css'
 
-const AdditionCartItem = ({ id, image, name, weight, price, productType }) => {
+const AdditionCartItem = ({
+    product_id,
+    product_name,
+    image,
+    weight,
+    price,
+}) => {
     const dispatch = useDispatch()
     const onClickAdd = () => {
         const item = {
-            id,
-            name,
+            product_id,
+            product_name,
             weight,
             price,
             image,
-            productType,
         }
         dispatch(addItem(item))
     }
     return (
         <div className="m-additions-item__inner">
             <div className="img">
-                <img src={image} alt="" />
+                <img
+                    src={process.env.REACT_APP_POSTER_API_URL + image}
+                    alt={product_name}
+                />
             </div>
             <div className="m-additions-item__desc">
-                <div className="name">{name}</div>
-                <div className="weight">{weight} мл.</div>
+                <div className="name">{product_name}</div>
+                <div className="weight">
+                    {weight > 0 && <span>{Math.round(weight)} гр.</span>}
+                </div>
                 <div className="bottom">
                     <div className="price">{price} грн</div>
                     <button className="plus-btn" onClick={onClickAdd}>
@@ -55,11 +65,10 @@ const AdditionCartItem = ({ id, image, name, weight, price, productType }) => {
 }
 
 AdditionCartItem.propTypes = {
-    name: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-    weight: PropTypes.number.isRequired,
-    productType: PropTypes.string,
-    id: PropTypes.string,
+    product_name: PropTypes.string,
+    price: PropTypes.number,
+    weight: PropTypes.number,
+    product_id: PropTypes.string,
     image: PropTypes.string,
 }
 

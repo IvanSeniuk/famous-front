@@ -93,7 +93,9 @@ const ProductsList = () => {
                                               .filter(
                                                   (cat) =>
                                                       cat.parent_category ===
-                                                      category
+                                                          category ||
+                                                      cat.category_id ===
+                                                          category
                                               )
                                               .map((catAll) =>
                                                   products.items
@@ -112,6 +114,7 @@ const ProductsList = () => {
                                                           />
                                                       ))
                                               ))}
+
                                 {subcategory &&
                                     (category === '4'
                                         ? products.items

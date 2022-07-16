@@ -1,12 +1,10 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import axios from 'axios'
+import axios from '../../../../http/axios'
 
 export const fetchProductsPoster = createAsyncThunk(
     'products/fetchProductsPoster',
     async () => {
-        const { data } = await axios.get(
-            `https://joinposter.com/api/menu.getProducts?token=557693:63509286feaa600b23bb9dd85533f8ff`
-        )
+        const { data } = await axios.get('api/product_poster')
         return data.response
     }
 )

@@ -1,12 +1,13 @@
 import CartItem from './CartItem'
 import CartEmpty from './CartEmpty/CartEmpty'
 import AdditionCartItem from './AdditionCartItem/AdditionCartItem'
-import ProductsObj from '../../ProductsArray/ProductsObj.json'
+//import ProductsObj from '../../ProductsArray/ProductsObj.json'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import SwiperCore, { Navigation } from 'swiper'
 import { Link } from 'react-router-dom'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
+import axios from '../../http/axios'
 
 // swiper bundle styles
 import 'swiper/swiper-bundle.min.css'
@@ -15,44 +16,97 @@ import 'swiper/swiper.min.css'
 // modules styles
 import 'swiper/components/navigation/navigation.min.css'
 import { toggleCart } from '../../redux/slices/ui/uiSlice'
+import { addAppliances, addPromocode } from '../../redux/slices/cart/cartSlice'
 
 SwiperCore.use([Navigation])
 
-//let cart = document.querySelector('.o-cart')
-//let cartTop = document.querySelector('.m-cart-top')
-//let cartBottom = document.querySelector('.o-cart .m-cart-bottom')
-//let cartBottomFixed = document.querySelector('.m-cart-bottom__fixed')
-//let cartScroll = document.querySelector('.m-cart-scroll')
-//let cartContent = document.querySelector('.m-cart-content')
-
-//console.log(document.querySelector('.m-cart-bottom__fixed'))
-//console.log(cartBottomFixed, cartScroll, cartContent)
-
-//if (cartContent.clientHeight < cartScroll.clientHeight) {
-//    cartBottomFixed.classList.remove('fixed')
-//}
-//cartScroll.addEventListener('scroll', () => {
-//    var scroll = cartScroll.scrollTop + cart.height
-//    if (
-//        scroll >
-//        cartContent.height +
-//            cartTop.height -
-//            cartBottom.height +
-//            cartBottom.height / 2 +
-//            60
-//    ) {
-//        cartBottomFixed.classList.remove('fixed')
-//    } else {
-//        cartBottomFixed.classList.add('fixed')
-//    }
-//})
-
 const Cart = () => {
-    const { items, totalPrice, totalCount } = useSelector((state) => state.cart)
+    const { items, totalPrice, totalCount, promocode } = useSelector(
+        (state) => state.cart
+    )
+    const categories = useSelector((state) => state.categoriesPoster.items)
     const { cartVisible } = useSelector((state) => state.ui)
+    const products = useSelector((state) => state.productsPoster)
     const dispatch = useDispatch()
-    const findSushiAddition = items.find((obj) => obj.productType === 'sushi')
-    const findSetsAddition = items.find((obj) => obj.productType === 'sets')
+
+    const [promocodeChange, setPromocodeChange] = useState('')
+    const checkPromo = async (e) => {
+        e.preventDefault()
+        try {
+            const response = await axios.get(`api/promocode/${promocodeChange}`)
+            if (response.data === null) {
+                setPromocodeChange('Не правильний промокод')
+                setTimeout(() => {
+                    setPromocodeChange('')
+                }, 2000)
+            } else {
+                dispatch(
+                    addPromocode({
+                        promo: response.data.title,
+                        percent: response.data.promo,
+                        promocodeVerify: true,
+                    })
+                )
+            }
+            console.log(response)
+        } catch (err) {
+            return err.response.data
+        }
+    }
+
+    const [appliances, setApplances] = useState({
+        personCount: 1,
+        chopsticksStandartCount: 1,
+        chopsticksTrainingCount: 0,
+    })
+    const onClickPlusPerson = () => {
+        setApplances({ ...appliances, personCount: appliances.personCount + 1 })
+    }
+    const onClickMinusPerson = () => {
+        setApplances({ ...appliances, personCount: appliances.personCount - 1 })
+    }
+    const onClickPlusChopsticksStandart = () => {
+        setApplances({
+            ...appliances,
+            chopsticksStandartCount: appliances.chopsticksStandartCount + 1,
+        })
+    }
+    const onClickMinusChopsticksStandart = () => {
+        setApplances({
+            ...appliances,
+            chopsticksStandartCount: appliances.chopsticksStandartCount + 1,
+        })
+    }
+    const onClickPlusChopsticksTraining = () => {
+        setApplances({
+            ...appliances,
+            chopsticksTrainingCount: appliances.chopsticksTrainingCount + 1,
+        })
+    }
+    const onClickMinusChopsticksTraining = () => {
+        setApplances({
+            ...appliances,
+            chopsticksTrainingCount: appliances.chopsticksTrainingCount + 1,
+        })
+    }
+    const findSushiAddition = categories
+        .filter(
+            (obj) =>
+                obj.category_id === '2' ||
+                obj.parent_category === '2' ||
+                obj.category_id === '3' ||
+                obj.parent_category === '3'
+        )
+        .map((item) => item.category_id)
+    const chopsticks = items.find((item) =>
+        findSushiAddition.find((p) => item.menu_category_id === p)
+    )
+    useEffect(() => {
+        chopsticks
+            ? dispatch(addAppliances(appliances))
+            : dispatch(addAppliances(null))
+    }, [appliances, chopsticks, dispatch])
+
     useEffect(() => {
         let cartBottomFixed = document.querySelector('.m-cart-bottom__fixed')
         let cartScroll = document.querySelector('.m-cart-scroll')
@@ -166,23 +220,38 @@ const Cart = () => {
                                         }}
                                         modules={[Navigation]}
                                     >
-                                        {ProductsObj.drinks.map((drink) => (
-                                            <SwiperSlide
-                                                className="swiper-slide m-additions-item"
-                                                key={drink.id}
-                                            >
-                                                <AdditionCartItem
-                                                    id={drink.id}
-                                                    image={drink.image}
-                                                    name={drink.name}
-                                                    weight={drink.weight}
-                                                    price={drink.price}
-                                                    productType={
-                                                        drink.productType
-                                                    }
-                                                />
-                                            </SwiperSlide>
-                                        ))}
+                                        {products.items
+                                            ?.filter(
+                                                (item) =>
+                                                    item.category_name ===
+                                                    'Напої'
+                                            )
+                                            .map((drink) => (
+                                                <SwiperSlide
+                                                    className="swiper-slide m-additions-item"
+                                                    key={drink.product_id}
+                                                >
+                                                    <AdditionCartItem
+                                                        product_id={
+                                                            drink.product_id
+                                                        }
+                                                        menu_category_id={
+                                                            drink.menu_category_id
+                                                        }
+                                                        image={
+                                                            drink.photo_origin
+                                                        }
+                                                        product_name={
+                                                            drink.product_name
+                                                        }
+                                                        weight={drink.out}
+                                                        price={
+                                                            drink.price['1'] /
+                                                            100
+                                                        }
+                                                    />
+                                                </SwiperSlide>
+                                            ))}
                                         <div className="m-additions-prev">
                                             <svg
                                                 width="58"
@@ -371,7 +440,7 @@ const Cart = () => {
                                             </svg>
                                         </div>
                                     </Swiper>
-                                    {findSushiAddition || findSetsAddition ? (
+                                    {chopsticks ? (
                                         <div className="m-additions-bottom">
                                             <div className="item">
                                                 <div className="label">
@@ -379,12 +448,39 @@ const Cart = () => {
                                                 </div>
                                                 <div className="value">
                                                     <div className="quantity e--border">
-                                                        <button>-</button>
-                                                        <input
-                                                            type="text"
-                                                            value="1"
-                                                        />
-                                                        <button>+</button>
+                                                        {appliances.personCount <
+                                                        1 ? (
+                                                            <button disabled>
+                                                                +
+                                                            </button>
+                                                        ) : (
+                                                            <button
+                                                                onClick={
+                                                                    onClickMinusPerson
+                                                                }
+                                                            >
+                                                                -
+                                                            </button>
+                                                        )}
+                                                        {/*<input type="text" value={count} onChange={count} />*/}
+                                                        <span
+                                                            style={{
+                                                                width: '38px',
+                                                                textAlign:
+                                                                    'center',
+                                                            }}
+                                                        >
+                                                            {
+                                                                appliances.personCount
+                                                            }
+                                                        </span>
+                                                        <button
+                                                            onClick={
+                                                                onClickPlusPerson
+                                                            }
+                                                        >
+                                                            +
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -394,12 +490,39 @@ const Cart = () => {
                                                 </div>
                                                 <div className="value">
                                                     <div className="quantity e--border">
-                                                        <button>-</button>
-                                                        <input
-                                                            type="text"
-                                                            value="1"
-                                                        />
-                                                        <button>+</button>
+                                                        {appliances.chopsticksStandartCount <
+                                                        1 ? (
+                                                            <button disabled>
+                                                                +
+                                                            </button>
+                                                        ) : (
+                                                            <button
+                                                                onClick={
+                                                                    onClickMinusChopsticksStandart
+                                                                }
+                                                            >
+                                                                -
+                                                            </button>
+                                                        )}
+                                                        {/*<input type="text" value={count} onChange={count} />*/}
+                                                        <span
+                                                            style={{
+                                                                width: '38px',
+                                                                textAlign:
+                                                                    'center',
+                                                            }}
+                                                        >
+                                                            {
+                                                                appliances.chopsticksStandartCount
+                                                            }
+                                                        </span>
+                                                        <button
+                                                            onClick={
+                                                                onClickPlusChopsticksStandart
+                                                            }
+                                                        >
+                                                            +
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -409,12 +532,39 @@ const Cart = () => {
                                                 </div>
                                                 <div className="value">
                                                     <div className="quantity e--border">
-                                                        <button>-</button>
-                                                        <input
-                                                            type="text"
-                                                            value="1"
-                                                        />
-                                                        <button>+</button>
+                                                        {appliances.chopsticksTrainingCount <
+                                                        1 ? (
+                                                            <button disabled>
+                                                                +
+                                                            </button>
+                                                        ) : (
+                                                            <button
+                                                                onClick={
+                                                                    onClickMinusChopsticksTraining
+                                                                }
+                                                            >
+                                                                -
+                                                            </button>
+                                                        )}
+                                                        {/*<input type="text" value={count} onChange={count} />*/}
+                                                        <span
+                                                            style={{
+                                                                width: '38px',
+                                                                textAlign:
+                                                                    'center',
+                                                            }}
+                                                        >
+                                                            {
+                                                                appliances.chopsticksTrainingCount
+                                                            }
+                                                        </span>
+                                                        <button
+                                                            onClick={
+                                                                onClickPlusChopsticksTraining
+                                                            }
+                                                        >
+                                                            +
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -483,16 +633,46 @@ const Cart = () => {
                                             Оформити замовлення
                                         </Link>
                                     </div>
-                                    <div className="promocode">
-                                        <input
-                                            className="promo"
-                                            type="text"
-                                            placeholder="Промокод"
-                                        />
-                                        <a href="#!" className="promocode-link">
-                                            Застосувати
-                                        </a>
-                                    </div>
+                                    <form
+                                        className="promocode"
+                                        onSubmit={checkPromo}
+                                    >
+                                        {promocode.promocodeVerify ? (
+                                            <input
+                                                className="promo"
+                                                type="text"
+                                                value={`Знижка ${promocode.percent}%`}
+                                                placeholder="Промокод"
+                                                readOnly
+                                            />
+                                        ) : (
+                                            <input
+                                                className="promo"
+                                                type="text"
+                                                value={promocodeChange}
+                                                placeholder="Промокод"
+                                                onChange={(e) =>
+                                                    setPromocodeChange(
+                                                        e.target.value
+                                                    )
+                                                }
+                                            />
+                                        )}
+
+                                        {promocodeChange === '' ||
+                                        promocode.promocodeVerify ? (
+                                            <button
+                                                disabled
+                                                className="promocode-link"
+                                            >
+                                                Застосувати
+                                            </button>
+                                        ) : (
+                                            <button className="promocode-link">
+                                                Застосувати
+                                            </button>
+                                        )}
+                                    </form>
                                     <div className="item sum">
                                         <div className="label">
                                             <span className="count">
@@ -540,17 +720,42 @@ const Cart = () => {
                                             {totalPrice} грн
                                         </div>
                                     </div>
-                                    <div className="item discount">
-                                        <div className="label">Знижка</div>
-                                        <div className="value">-54грн</div>
-                                    </div>
+                                    {promocode.promocodeVerify && (
+                                        <div className="item discount">
+                                            <div className="label">Знижка</div>
+                                            <div className="value">
+                                                -{' '}
+                                                {Math.round(
+                                                    (totalPrice *
+                                                        promocode.percent) /
+                                                        100
+                                                )}{' '}
+                                                грн
+                                            </div>
+                                        </div>
+                                    )}
+
                                     <div className="item total">
                                         <div className="label">
                                             Сума замовлення
                                         </div>
-                                        <div className="value">
-                                            {totalPrice} грн
-                                        </div>
+
+                                        {promocode.percent &&
+                                        promocode.promocodeVerify ? (
+                                            <div className="value">
+                                                {Math.round(
+                                                    totalPrice -
+                                                        (totalPrice *
+                                                            promocode.percent) /
+                                                            100
+                                                )}{' '}
+                                                грн
+                                            </div>
+                                        ) : (
+                                            <div className="value">
+                                                {totalPrice} грн
+                                            </div>
+                                        )}
                                     </div>
                                     <Link
                                         onClick={() => {

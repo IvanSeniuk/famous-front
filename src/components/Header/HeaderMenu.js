@@ -1,7 +1,9 @@
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
+import { useSelector } from 'react-redux'
 
 const HeaderMenu = ({ burgerActive }) => {
+    const dataContacts = useSelector((state) => state.contacts)
     return (
         <div className={`m-header-menu ${burgerActive ? 'active' : ''}`}>
             <div className="m-header-menu__inner">
@@ -11,9 +13,9 @@ const HeaderMenu = ({ burgerActive }) => {
                             Про нас
                         </Link>
                     </li>
-                    <li>
+                    {/*<li>
                         <Link to="/franchise"> Франшиза </Link>
-                    </li>
+                    </li>*/}
                     <li>
                         <Link to="/delivery"> Доставка </Link>
                     </li>
@@ -25,11 +27,13 @@ const HeaderMenu = ({ burgerActive }) => {
                     </li>
                 </ul>
                 <div className="m-header-menu__phone">
-                    <Link to="tel:+380505913556">+380505913556</Link>
+                    <a href={`tel:${dataContacts.item.phone2}`}>
+                        {dataContacts.item.phone2}
+                    </a>
                 </div>
                 <ul className="m-header-socials__list">
                     <li>
-                        <Link to="">
+                        <a href={`https://${dataContacts.item.facebook}`}>
                             <svg
                                 width="33"
                                 height="32"
@@ -42,10 +46,10 @@ const HeaderMenu = ({ burgerActive }) => {
                                     fill="white"
                                 />
                             </svg>
-                        </Link>
+                        </a>
                     </li>
                     <li>
-                        <Link to="/franchise">
+                        <a href={`https://${dataContacts.item.instagram}`}>
                             <svg
                                 width="33"
                                 height="32"
@@ -70,7 +74,7 @@ const HeaderMenu = ({ burgerActive }) => {
                                     fill="white"
                                 />
                             </svg>
-                        </Link>
+                        </a>
                     </li>
                 </ul>
             </div>

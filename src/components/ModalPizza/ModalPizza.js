@@ -107,7 +107,6 @@ const ModalPizza = ({
             //    this.removeEventListener('touchend')
         })
     })
-    console.log(price)
     const [activeType, setActiveType] = useState(0)
     const [activeSide, setActiveSide] = useState(0)
     const [count, setCount] = useState(1)
@@ -135,7 +134,6 @@ const ModalPizza = ({
         }))
     )
 
-    console.log(countAdd)
     const incrementCountAdd = (dish_modification_id) => {
         setCountAdd(
             countAdd.map((item) =>
@@ -173,12 +171,13 @@ const ModalPizza = ({
     let [searchParams, setSearchParams] = useSearchParams()
     const handleDeleteParams = () => {
         setSearchParams([])
+        searchParams
     }
     //const params = searchParams.get('product') || ''
     //console.log(setSearchParams)
     //et searchParams = new URLSearchParams(location.search)
     //searchParams.delete('product')
-    console.log(searchParams)
+    //console.log(searchParams)
     const dispatch = useDispatch()
 
     //countAdd.filter((item) => item.check === true)
@@ -446,7 +445,9 @@ const ModalPizza = ({
                                                         <input
                                                             type="checkbox"
                                                             name={item.name}
-                                                            checked={item.check}
+                                                            defaultChecked={
+                                                                item.check
+                                                            }
                                                             //onChange={(
                                                             //    event
                                                             //) => {
@@ -461,7 +462,6 @@ const ModalPizza = ({
                                                                     item.dish_modification_id
                                                                 )
                                                             }}
-                                                            id=""
                                                         />
                                                         <span></span>
                                                         <p>
@@ -584,12 +584,11 @@ const ModalPizza = ({
 
 ModalPizza.propTypes = {
     modalPizzaVisible: PropTypes.bool,
-
     photo_origin: PropTypes.string,
     product_name: PropTypes.string,
-    price: PropTypes.array,
+    price: PropTypes.object,
     product_id: PropTypes.string,
-    out: PropTypes.string,
+    out: PropTypes.number,
     ingredients: PropTypes.array,
     group_modifications: PropTypes.array,
     //additions: PropTypes.object,

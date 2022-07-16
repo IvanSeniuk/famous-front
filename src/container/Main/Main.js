@@ -19,8 +19,11 @@ import Banners from '../../admin/pages/Banners/Banners'
 import ActionsAdmin from '../../admin/pages/Actions/ActionsAdmin'
 import ActionsUpdate from '../../admin/pages/Actions/ActionsUpdate'
 import ProductsCategories from '../../admin/pages/ProductsCategories/ProductsCategories'
-import CreateCategories from '../../admin/pages/ProductsCategories/CreateCategories'
+//import CreateCategories from '../../admin/pages/ProductsCategories/CreateCategories'
 import Checkout from '../../pages/Checkout/Checkout'
+import Delivery from '../../pages/Delivery/Delivery'
+import ContactsAdmin from '../../admin/pages/Contacts/ContactsAdmin'
+import Promocode from '../../admin/pages/Promocode/Promocode'
 const Main = () => {
     const auth = useSelector((state) => state.auth)
     return (
@@ -36,6 +39,7 @@ const Main = () => {
                     />
                     <Route path="checkout" element={<Checkout />} />
                     <Route path="about" element={<About />} />
+                    <Route path="delivery" element={<Delivery />} />
                     <Route path="actions" element={<Actions />} />
                     {auth.userLoaded && (
                         <Route path="/profile" element={<Profile />} />
@@ -50,10 +54,10 @@ const Main = () => {
                             <Route path="types" />
                             <Route path="categories">
                                 <Route index element={<ProductsCategories />} />
-                                <Route
+                                {/*<Route
                                     path="create"
                                     element={<CreateCategories />}
-                                />
+                                />*/}
                             </Route>
                             <Route path="create" element={<ProductCreate />} />
                             <Route
@@ -70,9 +74,13 @@ const Main = () => {
                             </Route>
                         </Route>
                         <Route path="banners" element={<Banners />} />
+                        <Route path="promocode" element={<Promocode />} />
+                        <Route path="subscription" element={<Banners />} />
 
                         <Route path="orders" />
-                        <Route path="contacts" />
+                        <Route path="contacts">
+                            <Route index element={<ContactsAdmin />} />
+                        </Route>
                     </Route>
                 )}
             </Routes>

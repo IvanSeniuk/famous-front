@@ -1,4 +1,5 @@
 import { FcAbout } from 'react-icons/fc'
+import { TbDiscount2 } from 'react-icons/tb'
 import { Link } from 'react-router-dom'
 
 import './PagesList.scss'
@@ -12,7 +13,7 @@ const PagesList = () => {
                     <span>Про нас</span>
                 </Link>
                 <Link to="actions" className="item">
-                    <FcAbout />
+                    <TbDiscount2 />
                     <span>Акції</span>
                 </Link>
             </div>

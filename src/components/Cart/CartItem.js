@@ -90,7 +90,9 @@ const CartItem = ({
                         ''
                     )}
 
-                    <div className="weight">{Math.round(weight)} гр.</div>
+                    <div className="weight">
+                        {weight > 0 && <span>{Math.round(weight)} гр.</span>}
+                    </div>
 
                     <div className="a-product-card__price">
                         <div className="price">

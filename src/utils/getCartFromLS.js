@@ -6,10 +6,14 @@ export const getCartFromLS = () => {
     const items = data ? JSON.parse(data) : []
     const totalPrice = calcTotalPrice(items)
     const totalCount = calcTotalCount(items)
+    const appliances = {}
+    const promocode = {}
 
     return {
         items: items,
         totalCount,
         totalPrice,
+        appliances,
+        promocode,
     }
 }

@@ -3,18 +3,59 @@ import {
     plusItem,
     removeItem,
     minusItem,
+    removeCart,
+    addPromocode,
 } from '../../redux/slices/cart/cartSlice'
+import axios from '../../http/axios'
 import { Link, useNavigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
+import NumberFormat from 'react-number-format'
 import { sendOrderPoster } from '../../redux/slices/poster/orderSlice/OrderSlice'
+import ReactTextareaAutosize from 'react-textarea-autosize'
 
 const Checkout = () => {
-    const { items, totalPrice, totalCount } = useSelector((state) => state.cart)
+    const { items, totalPrice, totalCount, appliances, promocode } =
+        useSelector((state) => state.cart)
+    const [orderComment, setOrderComment] = useState('')
+    const orderPoster = useSelector((state) => state.orderPosterSlice)
+    const [sendOrder, setSendOrder] = useState(false)
+    const [modalPaymentVisible, setModalPaymentVisible] = useState(false)
+    const [activeClass, setActiveClass] = useState(false)
+    const [requiredField, setRequiredField] = useState(false)
+    const [showRequiredField, setShowRequiredField] = useState(false)
+    const [activeDelivery, setActiveDelivery] = useState(2)
+    const [activePayment, setActivePayment] = useState('При отриманні')
+    const [address, setAddress] = useState({
+        city: '',
+        street: '',
+        house: '',
+        apartment: '',
+    })
 
     const [order, setOrder] = useState({
         spot_id: 1,
         phone: '',
-        service_mode: 3,
+        first_name: '',
+        last_name: '',
+        email: '',
+        service_mode: activeDelivery,
+        address: 'Самовивіз',
+        //payment: [{ type: 1, sum: 100, currency: 'UAH' }],
+        comment: `Оплата: При отриманні - - - | - - | - - ${
+            appliances != null
+                ? `К-сть персон: ${appliances.personCount}; 
+                К-сть звичайних палочок: ${appliances.chopsticksStandartCount}; 
+                К-сть навчальних палочок: ${appliances.chopsticksTrainingCount} - - - | - - | - - `
+                : ''
+        } ${
+            promocode.promocodeVerify
+                ? `Промокод на знижку:  ${
+                      promocode.promo
+                  }  - | - - | -  Сума знижки: ${Math.round(
+                      (totalPrice * promocode.percent) / 100
+                  )} грн `
+                : ''
+        }`,
         products: items.map((item) => ({
             product_id: item.product_id,
             count: item.count,
@@ -26,15 +67,22 @@ const Checkout = () => {
                 : null,
         })),
     })
-
-    console.log(order, setOrder)
+    useEffect(() => {
+        if (order.first_name != '' && order.phone != '') {
+            setRequiredField(true)
+            setShowRequiredField(false)
+        } else {
+            setRequiredField(false)
+        }
+    }, [order.first_name, order.phone])
     const dispatch = useDispatch()
     const navigate = useNavigate()
     useEffect(() => {
         if (items.length === 0) {
             navigate('/')
+            setSendOrder(false)
         }
-    })
+    }, [setSendOrder, items, navigate])
 
     const onClickMinus = (item, indexCart) => {
         const itemMinus = {
@@ -57,12 +105,52 @@ const Checkout = () => {
         }
         dispatch(removeItem(itemRemove))
     }
-
+    //useEffect(() => {
+    //    if (totalCount === 0) {
+    //        dispatch(removeOrder())
+    //    }
+    //})
     const handleSendOrder = async (e) => {
+        setSendOrder(true)
         e.preventDefault()
-
         dispatch(sendOrderPoster(order))
+
+        //if (orderPoster.statusPoster === 'succes') {
+        //    setSendOrder(true)
+        //} else {
+        //    setSendOrder(false)
+        //}
     }
+
+    useEffect(() => {
+        if (orderPoster.statusPoster === 'succes' && sendOrder === true) {
+            dispatch(removeCart())
+            if (promocode.promocodeVerify === true) {
+                const f = async () => {
+                    try {
+                        const response = await axios.put(
+                            `api/promocode/${promocode.promo}`
+                        )
+                        return response
+                    } catch (err) {
+                        return err.response.data
+                    }
+                }
+                const result = f()
+                if (result) {
+                    dispatch(addPromocode({}))
+                }
+            }
+        }
+    }, [
+        dispatch,
+        navigate,
+        orderPoster.statusPoster,
+        sendOrder,
+        promocode.promo,
+        promocode.promocodeVerify,
+    ])
+
     return (
         <>
             <div className="m-breadcrumbs">
@@ -89,13 +177,45 @@ const Checkout = () => {
                                 <div className="data-list">
                                     <div className="input data-list__item">
                                         <label>
-                                            <input type="text" />
+                                            <input
+                                                type="text"
+                                                value={order.first_name}
+                                                required
+                                                className={`${
+                                                    order.first_name.length > 0
+                                                        ? 'filled'
+                                                        : ''
+                                                }`}
+                                                onChange={(e) =>
+                                                    setOrder({
+                                                        ...order,
+                                                        first_name:
+                                                            e.target.value,
+                                                    })
+                                                }
+                                            />
                                             <span className="label">Ім’я</span>
                                         </label>
                                     </div>
                                     <div className="input data-list__item">
                                         <label>
-                                            <input type="text" />
+                                            <input
+                                                type="text"
+                                                value={order.last_name}
+                                                minLength={2}
+                                                className={`${
+                                                    order.last_name.length > 0
+                                                        ? 'filled'
+                                                        : ''
+                                                }`}
+                                                onChange={(e) =>
+                                                    setOrder({
+                                                        ...order,
+                                                        last_name:
+                                                            e.target.value,
+                                                    })
+                                                }
+                                            />
                                             <span className="label">
                                                 Прізвище
                                             </span>
@@ -103,14 +223,19 @@ const Checkout = () => {
                                     </div>
                                     <div className="input data-list__item">
                                         <label>
-                                            <input
-                                                type="text"
+                                            <NumberFormat
+                                                format="+## (###) ### ## ##"
+                                                type="tel"
+                                                mask="_"
+                                                required
+                                                placeholder="+38 (099) 999 99 99"
                                                 value={order.phone}
-                                                className={`${
-                                                    order.phone.length > 0
-                                                        ? 'filled phone'
-                                                        : 'phone'
-                                                }`}
+                                                //className={`${
+                                                //    order.phone.length > 0
+                                                //        ? 'filled phone'
+                                                //        : 'phone'
+                                                //}`}
+                                                className="filled phone"
                                                 onChange={(e) =>
                                                     setOrder({
                                                         ...order,
@@ -118,14 +243,41 @@ const Checkout = () => {
                                                     })
                                                 }
                                             />
+
                                             <span className="label">
                                                 Номер телефону
                                             </span>
                                         </label>
+                                        {orderPoster.error.error === 37 && (
+                                            <p
+                                                style={{
+                                                    marginTop: '0.5rem',
+                                                    fontSize: '0.875rem',
+                                                    color: '#f84e4e',
+                                                }}
+                                            >
+                                                Перевірте правильність введеного
+                                                номера
+                                            </p>
+                                        )}
                                     </div>
                                     <div className="input data-list__item">
                                         <label>
-                                            <input type="email" />
+                                            <input
+                                                type="email"
+                                                value={order.email}
+                                                className={`${
+                                                    order.email.length > 0
+                                                        ? 'filled'
+                                                        : ''
+                                                }`}
+                                                onChange={(e) =>
+                                                    setOrder({
+                                                        ...order,
+                                                        email: e.target.value,
+                                                    })
+                                                }
+                                            />
                                             <span className="label">Email</span>
                                         </label>
                                     </div>
@@ -137,31 +289,62 @@ const Checkout = () => {
                                 </div>
                                 <div className="m-product-card__options delivery">
                                     <ul>
-                                        <li className="active">Самовивіз</li>
-                                        <li>Доставка</li>
+                                        <li
+                                            className={
+                                                activeDelivery === 2
+                                                    ? 'active'
+                                                    : ''
+                                            }
+                                            onClick={() => {
+                                                setActiveDelivery(2)
+                                                setOrder({
+                                                    ...order,
+                                                    address: 'Самовивіз',
+                                                })
+                                            }}
+                                        >
+                                            Самовивіз
+                                        </li>
+                                        <li
+                                            className={
+                                                activeDelivery === 3
+                                                    ? 'active'
+                                                    : ''
+                                            }
+                                            onClick={() => {
+                                                setActiveDelivery(3)
+                                                setOrder({
+                                                    ...order,
+                                                    address: `Місто: ${address.city}, Вулиця: ${address.street}, Будинок: ${address.house}, Квартира: ${address.apartment}`,
+                                                })
+                                            }}
+                                        >
+                                            Доставка
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
                             <div className="delivery-methods">
-                                <div className="m-ordering-item active">
-                                    <div className="data-list">
-                                        <div className="m-ordering-item__title">
-                                            <h3>Адреси закладів</h3>
-                                        </div>
-                                        <div className="data-list__item radio-btn">
-                                            <label className="me-sm-2 delivery-btn">
-                                                <input
-                                                    type="radio"
-                                                    name="delivery"
-                                                    checked
-                                                />
-                                                <span></span>
-                                                <p className="a-text">
-                                                    Вулиця 1256
-                                                </p>
-                                            </label>
-                                        </div>
-                                        <div className="data-list__item radio-btn">
+                                {activeDelivery === 2 && (
+                                    <div className="m-ordering-item active">
+                                        <div className="data-list">
+                                            <div className="m-ordering-item__title">
+                                                <h3>Адреси закладів</h3>
+                                            </div>
+                                            <div className="data-list__item radio-btn">
+                                                <label className="me-sm-2 delivery-btn">
+                                                    <input
+                                                        type="radio"
+                                                        name="delivery"
+                                                        checked
+                                                    />
+                                                    <span></span>
+                                                    <p className="a-text">
+                                                        Вулиця 1256
+                                                    </p>
+                                                </label>
+                                            </div>
+                                            {/*<div className="data-list__item radio-btn">
                                             <label className="me-sm-2 delivery-btn">
                                                 <input
                                                     type="radio"
@@ -172,48 +355,133 @@ const Checkout = () => {
                                                     Вулиця 695215
                                                 </p>
                                             </label>
+                                        </div>*/}
                                         </div>
                                     </div>
-                                </div>
-                                <div className="m-ordering-item">
-                                    <div className="data-list row">
-                                        <div className="m-ordering-item__title">
-                                            <h3>Адреса</h3>
-                                        </div>
-                                        <div className="input data-list__item">
-                                            <label>
-                                                <input type="text" />
-                                                <span className="label">
-                                                    Населений пункт
-                                                </span>
-                                            </label>
-                                        </div>
-                                        <div className="input data-list__item col-md-6">
-                                            <label>
-                                                <input type="text" />
-                                                <span className="label">
-                                                    Вулиця
-                                                </span>
-                                            </label>
-                                        </div>
-                                        <div className="input data-list__item col-md-3">
-                                            <label>
-                                                <input type="text" />
-                                                <span className="label">
-                                                    Будинок
-                                                </span>
-                                            </label>
-                                        </div>
-                                        <div className="input data-list__item col-md-3">
-                                            <label>
-                                                <input type="text" />
-                                                <span className="label">
-                                                    Квартира
-                                                </span>
-                                            </label>
+                                )}
+
+                                {activeDelivery === 3 && (
+                                    <div className="m-ordering-item active">
+                                        <div className="data-list row">
+                                            <div className="m-ordering-item__title">
+                                                <h3>Адреса</h3>
+                                            </div>
+                                            <div className="input data-list__item">
+                                                <label>
+                                                    <input
+                                                        type="text"
+                                                        value={address.city}
+                                                        className={`${
+                                                            address.city != ''
+                                                                ? 'filled'
+                                                                : ''
+                                                        }`}
+                                                        onChange={(e) => {
+                                                            setAddress({
+                                                                ...address,
+                                                                city: e.target
+                                                                    .value,
+                                                            })
+                                                            setOrder({
+                                                                ...order,
+                                                                address: `Місто: ${address.city}, Вулиця: ${address.street}, Будинок: ${address.house}, Квартира: ${address.apartment}`,
+                                                            })
+                                                        }}
+                                                    />
+                                                    <span className="label">
+                                                        Населений пункт
+                                                    </span>
+                                                </label>
+                                            </div>
+                                            <div className="input data-list__item col-md-6">
+                                                <label>
+                                                    <input
+                                                        type="text"
+                                                        value={address.street}
+                                                        className={`${
+                                                            address.street
+                                                                .length > 0
+                                                                ? 'filled'
+                                                                : ''
+                                                        }`}
+                                                        onChange={(e) => {
+                                                            setAddress({
+                                                                ...address,
+                                                                street: e.target
+                                                                    .value,
+                                                            })
+                                                            //setOrder({
+                                                            //    ...order,
+                                                            //})
+                                                        }}
+                                                    />
+                                                    <span className="label">
+                                                        Вулиця
+                                                    </span>
+                                                </label>
+                                            </div>
+                                            <div className="input data-list__item col-md-3">
+                                                <label>
+                                                    <input
+                                                        type="text"
+                                                        value={address.house}
+                                                        className={`${
+                                                            address.house
+                                                                .length > 0
+                                                                ? 'filled'
+                                                                : ''
+                                                        }`}
+                                                        onChange={(e) => {
+                                                            setAddress({
+                                                                ...address,
+                                                                house: e.target
+                                                                    .value,
+                                                            })
+                                                            setOrder({
+                                                                ...order,
+                                                                address: `Місто: ${address.city}, Вулиця: ${address.street}, Будинок: ${address.house}, Квартира: ${address.apartment}`,
+                                                            })
+                                                        }}
+                                                    />
+                                                    <span className="label">
+                                                        Будинок
+                                                    </span>
+                                                </label>
+                                            </div>
+                                            <div className="input data-list__item col-md-3">
+                                                <label>
+                                                    <input
+                                                        type="text"
+                                                        value={
+                                                            address.apartment
+                                                        }
+                                                        className={`${
+                                                            address.apartment
+                                                                .length > 0
+                                                                ? 'filled'
+                                                                : ''
+                                                        }`}
+                                                        onChange={(e) => {
+                                                            setAddress({
+                                                                ...address,
+                                                                apartment:
+                                                                    e.target
+                                                                        .value,
+                                                            })
+                                                            setOrder({
+                                                                ...order,
+                                                                address: `Місто: ${address.city}, Вулиця: ${address.street}, Будинок: ${address.house}, Квартира: ${address.apartment}`,
+                                                            })
+                                                        }}
+                                                    />
+                                                    <span className="label">
+                                                        Квартира
+                                                    </span>
+                                                </label>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                )}
                             </div>
                             <div className="m-ordering-item payment-delivery">
                                 <div className="m-ordering-item__title">
@@ -221,10 +489,81 @@ const Checkout = () => {
                                 </div>
                                 <div className="m-product-card__options">
                                     <ul>
-                                        <li className="active">
+                                        <li
+                                            className={
+                                                activePayment ===
+                                                'При отриманні'
+                                                    ? 'active'
+                                                    : ''
+                                            }
+                                            onClick={() => {
+                                                setActivePayment(
+                                                    'При отриманні'
+                                                )
+                                                setOrder({
+                                                    ...order,
+                                                    comment: `${
+                                                        orderComment != ''
+                                                            ? `Коментар до замовлення: ${orderComment} - - - | - - | - - `
+                                                            : ''
+                                                    }  Оплата: При отриманні - - - | - - | - -  ${
+                                                        appliances != null
+                                                            ? `К-сть персон: ${appliances.personCount}; 
+                                                            К-сть звичайних палочок: ${appliances.chopsticksStandartCount}; 
+                                                            К-сть навчальних палочок: ${appliances.chopsticksTrainingCount} - - - | - - | - - `
+                                                            : ''
+                                                    } ${
+                                                        promocode.promocodeVerify
+                                                            ? `Промокод на знижку:  ${
+                                                                  promocode.promo
+                                                              }  - | - - | -  Сума знижки: ${Math.round(
+                                                                  (totalPrice *
+                                                                      promocode.percent) /
+                                                                      100
+                                                              )} грн `
+                                                            : ''
+                                                    }  `,
+                                                })
+                                            }}
+                                        >
                                             При отриманні
                                         </li>
-                                        <li>На карту</li>
+                                        <li
+                                            className={
+                                                activePayment === 'На карту'
+                                                    ? 'active'
+                                                    : ''
+                                            }
+                                            onClick={() => {
+                                                setActivePayment('На карту')
+                                                setOrder({
+                                                    ...order,
+                                                    comment: `${
+                                                        orderComment != ''
+                                                            ? `Коментар до замовлення: ${orderComment} - - - | - - | - - `
+                                                            : ''
+                                                    }  Оплата: При отриманні - - - | - - | - -  ${
+                                                        appliances != null
+                                                            ? `К-сть персон: ${appliances.personCount}; 
+                                                            К-сть звичайних палочок: ${appliances.chopsticksStandartCount}; 
+                                                            К-сть навчальних палочок: ${appliances.chopsticksTrainingCount} - - - | - - | - - `
+                                                            : ''
+                                                    } ${
+                                                        promocode.promocodeVerify
+                                                            ? `Промокод на знижку:  ${
+                                                                  promocode.promo
+                                                              }  - | - - | -  Сума знижки: ${Math.round(
+                                                                  (totalPrice *
+                                                                      promocode.percent) /
+                                                                      100
+                                                              )} грн `
+                                                            : ''
+                                                    }  `,
+                                                })
+                                            }}
+                                        >
+                                            На карту
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
@@ -235,7 +574,41 @@ const Checkout = () => {
                                 </div>
                                 <div className="textarea">
                                     <label>
-                                        <textarea></textarea>
+                                        <ReactTextareaAutosize
+                                            value={orderComment}
+                                            className={`${
+                                                orderComment != ''
+                                                    ? 'filled'
+                                                    : ''
+                                            }`}
+                                            onChange={(e) => {
+                                                setOrderComment(e.target.value)
+                                                setOrder({
+                                                    ...order,
+                                                    comment: `${
+                                                        orderComment != ''
+                                                            ? `Коментар до замовлення: ${orderComment} - - - | - - | - - `
+                                                            : ''
+                                                    }  Оплата: При отриманні - - - | - - | - -  ${
+                                                        appliances != null
+                                                            ? `К-сть персон: ${appliances.personCount}; 
+                                                            К-сть звичайних палочок: ${appliances.chopsticksStandartCount}; 
+                                                            К-сть навчальних палочок: ${appliances.chopsticksTrainingCount} - - - | - - | - - `
+                                                            : ''
+                                                    } ${
+                                                        promocode.promocodeVerify
+                                                            ? `Промокод на знижку:  ${
+                                                                  promocode.promo
+                                                              }  - | - - | -  Сума знижки: ${Math.round(
+                                                                  (totalPrice *
+                                                                      promocode.percent) /
+                                                                      100
+                                                              )} грн `
+                                                            : ''
+                                                    }  `,
+                                                })
+                                            }}
+                                        ></ReactTextareaAutosize>
                                         <span className="label">
                                             Коментар до замовлення
                                         </span>
@@ -246,27 +619,127 @@ const Checkout = () => {
                                 <div className="m-cart-bottom">
                                     <div className="item sum">
                                         <div className="label">
-                                            <span className="count">12 </span>
-                                            Товарів
+                                            <span className="count">
+                                                {totalCount}{' '}
+                                            </span>
+                                            {(() => {
+                                                if (
+                                                    totalCount ===
+                                                    (1 ||
+                                                        21 ||
+                                                        31 ||
+                                                        41 ||
+                                                        51 ||
+                                                        61 ||
+                                                        71 ||
+                                                        81 ||
+                                                        91 ||
+                                                        101 ||
+                                                        121)
+                                                ) {
+                                                    return 'товар'
+                                                } else if (
+                                                    totalCount ===
+                                                    (2 ||
+                                                        3 ||
+                                                        4 ||
+                                                        22 ||
+                                                        23 ||
+                                                        24 ||
+                                                        32 ||
+                                                        33 ||
+                                                        34 ||
+                                                        42 ||
+                                                        43 ||
+                                                        44)
+                                                ) {
+                                                    return 'товари'
+                                                } else {
+                                                    return 'товарів'
+                                                }
+                                            })()}
                                         </div>
-                                        <div className="value">1 462грн</div>
+
+                                        <div className="value">
+                                            {totalPrice} грн
+                                        </div>
                                     </div>
-                                    <div className="item discount">
-                                        <div className="label">Знижка</div>
-                                        <div className="value">-54грн</div>
-                                    </div>
+                                    {promocode.promocodeVerify && (
+                                        <div className="item discount">
+                                            <div className="label">Знижка</div>
+                                            <div className="value">
+                                                -{' '}
+                                                {Math.round(
+                                                    (totalPrice *
+                                                        promocode.percent) /
+                                                        100
+                                                )}{' '}
+                                                грн
+                                            </div>
+                                        </div>
+                                    )}
                                     <div className="item total">
                                         <div className="label">
                                             Сума замовлення
                                         </div>
-                                        <div className="value">11 500грн</div>
+                                        {promocode.percent &&
+                                        promocode.promocodeVerify ? (
+                                            <div className="value">
+                                                {Math.round(
+                                                    totalPrice -
+                                                        (totalPrice *
+                                                            promocode.percent) /
+                                                            100
+                                                )}{' '}
+                                                грн
+                                            </div>
+                                        ) : (
+                                            <div className="value">
+                                                {totalPrice} грн
+                                            </div>
+                                        )}
                                     </div>
-                                    <a
-                                        href="javascript:;"
-                                        className="a-btn e--gold modal-payment-open"
-                                    >
-                                        Оформити замовлення
-                                    </a>
+                                    {activePayment === 'На карту' ? (
+                                        <button
+                                            type="button"
+                                            className="a-btn e--gold modal-payment-open"
+                                            onClick={() => {
+                                                if (!requiredField) {
+                                                    setShowRequiredField(true)
+                                                } else {
+                                                    setModalPaymentVisible(
+                                                        true
+                                                    ),
+                                                        setTimeout(() => {
+                                                            setActiveClass(true)
+                                                        }, 100)
+                                                }
+                                            }}
+                                        >
+                                            Оформити замовлення
+                                        </button>
+                                    ) : (
+                                        <button
+                                            type="submit"
+                                            className="a-btn e--gold modal-payment-open"
+                                        >
+                                            Оформити замовлення
+                                        </button>
+                                    )}
+                                    {showRequiredField ? (
+                                        <p
+                                            style={{
+                                                fontSize: '.875rem',
+                                                marginTop: '.625rem',
+                                                color: '#f84e4e',
+                                            }}
+                                        >
+                                            Не заповнено поле Ім&apos;я або
+                                            Номер телефону
+                                        </p>
+                                    ) : (
+                                        ''
+                                    )}
                                 </div>
                             </div>
                             {/*<div className="checkbox">
@@ -290,6 +763,10 @@ const Checkout = () => {
                                                 key={item.product_id}
                                             >
                                                 <div
+                                                    style={{
+                                                        opacity: '0',
+                                                        pointerEvent: 'none',
+                                                    }}
                                                     className="delete-cart-item"
                                                     onClick={() =>
                                                         onClickRemove(
@@ -373,7 +850,15 @@ const Checkout = () => {
                                                             ''
                                                         )}
                                                         <div className="weight">
-                                                            {item.weight} гр.
+                                                            {item.weight >
+                                                                0 && (
+                                                                <span>
+                                                                    {Math.round(
+                                                                        item.weight
+                                                                    )}{' '}
+                                                                    гр.
+                                                                </span>
+                                                            )}
                                                         </div>
 
                                                         <div className="a-product-card__price">
@@ -471,68 +956,302 @@ const Checkout = () => {
                                                     }
                                                 })()}
                                             </div>
+
                                             <div className="value">
                                                 {totalPrice} грн
                                             </div>
                                         </div>
-                                        <div className="item discount">
-                                            <div
-                                                className="label"
-                                                //onClick={() => {
-                                                //    setOrder({
-                                                //        ...order,
-                                                //        products: items.map(
-                                                //            (item) => [
-                                                //                ...item,
-                                                //                modification.push(
-                                                //                    {
-                                                //                        m: 1,
-                                                //                        a: 2,
-                                                //                    }
-                                                //                ),
-                                                //            ]
-                                                //        ),
-                                                //    })
-                                                //    console.log(order, setOrder)
-                                                //}}
-                                            >
-                                                Знижка
+                                        {promocode.promocodeVerify && (
+                                            <div className="item discount">
+                                                <div className="label">
+                                                    Знижка
+                                                </div>
+                                                <div className="value">
+                                                    -{' '}
+                                                    {Math.round(
+                                                        (totalPrice *
+                                                            promocode.percent) /
+                                                            100
+                                                    )}{' '}
+                                                    грн
+                                                </div>
                                             </div>
-                                            <div className="value">-54грн</div>
-                                        </div>
+                                        )}
                                         <div className="item total">
                                             <div className="label">
                                                 Сума замовлення
                                             </div>
-                                            <div className="value">
-                                                {totalPrice} грн
-                                            </div>
+                                            {promocode.percent &&
+                                            promocode.promocodeVerify ? (
+                                                <div className="value">
+                                                    {Math.round(
+                                                        totalPrice -
+                                                            (totalPrice *
+                                                                promocode.percent) /
+                                                                100
+                                                    )}{' '}
+                                                    грн
+                                                </div>
+                                            ) : (
+                                                <div className="value">
+                                                    {totalPrice} грн
+                                                </div>
+                                            )}
                                         </div>
-                                        <button
-                                            //onClick={() => {
-                                            //    setOrder({
-                                            //        ...order,
-                                            //        products: items.map(
-                                            //            (item) => ({
-                                            //                ...item.modification,
-                                            //                modification: [
-                                            //                    ...item.modification,
-                                            //                    { m: 1, a: 2 },
-                                            //                ],
-                                            //            })
-                                            //        ),
-                                            //    })
-                                            //    console.log(order, setOrder)
-                                            //}}
-                                            className="a-btn e--gold modal-payment-open"
-                                        >
-                                            Оформити замовлення
-                                        </button>
+                                        {activePayment === 'На карту' ? (
+                                            <button
+                                                type="button"
+                                                className="a-btn e--gold modal-payment-open"
+                                                onClick={() => {
+                                                    if (!requiredField) {
+                                                        setShowRequiredField(
+                                                            true
+                                                        )
+                                                    } else {
+                                                        setModalPaymentVisible(
+                                                            true
+                                                        ),
+                                                            setTimeout(() => {
+                                                                setActiveClass(
+                                                                    true
+                                                                )
+                                                            }, 100)
+                                                    }
+                                                }}
+                                            >
+                                                Оформити замовлення
+                                            </button>
+                                        ) : (
+                                            <button
+                                                type="submit"
+                                                className="a-btn e--gold modal-payment-open"
+                                            >
+                                                Оформити замовлення
+                                            </button>
+                                        )}
+                                        {showRequiredField ? (
+                                            <p
+                                                style={{
+                                                    fontSize: '.875rem',
+                                                    marginTop: '.625rem',
+                                                    color: '#f84e4e',
+                                                }}
+                                            >
+                                                Не заповнено поле Ім&apos;я або
+                                                Номер телефону
+                                            </p>
+                                        ) : (
+                                            ''
+                                        )}
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    {/*{modalPaymentVisible && <div>Модальне </div>}*/}
+                    {modalPaymentVisible && (
+                        <>
+                            <div
+                                className={
+                                    activeClass
+                                        ? 'm-modal-payment m-modal active'
+                                        : 'm-modal-payment m-modal'
+                                }
+                            >
+                                <div className="m-modal-top">
+                                    <h2 className="m-modal-title">
+                                        Оплатіть замовлення
+                                    </h2>
+                                    <div
+                                        className="close-modal close-modal-btn"
+                                        onClick={() => {
+                                            setActiveClass(false)
+                                            setTimeout(() => {
+                                                setModalPaymentVisible(false)
+                                            }, 550)
+                                        }}
+                                    ></div>
+                                </div>
+                                <div className="m-modal-scroll">
+                                    <div className="m-modal-content">
+                                        <div className="swiper m-payment-slider">
+                                            <div className="swiper-wrapper">
+                                                <div className="swiper-slide m-payment-card">
+                                                    <div className="m-payment-card__inner">
+                                                        <img
+                                                            src="../img/46.png"
+                                                            alt=""
+                                                        />
+                                                    </div>
+                                                    <div className="card-number">
+                                                        456456456345
+                                                    </div>
+                                                </div>
+                                                <div className="swiper-slide m-payment-card">
+                                                    <div className="m-payment-card__inner">
+                                                        <img
+                                                            src="../img/universalnaya_karta.png"
+                                                            alt=""
+                                                        />
+                                                    </div>
+                                                    <div className="card-number">
+                                                        1234568547965235
+                                                    </div>
+                                                </div>
+                                                <div className="swiper-slide m-payment-card">
+                                                    <div className="m-payment-card__inner">
+                                                        <img
+                                                            src="../img/46.png"
+                                                            alt=""
+                                                        />
+                                                    </div>
+                                                    <div className="card-number">
+                                                        4564564564564
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="a-slider-pagination"></div>
+                                        </div>
+                                        <div className="bottom pe-3 ps-3">
+                                            <div className="m-cart-bottom pe-4 ps-4">
+                                                <div className="m-payment-card-number">
+                                                    <input
+                                                        type="text"
+                                                        id="card-number"
+                                                        className="card-number"
+                                                        value="2221123446802089"
+                                                        readOnly
+                                                    />
+                                                    <div className="copy-card-number icon">
+                                                        <svg
+                                                            width="25"
+                                                            height="25"
+                                                            viewBox="0 0 25 25"
+                                                            fill="none"
+                                                            xmlns="http://www.w3.org/2000/svg"
+                                                        >
+                                                            <path
+                                                                d="M21.5 9.12188C21.4896 9.03002 21.4695 8.93952 21.44 8.85188V8.76188C21.3919 8.65906 21.3278 8.56455 21.25 8.48188L15.25 2.48188C15.1673 2.4041 15.0728 2.33997 14.97 2.29188C14.9402 2.28764 14.9099 2.28764 14.88 2.29188C14.7784 2.23363 14.6662 2.19623 14.55 2.18188H10.5C9.70435 2.18188 8.94129 2.49796 8.37868 3.06056C7.81607 3.62317 7.5 4.38624 7.5 5.18188V6.18188H6.5C5.70435 6.18188 4.94129 6.49796 4.37868 7.06056C3.81607 7.62317 3.5 8.38624 3.5 9.18188V19.1819C3.5 19.9775 3.81607 20.7406 4.37868 21.3032C4.94129 21.8658 5.70435 22.1819 6.5 22.1819H14.5C15.2956 22.1819 16.0587 21.8658 16.6213 21.3032C17.1839 20.7406 17.5 19.9775 17.5 19.1819V18.1819H18.5C19.2956 18.1819 20.0587 17.8658 20.6213 17.3032C21.1839 16.7406 21.5 15.9775 21.5 15.1819V9.18188C21.5 9.18188 21.5 9.18188 21.5 9.12188ZM15.5 5.59188L18.09 8.18188H16.5C16.2348 8.18188 15.9804 8.07653 15.7929 7.88899C15.6054 7.70146 15.5 7.4471 15.5 7.18188V5.59188ZM15.5 19.1819C15.5 19.4471 15.3946 19.7015 15.2071 19.889C15.0196 20.0765 14.7652 20.1819 14.5 20.1819H6.5C6.23478 20.1819 5.98043 20.0765 5.79289 19.889C5.60536 19.7015 5.5 19.4471 5.5 19.1819V9.18188C5.5 8.91667 5.60536 8.66231 5.79289 8.47478C5.98043 8.28724 6.23478 8.18188 6.5 8.18188H7.5V15.1819C7.5 15.9775 7.81607 16.7406 8.37868 17.3032C8.94129 17.8658 9.70435 18.1819 10.5 18.1819H15.5V19.1819ZM19.5 15.1819C19.5 15.4471 19.3946 15.7015 19.2071 15.889C19.0196 16.0765 18.7652 16.1819 18.5 16.1819H10.5C10.2348 16.1819 9.98043 16.0765 9.79289 15.889C9.60536 15.7015 9.5 15.4471 9.5 15.1819V5.18188C9.5 4.91667 9.60536 4.66231 9.79289 4.47478C9.98043 4.28724 10.2348 4.18188 10.5 4.18188H13.5V7.18188C13.5 7.97753 13.8161 8.7406 14.3787 9.30321C14.9413 9.86581 15.7044 10.1819 16.5 10.1819H19.5V15.1819Z"
+                                                                fill="white"
+                                                            />
+                                                        </svg>
+                                                    </div>
+                                                </div>
+                                                <div className="item sum">
+                                                    <div className="label">
+                                                        <span className="count">
+                                                            {totalCount}{' '}
+                                                        </span>
+                                                        {(() => {
+                                                            if (
+                                                                totalCount ===
+                                                                (1 ||
+                                                                    21 ||
+                                                                    31 ||
+                                                                    41 ||
+                                                                    51 ||
+                                                                    61 ||
+                                                                    71 ||
+                                                                    81 ||
+                                                                    91 ||
+                                                                    101 ||
+                                                                    121)
+                                                            ) {
+                                                                return 'товар'
+                                                            } else if (
+                                                                totalCount ===
+                                                                (2 ||
+                                                                    3 ||
+                                                                    4 ||
+                                                                    22 ||
+                                                                    23 ||
+                                                                    24 ||
+                                                                    32 ||
+                                                                    33 ||
+                                                                    34 ||
+                                                                    42 ||
+                                                                    43 ||
+                                                                    44)
+                                                            ) {
+                                                                return 'товари'
+                                                            } else {
+                                                                return 'товарів'
+                                                            }
+                                                        })()}
+                                                    </div>
+
+                                                    <div className="value">
+                                                        {totalPrice} грн
+                                                    </div>
+                                                </div>
+                                                {promocode.promocodeVerify && (
+                                                    <div className="item discount">
+                                                        <div className="label">
+                                                            Знижка
+                                                        </div>
+                                                        <div className="value">
+                                                            -{' '}
+                                                            {Math.round(
+                                                                (totalPrice *
+                                                                    promocode.percent) /
+                                                                    100
+                                                            )}{' '}
+                                                            грн
+                                                        </div>
+                                                    </div>
+                                                )}
+                                                <div className="item total">
+                                                    <div className="label">
+                                                        Сума замовлення
+                                                    </div>
+                                                    {promocode.percent &&
+                                                    promocode.promocodeVerify ? (
+                                                        <div className="value">
+                                                            {Math.round(
+                                                                totalPrice -
+                                                                    (totalPrice *
+                                                                        promocode.percent) /
+                                                                        100
+                                                            )}{' '}
+                                                            грн
+                                                        </div>
+                                                    ) : (
+                                                        <div className="value">
+                                                            {totalPrice} грн
+                                                        </div>
+                                                    )}
+                                                </div>
+                                                <button
+                                                    type="submit"
+                                                    className="a-btn e--gold"
+                                                >
+                                                    Готово
+                                                </button>
+                                                <p className="text-message mt-3">
+                                                    Після оплати з вами
+                                                    звяжеться наш менеджер, для
+                                                    підтвердження замовлення
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div
+                                onClick={() => {
+                                    setActiveClass(false)
+                                    setTimeout(() => {
+                                        setModalPaymentVisible(false)
+                                    }, 550)
+                                }}
+                                className={
+                                    activeClass
+                                        ? 'm-modal-payment-overlay active'
+                                        : 'm-modal-payment-overlay'
+                                }
+                            ></div>
+                        </>
+                    )}
                 </form>
             </section>
         </>

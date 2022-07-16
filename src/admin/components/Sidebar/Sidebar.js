@@ -33,7 +33,7 @@ const Sidebar = () => {
                             }`}
                         >
                             <MdDashboard />
-                            <span>Dashboard</span>
+                            <span>Home</span>
                         </Link>
                     </li>
                     <li>

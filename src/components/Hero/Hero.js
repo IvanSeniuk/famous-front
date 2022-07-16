@@ -26,7 +26,7 @@ import ButtonRight from '../Icons/ButtonRight.svg'
 
 const Hero = () => {
     const banners = useSelector((state) => state.banners)
-    console.log(banners)
+    //console.log(banners)
     const dispatch = useDispatch()
     useEffect(() => {
         dispatch(fetchBanners())

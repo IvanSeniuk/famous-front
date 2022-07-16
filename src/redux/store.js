@@ -8,8 +8,9 @@ import { product } from './slices/products/productSlice'
 import { productsPoster } from './slices/poster/productsSlice/ProductsSlice.js'
 import { productPoster } from './slices/poster/productsSlice/ProductSlice.js'
 import { categoriesPoster } from './slices/poster/productsSlice/CategoriesSlice.js'
-import { orderPoster } from './slices/poster/orderSlice/OrderSlice.js'
+import orderPosterSlice from './slices/poster/orderSlice/OrderSlice.js'
 import { actions } from './slices/actions/actionsSlice'
+import { contacts } from './slices/contacts/contactsSlice.js'
 
 export const store = configureStore({
     reducer: {
@@ -20,9 +21,10 @@ export const store = configureStore({
         product,
         productsPoster,
         productPoster,
-        orderPoster,
+        orderPosterSlice,
         categoriesPoster,
         banners,
         actions,
+        contacts,
     },
 })

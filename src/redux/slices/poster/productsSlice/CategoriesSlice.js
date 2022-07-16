@@ -1,25 +1,23 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import axios from 'axios'
+import axios from '../../../../http/axios'
 
 export const fetchCategoriesPoster = createAsyncThunk(
     'categories/fetchCategoriesPoster',
     async () => {
-        const { data } = await axios.get(
-            `https://joinposter.com/api/menu.getCategories?token=557693:63509286feaa600b23bb9dd85533f8ff`
-        )
+        const { data } = await axios.get(`api/category_poster`)
         return data.response
     }
 )
-export const createCategoriesPoster = createAsyncThunk(
-    'categories/createCategoriesPoster',
-    async (category) => {
-        const { data } = await axios.post(
-            `http://joinposter.com/api/menu.createCategory?token=557693:63509286feaa600b23bb9dd85533f8ff`,
-            category
-        )
-        return data
-    }
-)
+//export const createCategoriesPoster = createAsyncThunk(
+//    'categories/createCategoriesPoster',
+//    async (category) => {
+//        const { data } = await axios.post(
+//            `http://joinposter.com/api/menu.createCategory?token=557693:63509286feaa600b23bb9dd85533f8ff`,
+//            category
+//        )
+//        return data
+//    }
+//)
 //export const deleteProduct = createAsyncThunk(
 //    'products/deleteProduct',
 //    async (id) => {
@@ -52,16 +50,16 @@ const categoriesPosterSlice = createSlice({
             state.items = []
             state.status = 'error'
         },
-        [createCategoriesPoster.pending]: (state) => {
-            state.createStatus = 'loading'
-        },
-        [createCategoriesPoster.fulfilled]: (state, action) => {
-            state.items.push(action.payload)
-            state.createStatus = 'loaded'
-        },
-        [createCategoriesPoster.rejected]: (state) => {
-            state.createStatus = 'error'
-        },
+        //[createCategoriesPoster.pending]: (state) => {
+        //    state.createStatus = 'loading'
+        //},
+        //[createCategoriesPoster.fulfilled]: (state, action) => {
+        //    state.items.push(action.payload)
+        //    state.createStatus = 'loaded'
+        //},
+        //[createCategoriesPoster.rejected]: (state) => {
+        //    state.createStatus = 'error'
+        //},
         //[deleteCategoriesPoster.pending]: (state) => {
         //    state.deleteStatus = 'loading'
         //},

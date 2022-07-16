@@ -160,6 +160,23 @@
                 }
             }
         }
+        &-overlay {
+            position: fixed;
+            left: 0;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 115;
+            background: rgba(58, 58, 58, 0.5);
+
+            opacity: 0;
+            transition: 0.3s;
+            pointer-events: none;
+            &.active {
+                pointer-events: painted;
+                opacity: 1;
+            }
+        }
     }
     &-pizza {
         position: relative;

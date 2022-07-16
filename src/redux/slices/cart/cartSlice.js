@@ -159,11 +159,28 @@ export const cartSlice = createSlice({
                 return obj.count + total
             }, 0)
         },
+        removeCart(state) {
+            ;(state.items = []), (state.totalPrice = 0), (state.totalCount = 0)
+        },
+        addAppliances(state, action) {
+            state.appliances = action.payload
+        },
+        addPromocode(state, action) {
+            state.promocode = action.payload
+        },
     },
 })
 
 // Action creators are generated for each case reducer function
-export const { addItem, addItemPizza, minusItem, removeItem, plusItem } =
-    cartSlice.actions
+export const {
+    addItem,
+    addItemPizza,
+    minusItem,
+    removeItem,
+    plusItem,
+    addAppliances,
+    removeCart,
+    addPromocode,
+} = cartSlice.actions
 
 export default cartSlice.reducer

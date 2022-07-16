@@ -1,14 +1,12 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import axios from 'axios'
+import axios from '../../../../http/axios'
 
 export const sendOrderPoster = createAsyncThunk(
-    'odrer/sendOrderPoster',
+    'order/sendOrderPoster',
     async (order) => {
-        const { data } = await axios.post(
-            `https://joinposter.com/api/incomingOrders.createIncomingOrder?token=557693:63509286feaa600b23bb9dd85533f8ff`,
-            order
-        )
-        return data.response
+        const { data } = await axios.post(`api/order`, order)
+        console.log(data)
+        return data
     }
 )
 
@@ -30,6 +28,8 @@ export const sendOrderPoster = createAsyncThunk(
 const initialState = {
     order: {},
     status: '',
+    statusPoster: '',
+    error: '',
 }
 
 const orderPosterSlice = createSlice({
@@ -40,14 +40,27 @@ const orderPosterSlice = createSlice({
         [sendOrderPoster.pending]: (state) => {
             state.order = {}
             state.status = 'loading'
+            state.statusPoster = 'loading'
+            state.error = ''
         },
         [sendOrderPoster.fulfilled]: (state, action) => {
-            state.order = action.payload
-            state.status = 'send'
+            if (action.payload.response) {
+                state.order = action.payload
+                state.status = 'send'
+                state.statusPoster = 'succes'
+                state.error = ''
+            } else {
+                state.order = {}
+                state.status = 'send'
+                state.statusPoster = 'error'
+                state.error = action.payload
+            }
         },
-        [sendOrderPoster.rejected]: (state) => {
-            state.order = {}
+        [sendOrderPoster.rejected]: (state, action) => {
+            state.order = action.payload
             state.status = 'error'
+            state.statusPoster = 'error'
+            state.error = ''
         },
         //[createProduct.pending]: (state) => {
         //    state.createStatus = 'loading'
@@ -74,4 +87,4 @@ const orderPosterSlice = createSlice({
     },
 })
 
-export const orderPoster = orderPosterSlice.reducer
+export default orderPosterSlice.reducer

@@ -4,7 +4,7 @@ import { NavLink, Link } from 'react-router-dom'
 
 const Categories = ({ categories, value }) => {
     const categoriesList = categories.items
-    console.log(categoriesList)
+    //console.log(categoriesList)
     //const onClickCategory = (index) => {
     //    setActiveIndex(index)
     //}

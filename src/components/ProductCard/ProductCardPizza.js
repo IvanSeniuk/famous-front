@@ -227,11 +227,11 @@ const ProductCardPizza = ({
                                             <span>в кошик</span>
                                         </span>
                                     </button>*/}
-                                    <div className="quantity">
+                                    {/*<div className="quantity">
                                         <button>-</button>
                                         <input type="text" defaultValue={1} />
                                         <button>+</button>
-                                    </div>
+                                    </div>*/}
                                 </div>
                             </div>
                         </div>

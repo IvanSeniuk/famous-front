@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 
 const Footer = () => {
+    const dataContacts = useSelector((state) => state.contacts)
     return (
         <footer className="o-footer">
             <div className="container">
@@ -25,7 +27,9 @@ const Footer = () => {
                         <div className="col-12 col-md-7 col-lg-12 order-sm-3 order-md-4">
                             <ul className="social-list pt-4 pb-4">
                                 <li>
-                                    <Link to="#">
+                                    <a
+                                        href={`https://${dataContacts.item.facebook}`}
+                                    >
                                         <svg
                                             width="24"
                                             height="24"
@@ -50,10 +54,12 @@ const Footer = () => {
                                                 fill="white"
                                             />
                                         </svg>
-                                    </Link>
+                                    </a>
                                 </li>
                                 <li>
-                                    <Link to="#">
+                                    <a
+                                        href={`https://${dataContacts.item.instagram}`}
+                                    >
                                         <svg
                                             width="24"
                                             height="24"
@@ -66,7 +72,7 @@ const Footer = () => {
                                                 fill="white"
                                             />
                                         </svg>
-                                    </Link>
+                                    </a>
                                 </li>
                             </ul>
                         </div>
@@ -75,17 +81,13 @@ const Footer = () => {
                             <nav className="m-footer-nav pt-4 pb-4 pt-sm-0 pb-sm-0 pb-lg-0">
                                 <ul>
                                     <li>
-                                        <Link to="../about-us.html">
-                                            Про нас
-                                        </Link>
+                                        <Link to="/about">Про нас</Link>
                                     </li>
-                                    <li>
+                                    {/*<li>
                                         <Link to="#">Франшиза</Link>
-                                    </li>
+                                    </li>*/}
                                     <li>
-                                        <Link to="../delivery.html">
-                                            Доставка
-                                        </Link>
+                                        <Link to="/delivery">Доставка</Link>
                                     </li>
                                     <li>
                                         <Link to="../about-us.html#contacts">
@@ -93,27 +95,27 @@ const Footer = () => {
                                         </Link>
                                     </li>
                                     <li>
-                                        <Link to="../actions.html">Акції</Link>
+                                        <Link to="/actions">Акції</Link>
                                     </li>
-                                    <li>
+                                    {/*<li>
                                         <Link to="../cashback.html">
                                             Кешбек
                                         </Link>
-                                    </li>
+                                    </li>*/}
                                 </ul>
                             </nav>
                         </div>
                         <div className="col-12 col-md-5 col-lg-3 col-xxl-2 order-sm-4 order-md-3">
                             <div className="line-bg"></div>
                             <div className="m-footer-phone pt-4 pb-4 pt-lg-0 pb-lg-0">
-                                <Link to="tel:+38 (050) 591 35 56">
-                                    +38 (050) 591 35 56
-                                </Link>
-                                <Link to="tel:+38 (050) 591 35 56">
-                                    +38 (050) 591 35 56
-                                </Link>
+                                <a href={`tel:${dataContacts.item.phone1}`}>
+                                    {dataContacts.item.phone1}
+                                </a>
+                                <a href={`tel:${dataContacts.item.phone2}`}>
+                                    {dataContacts.item.phone2}
+                                </a>
                                 <p className="business-hours">
-                                    Кожного дня 09:00 - 23:00
+                                    {dataContacts.item.hours}
                                 </p>
                             </div>
                         </div>
@@ -126,7 +128,7 @@ const Footer = () => {
                     <div className="row">
                         <div className="col-12 col-md-6">
                             <div className="copyright pt-3 pb-1 pt-md-0 pb-md-0">
-                                © People SUSHI&PIZZA. All rights reserved
+                                © Famous SUSHI&PIZZA. All rights reserved
                             </div>
                         </div>
                         <div className="col-12 col-md-6">
