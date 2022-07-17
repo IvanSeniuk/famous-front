@@ -1,10 +1,5 @@
 import { Link, NavLink, useLocation } from 'react-router-dom'
-import {
-    GiFullPizza,
-    GiSushis,
-    GiShoppingCart,
-    GiRotaryPhone,
-} from 'react-icons/gi'
+import { GiSushis, GiShoppingCart, GiRotaryPhone } from 'react-icons/gi'
 
 import { MdDashboard } from 'react-icons/md'
 import { HiUsers } from 'react-icons/hi'
@@ -54,12 +49,12 @@ const Sidebar = () => {
                             <span>Products</span>
                         </NavLink>
                         <ul>
-                            <li>
+                            {/*<li>
                                 <NavLink to="products/types">
                                     <GiFullPizza />
                                     <span>Products Types</span>
                                 </NavLink>
-                            </li>
+                            </li>*/}
                             <li>
                                 <NavLink to="products/categories">
                                     <GiSushis />

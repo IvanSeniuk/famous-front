@@ -54,12 +54,14 @@ const ProductsCategories = () => {
                                     </div>
                                     <div>
                                         <button
+                                            disabled
                                             type="button"
                                             className="update"
                                         >
                                             <Link to="/admin">Редагувати</Link>
                                         </button>
                                         <button
+                                            disabled
                                             type="button"
                                             className="delete"
                                         >
@@ -87,6 +89,7 @@ const ProductsCategories = () => {
                                                 </div>
                                                 <div>
                                                     <button
+                                                        disabled
                                                         type="button"
                                                         className="update"
                                                     >
@@ -95,6 +98,7 @@ const ProductsCategories = () => {
                                                         </Link>
                                                     </button>
                                                     <button
+                                                        disabled
                                                         type="button"
                                                         className="delete"
                                                     >
@@ -108,7 +112,7 @@ const ProductsCategories = () => {
                             </>
                         ))}
             </div>
-            <button className="create">
+            <button className="create" disabled>
                 <Link to="create">Додати категорію</Link>
             </button>
         </div>

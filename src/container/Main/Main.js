@@ -24,6 +24,7 @@ import Checkout from '../../pages/Checkout/Checkout'
 import Delivery from '../../pages/Delivery/Delivery'
 import ContactsAdmin from '../../admin/pages/Contacts/ContactsAdmin'
 import Promocode from '../../admin/pages/Promocode/Promocode'
+import Orders from '../../admin/pages/Orders/Orders'
 const Main = () => {
     const auth = useSelector((state) => state.auth)
     return (
@@ -77,7 +78,7 @@ const Main = () => {
                         <Route path="promocode" element={<Promocode />} />
                         <Route path="subscription" element={<Banners />} />
 
-                        <Route path="orders" />
+                        <Route path="orders" element={<Orders />} />
                         <Route path="contacts">
                             <Route index element={<ContactsAdmin />} />
                         </Route>

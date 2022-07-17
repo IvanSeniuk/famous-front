@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from '../../../../http/axios'
+import { $authHost } from '../../../../http'
 
 export const sendOrderPoster = createAsyncThunk(
     'order/sendOrderPoster',
@@ -10,26 +11,28 @@ export const sendOrderPoster = createAsyncThunk(
     }
 )
 
-//export const createProduct = createAsyncThunk(
-//    'products/createProduct',
-//    async (product) => {
-//        const { data } = await $authHost.post('api/product_p', product)
-//        return data
-//    }
-//)
-//export const deleteProduct = createAsyncThunk(
-//    'products/deleteProduct',
-//    async (id) => {
-//        const { data } = await $authHost.delete(`api/product_p/${id}`)
-//        return data
-//    }
-//)
+export const getOrderPoster = createAsyncThunk(
+    'order/getOrderPoster',
+    async (id) => {
+        const { data } = await $authHost.get(`api/order${id}`)
+        return data
+    }
+)
+export const getOrdersPoster = createAsyncThunk(
+    'order/getOrdersPoster',
+    async () => {
+        const { data } = await $authHost.get(`api/order`)
+        return data
+    }
+)
 
 const initialState = {
     order: {},
     status: '',
     statusPoster: '',
     error: '',
+    orders: [],
+    getOrdersStatus: '',
 }
 
 const orderPosterSlice = createSlice({
@@ -62,28 +65,26 @@ const orderPosterSlice = createSlice({
             state.statusPoster = 'error'
             state.error = ''
         },
-        //[createProduct.pending]: (state) => {
-        //    state.createStatus = 'loading'
-        //},
-        //[createProduct.fulfilled]: (state, action) => {
-        //    state.items.push(action.payload)
-        //    state.createStatus = 'loaded'
-        //},
-        //[createProduct.rejected]: (state) => {
-        //    state.createStatus = 'error'
-        //},
-        //[deleteProduct.pending]: (state) => {
-        //    state.deleteStatus = 'loading'
-        //},
-        //[deleteProduct.fulfilled]: (state, action) => {
-        //    state.items = state.items.filter(
-        //        (item) => item.id !== action.payload
-        //    )
-        //    state.deleteStatus = 'loaded'
-        //},
-        //[deleteProduct.rejected]: (state) => {
-        //    state.deleteStatus = 'error'
-        //},
+        [getOrderPoster.pending]: (state) => {
+            state.getOrderStatus = 'loading'
+        },
+        [getOrderPoster.fulfilled]: (state, action) => {
+            state.order = action.payload.response
+            state.getOrderStatus = 'loaded'
+        },
+        [getOrderPoster.rejected]: (state) => {
+            state.getOrderStatus = 'error'
+        },
+        [getOrdersPoster.pending]: (state) => {
+            state.getOrdersStatus = 'loading'
+        },
+        [getOrdersPoster.fulfilled]: (state, action) => {
+            state.orders = action.payload.response
+            state.getOrdersStatus = 'loaded'
+        },
+        [getOrdersPoster.rejected]: (state) => {
+            state.getOrdersStatus = 'error'
+        },
     },
 })
 

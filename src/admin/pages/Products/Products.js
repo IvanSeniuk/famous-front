@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { useEffect } from 'react'
 import { fetchProductsPoster } from '../../../redux/slices/poster/productsSlice/ProductsSlice'
-import { Link } from 'react-router-dom'
+//import { Link } from 'react-router-dom'
 import './Products.scss'
 
 const Products = () => {
@@ -23,13 +23,13 @@ const Products = () => {
     }, [dispatch])
     return (
         <div className="products">
-            <Link to="create">Створити</Link>
+            {/*<Link to="create">Створити</Link>*/}
             <div className="products-list">
                 <div className="products-list__item title">
                     <span>ID</span>
                     <span>Продукт</span>
-                    <span>Тип</span>
                     <span>Категорія</span>
+                    <span>Вага</span>
                     <span>Ціна</span>
                     <span>Дії</span>
                 </div>
@@ -50,11 +50,16 @@ const Products = () => {
                                 />
                                 {item.product_name}
                             </span>
-                            <span>{item.productType}</span>
+
                             <span>{item.category_name}</span>
+                            {item.out > 0 ? (
+                                <span>{item.out}</span>
+                            ) : (
+                                <span>Не вказано</span>
+                            )}
                             <span>{item.price['1'] / 100} грн</span>
                             <span className="actions">
-                                <Link to={`list/${item.product_id}`}>
+                                {/*<Link to={`list/${item.product_id}`}>
                                     Переглянути
                                 </Link>
                                 <button
@@ -63,7 +68,7 @@ const Products = () => {
                                 //}}
                                 >
                                     Видалити
-                                </button>
+                                </button>*/}
                             </span>
                         </div>
                     ))}
