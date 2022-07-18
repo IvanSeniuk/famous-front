@@ -16,6 +16,7 @@
                 border: none;
                 position: absolute;
                 padding: 0.125rem;
+                margin-right: 0;
                 display: block;
                 right: calc(100% + 1rem);
                 &.active {
@@ -218,6 +219,7 @@
                 .add-to-wishlist {
                     right: 0;
                     top: 0;
+                    margin-right: 0;
                 }
                 &.left {
                     width: 100%;
