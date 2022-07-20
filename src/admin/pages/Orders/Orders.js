@@ -11,10 +11,7 @@ const Orders = () => {
     )
     const productsList = useSelector((state) => state.productsPoster.items)
 
-    console.log(productsList)
-    console.log(orders)
     const [showOrder, setShowOrder] = useState(0)
-    console.log(showOrder)
     const dispatch = useDispatch()
     //const getProduct = (id) => {
     //    dispatch(fetchProductPoster(id))

@@ -31,7 +31,7 @@ const Checkout = () => {
         house: '',
         apartment: '',
     })
-
+    console.log(activeDelivery)
     const [order, setOrder] = useState({
         spot_id: 1,
         phone: '',
@@ -299,6 +299,7 @@ const Checkout = () => {
                                                 setActiveDelivery(2)
                                                 setOrder({
                                                     ...order,
+                                                    service_mode: 2,
                                                     address: 'Самовивіз',
                                                 })
                                             }}
@@ -315,6 +316,7 @@ const Checkout = () => {
                                                 setActiveDelivery(3)
                                                 setOrder({
                                                     ...order,
+                                                    service_mode: 3,
                                                     address: `Місто: ${address.city}, Вулиця: ${address.street}, Будинок: ${address.house}, Квартира: ${address.apartment}`,
                                                 })
                                             }}

@@ -6,6 +6,7 @@ import { $authHost } from '../../../http'
 
 import './ContactsAdmin.scss'
 import { fetchContacts } from '../../../redux/slices/contacts/contactsSlice'
+import NumberFormat from 'react-number-format'
 
 const ContactsAdmin = () => {
     const dispatch = useDispatch()
@@ -37,6 +38,7 @@ const ContactsAdmin = () => {
             alert('Помилка при загрузці зображення')
         }
     }
+
     useEffect(() => {
         dispatch(fetchContacts())
     }, [dispatch])
@@ -92,8 +94,10 @@ const ContactsAdmin = () => {
                     <div className="row">
                         <div className="input col-6 col-lg-4 mb-3">
                             <label>
-                                <input
-                                    type="text"
+                                <NumberFormat
+                                    format="+## (###) ### ## ##"
+                                    type="tel"
+                                    mask="_"
                                     required
                                     value={dataContactsNew.phone1}
                                     className={`${
@@ -113,8 +117,10 @@ const ContactsAdmin = () => {
                         </div>
                         <div className="input col-6 col-lg-4 mb-3">
                             <label>
-                                <input
-                                    type="text"
+                                <NumberFormat
+                                    format="+## (###) ### ## ##"
+                                    type="tel"
+                                    mask="_"
                                     required
                                     value={dataContactsNew.phone2}
                                     className={`${

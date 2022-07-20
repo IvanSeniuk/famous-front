@@ -9,6 +9,7 @@ import './scss/style.scss'
 import { loadUser } from './redux/slices/auth/authSlice'
 
 store.dispatch(loadUser(null))
+
 ReactDOM.createRoot(document.getElementById('root')).render(
     <Provider store={store}>
         <BrowserRouter>

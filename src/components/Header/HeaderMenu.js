@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { useSelector } from 'react-redux'
+//import NumberFormat from 'react-number-format'
 
 const HeaderMenu = ({ burgerActive }) => {
     const dataContacts = useSelector((state) => state.contacts)
@@ -29,6 +30,9 @@ const HeaderMenu = ({ burgerActive }) => {
                 <div className="m-header-menu__phone">
                     <a href={`tel:${dataContacts.item.phone2}`}>
                         {dataContacts.item.phone2}
+                        {/*<NumberFormat format="+## (###) ### ## ##" type="tel">
+                            
+                        </NumberFormat>*/}
                     </a>
                 </div>
                 <ul className="m-header-socials__list">

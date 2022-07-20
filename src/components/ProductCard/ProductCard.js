@@ -1,7 +1,10 @@
 import PropTypes from 'prop-types'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { useRef, useEffect } from 'react'
 
 import { addItem } from '../../redux/slices/cart/cartSlice'
+import { changeItemWishlist } from '../../redux/slices/wishlist/wishlistSlice'
 
 const ProductCard = ({
     photo_origin,
@@ -11,13 +14,22 @@ const ProductCard = ({
     out,
     ingredients,
     menu_category_id,
+    wishlistCheck,
 }) => {
     const dispatch = useDispatch()
-    //const cartItem = useSelector((state) =>
-    //    state.cart.items.find((obj) => obj.id === product_id)
+    const auth = useSelector((state) => state.auth)
+    //const wishlistAdded = useSelector((state) =>
+    //    )
     //)
-
-    //const addedCount = cartItem ? cartItem.count : 0
+    const wishlist = useSelector((state) => state.wishlist.items)
+    const isMountedWish = useRef(false)
+    useEffect(() => {
+        if (isMountedWish.current) {
+            const json = JSON.stringify(wishlist)
+            localStorage.setItem('wishlist', json)
+        }
+        isMountedWish.current = true
+    }, [wishlist])
     const onClickAdd = () => {
         const item = {
             product_id,
@@ -29,6 +41,24 @@ const ProductCard = ({
         }
         dispatch(addItem(item))
     }
+    const navigate = useNavigate()
+    const onClickWishlist = () => {
+        if (auth.userLoaded) {
+            const item = {
+                photo_origin,
+                product_name,
+                price,
+                product_id,
+                out,
+                ingredients,
+                menu_category_id,
+            }
+            dispatch(changeItemWishlist(item))
+        } else {
+            navigate(`${location.pathname}?auth=login`)
+        }
+    }
+
     return (
         <div className="col-12 col-sm-6 col-lg-4 m-product-card__wrapper">
             <div className="m-product-card">
@@ -46,21 +76,52 @@ const ProductCard = ({
                     </div>
                     <div className="m-product-card__item right desc">
                         <div className="m-product-card__title">
-                            <button className="add-to-wishlist">
-                                <svg
-                                    width="26"
-                                    height="26"
-                                    viewBox="0 0 26 26"
-                                    fill="none"
-                                    xmlns="http://www.w3.org/2000/svg"
+                            {wishlistCheck === 'true' ? (
+                                <button
+                                    className="remove-card"
+                                    onClick={onClickWishlist}
                                 >
-                                    <path
-                                        d="M13.0005 22.75L12.5435 22.4453C10.371 20.9945 7.62225 19.3548 5.58643 16.9447C3.44093 14.4056 2.41159 11.798 2.438 8.97203C2.46999 5.81648 5.00042 3.25 8.07878 3.25C10.5219 3.25 12.1464 4.67188 13.0005 5.69816C13.8546 4.67188 15.4791 3.25 17.9222 3.25C21.0006 3.25 23.531 5.81648 23.563 8.97051C23.5914 11.798 22.5621 14.4041 20.4146 16.9432C18.3787 19.3548 15.6299 20.9945 13.4575 22.4453L13.0005 22.75Z"
-                                        fill="#878787"
-                                        fillOpacity="0.4"
-                                    />
-                                </svg>
-                            </button>
+                                    <svg
+                                        width="18"
+                                        height="18"
+                                        viewBox="0 0 18 18"
+                                        fill="none"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path
+                                            d="M10.0575 9.00002L14.7825 4.28252C14.9237 4.14129 15.003 3.94974 15.003 3.75002C15.003 3.55029 14.9237 3.35874 14.7825 3.21752C14.6412 3.07629 14.4497 2.99695 14.25 2.99695C14.0502 2.99695 13.8587 3.07629 13.7175 3.21752L8.99995 7.94252L4.28245 3.21752C4.14123 3.07629 3.94968 2.99695 3.74995 2.99695C3.55023 2.99695 3.35868 3.07629 3.21745 3.21752C3.07623 3.35874 2.99689 3.55029 2.99689 3.75002C2.99689 3.94974 3.07623 4.14129 3.21745 4.28252L7.94245 9.00002L3.21745 13.7175C3.14716 13.7872 3.09136 13.8702 3.05329 13.9616C3.01521 14.053 2.99561 14.151 2.99561 14.25C2.99561 14.349 3.01521 14.4471 3.05329 14.5384C3.09136 14.6298 3.14716 14.7128 3.21745 14.7825C3.28718 14.8528 3.37013 14.9086 3.46152 14.9467C3.55292 14.9848 3.65095 15.0044 3.74995 15.0044C3.84896 15.0044 3.94699 14.9848 4.03839 14.9467C4.12978 14.9086 4.21273 14.8528 4.28245 14.7825L8.99995 10.0575L13.7175 14.7825C13.7872 14.8528 13.8701 14.9086 13.9615 14.9467C14.0529 14.9848 14.1509 15.0044 14.25 15.0044C14.349 15.0044 14.447 14.9848 14.5384 14.9467C14.6298 14.9086 14.7127 14.8528 14.7825 14.7825C14.8527 14.7128 14.9085 14.6298 14.9466 14.5384C14.9847 14.4471 15.0043 14.349 15.0043 14.25C15.0043 14.151 14.9847 14.053 14.9466 13.9616C14.9085 13.8702 14.8527 13.7872 14.7825 13.7175L10.0575 9.00002Z"
+                                            fill="#878787"
+                                        ></path>
+                                    </svg>
+                                </button>
+                            ) : (
+                                <button
+                                    className={`${
+                                        wishlist.find(
+                                            (obj) =>
+                                                obj.product_id === product_id
+                                        )
+                                            ? 'add-to-wishlist active'
+                                            : 'add-to-wishlist'
+                                    } `}
+                                    onClick={onClickWishlist}
+                                >
+                                    <svg
+                                        width="26"
+                                        height="26"
+                                        viewBox="0 0 26 26"
+                                        fill="none"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path
+                                            d="M13.0005 22.75L12.5435 22.4453C10.371 20.9945 7.62225 19.3548 5.58643 16.9447C3.44093 14.4056 2.41159 11.798 2.438 8.97203C2.46999 5.81648 5.00042 3.25 8.07878 3.25C10.5219 3.25 12.1464 4.67188 13.0005 5.69816C13.8546 4.67188 15.4791 3.25 17.9222 3.25C21.0006 3.25 23.531 5.81648 23.563 8.97051C23.5914 11.798 22.5621 14.4041 20.4146 16.9432C18.3787 19.3548 15.6299 20.9945 13.4575 22.4453L13.0005 22.75Z"
+                                            fill="#878787"
+                                            fillOpacity="0.4"
+                                        />
+                                    </svg>
+                                </button>
+                            )}
+
                             <div className="name">{product_name}</div>
 
                             <div className="weight">
@@ -137,6 +198,7 @@ ProductCard.propTypes = {
     product_name: PropTypes.string,
     ingredients: PropTypes.array,
     menu_category_id: PropTypes.string,
+    wishlistCheck: PropTypes.string,
 }
 
 export default ProductCard

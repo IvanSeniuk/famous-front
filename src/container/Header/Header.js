@@ -17,6 +17,7 @@ const Header = () => {
     }
     const navigate = useNavigate()
     const { totalCount, items } = useSelector((state) => state.cart)
+
     const auth = useSelector((state) => state.auth)
     const dispatch = useDispatch()
     const [change, setChange] = useState(false)

@@ -1,11 +1,16 @@
 import { Link, NavLink, useLocation } from 'react-router-dom'
-import { GiSushis, GiShoppingCart, GiRotaryPhone } from 'react-icons/gi'
+import {
+    GiSushis,
+    GiShoppingCart,
+    GiRotaryPhone,
+    GiCenturionHelmet,
+} from 'react-icons/gi'
 
 import { MdDashboard } from 'react-icons/md'
 import { HiUsers } from 'react-icons/hi'
 import { AiFillShop } from 'react-icons/ai'
 import { BsCardImage } from 'react-icons/bs'
-import { ImPageBreak } from 'react-icons/im'
+import { ImPageBreak, ImUserCheck, ImUser } from 'react-icons/im'
 
 import './Sidebar.scss'
 
@@ -34,19 +39,19 @@ const Sidebar = () => {
                     <li>
                         <NavLink to="banners">
                             <BsCardImage />
-                            <span>Banners</span>
+                            <span>Банери</span>
                         </NavLink>
                     </li>
                     <li>
                         <NavLink to="pages">
                             <ImPageBreak />
-                            <span>Pages</span>
+                            <span>Сторінки</span>
                         </NavLink>
                     </li>
                     <li>
                         <NavLink to="products">
                             <AiFillShop />
-                            <span>Products</span>
+                            <span>Продукти</span>
                         </NavLink>
                         <ul>
                             {/*<li>
@@ -58,7 +63,7 @@ const Sidebar = () => {
                             <li>
                                 <NavLink to="products/categories">
                                     <GiSushis />
-                                    <span>Products Categories</span>
+                                    <span>Категорії продуктів</span>
                                 </NavLink>
                             </li>
                         </ul>
@@ -66,19 +71,39 @@ const Sidebar = () => {
                     <li>
                         <NavLink to="orders">
                             <GiShoppingCart />
-                            <span>Orders</span>
+                            <span>Замовлення</span>
                         </NavLink>
                     </li>
                     <li>
                         <NavLink to="users">
                             <HiUsers />
-                            <span>Users</span>
+                            <span>Клієнти</span>
                         </NavLink>
+                        <ul>
+                            <li>
+                                <NavLink to="users/reg">
+                                    <ImUserCheck />
+                                    <span>Зареєстровані</span>
+                                </NavLink>
+                            </li>
+                            <li>
+                                <NavLink to="users/all">
+                                    <ImUser />
+                                    <span>Усі клієнти</span>
+                                </NavLink>
+                            </li>
+                        </ul>
                     </li>
                     <li>
                         <NavLink to="contacts">
                             <GiRotaryPhone />
-                            <span>Contacts Info</span>
+                            <span>Контактна інформація</span>
+                        </NavLink>
+                    </li>
+                    <li>
+                        <NavLink to="other">
+                            <GiCenturionHelmet />
+                            <span>Інше</span>
                         </NavLink>
                     </li>
                 </ul>

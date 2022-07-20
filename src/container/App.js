@@ -10,6 +10,7 @@ import Main from './Main/Main'
 import { useDispatch } from 'react-redux'
 import { useEffect } from 'react'
 import { fetchContacts } from '../redux/slices/contacts/contactsSlice'
+import { Helmet } from 'react-helmet'
 
 const App = () => {
     useEffect(() => {
@@ -50,8 +51,23 @@ const App = () => {
     useEffect(() => {
         dispatch(fetchContacts())
     })
+
     return (
         <>
+            <Helmet>
+                <meta charset="utf-8" />
+
+                <meta
+                    name="viewport"
+                    content="width=device-width, initial-scale=1"
+                />
+                <meta name="theme-color" content="#000000" />
+                <meta
+                    name="description"
+                    content="Найкраща доставка їжі у Львові"
+                />
+                <title>Famous Lviv Sushi&Pizza</title>
+            </Helmet>
             <Main />
         </>
     )

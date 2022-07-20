@@ -25,6 +25,9 @@ import Delivery from '../../pages/Delivery/Delivery'
 import ContactsAdmin from '../../admin/pages/Contacts/ContactsAdmin'
 import Promocode from '../../admin/pages/Promocode/Promocode'
 import Orders from '../../admin/pages/Orders/Orders'
+import Users from '../../admin/pages/Users/Users'
+import UsersReg from '../../admin/pages/Users/UsersReg'
+import UsersAll from '../../admin/pages/Users/UsersAll'
 const Main = () => {
     const auth = useSelector((state) => state.auth)
     return (
@@ -43,7 +46,10 @@ const Main = () => {
                     <Route path="delivery" element={<Delivery />} />
                     <Route path="actions" element={<Actions />} />
                     {auth.userLoaded && (
-                        <Route path="/profile" element={<Profile />} />
+                        <Route path="/profile" element={<Profile />}>
+                            <Route path="wishlist" />
+                            <Route path="history-order" />
+                        </Route>
                     )}
                     <Route path="*" element={<NotFound />} />
                 </Route>
@@ -75,9 +81,14 @@ const Main = () => {
                             </Route>
                         </Route>
                         <Route path="banners" element={<Banners />} />
+                        <Route path="users">
+                            <Route index element={<Users />} />
+                            <Route path="reg" element={<UsersReg />} />
+                            <Route path="all" element={<UsersAll />} />
+                        </Route>
                         <Route path="promocode" element={<Promocode />} />
                         <Route path="subscription" element={<Banners />} />
-
+                        <Route path="other" element={<Banners />} />
                         <Route path="orders" element={<Orders />} />
                         <Route path="contacts">
                             <Route index element={<ContactsAdmin />} />

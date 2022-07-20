@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 import cart from './slices/cart/cartSlice.js'
+import wishlist from './slices/wishlist/wishlistSlice.js'
 import ui from './slices/ui/uiSlice.js'
 import auth from './slices/auth/authSlice'
 import { products } from './slices/products/productsSlice'
@@ -14,6 +15,7 @@ import { contacts } from './slices/contacts/contactsSlice.js'
 
 export const store = configureStore({
     reducer: {
+        wishlist,
         cart,
         ui,
         auth,

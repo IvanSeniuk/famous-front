@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import axios from '../../../../http/axios'
-import { $authHost } from '../../../../http'
+//import { $authHost } from '../../../../http'
 
 export const sendOrderPoster = createAsyncThunk(
     'order/sendOrderPoster',
@@ -14,14 +14,14 @@ export const sendOrderPoster = createAsyncThunk(
 export const getOrderPoster = createAsyncThunk(
     'order/getOrderPoster',
     async (id) => {
-        const { data } = await $authHost.get(`api/order${id}`)
+        const { data } = await axios.get(`api/order${id}`)
         return data
     }
 )
 export const getOrdersPoster = createAsyncThunk(
     'order/getOrdersPoster',
     async () => {
-        const { data } = await $authHost.get(`api/order`)
+        const { data } = await axios.get(`api/order`)
         return data
     }
 )
