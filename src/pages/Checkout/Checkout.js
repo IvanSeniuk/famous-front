@@ -12,6 +12,21 @@ import { useEffect, useState } from 'react'
 import NumberFormat from 'react-number-format'
 import { sendOrderPoster } from '../../redux/slices/poster/orderSlice/OrderSlice'
 import ReactTextareaAutosize from 'react-textarea-autosize'
+import { RiCheckboxMultipleLine } from 'react-icons/ri'
+
+import SwiperCore, { EffectCoverflow, Pagination } from 'swiper'
+import { Swiper, SwiperSlide } from 'swiper/react'
+
+// swiper bundle styles
+import 'swiper/swiper-bundle.min.css'
+
+// swiper core styles
+import 'swiper/swiper.min.css'
+
+// modules styles
+import 'swiper/components/pagination/pagination.min.css'
+
+SwiperCore.use([EffectCoverflow, Pagination])
 
 const Checkout = () => {
     const { items, totalPrice, totalCount, appliances, promocode } =
@@ -31,7 +46,6 @@ const Checkout = () => {
         house: '',
         apartment: '',
     })
-    console.log(activeDelivery)
     const [order, setOrder] = useState({
         spot_id: 1,
         phone: '',
@@ -67,6 +81,22 @@ const Checkout = () => {
                 : null,
         })),
     })
+
+    const [cardList, setCardList] = useState([])
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                const { data } = await axios.get('api/credit_cards')
+                setCardList(data)
+            } catch (error) {
+                console.log('Помилка при отриманні даних про карти')
+            }
+        }
+
+        fetchData()
+    }, [])
+    const [cardNumber, setCardNumber] = useState()
+    const [copiedNumber, setCopiedNumber] = useState(false)
     useEffect(() => {
         if (order.first_name != '' && order.phone != '') {
             setRequiredField(true)
@@ -704,7 +734,7 @@ const Checkout = () => {
                                     {activePayment === 'На карту' ? (
                                         <button
                                             type="button"
-                                            className="a-btn e--gold modal-payment-open"
+                                            className="a-btn e--gold modal-payment-open pe-4 ps-4"
                                             onClick={() => {
                                                 if (!requiredField) {
                                                     setShowRequiredField(true)
@@ -723,7 +753,7 @@ const Checkout = () => {
                                     ) : (
                                         <button
                                             type="submit"
-                                            className="a-btn e--gold modal-payment-open"
+                                            className="a-btn e--gold modal-payment-open pe-4 ps-4"
                                         >
                                             Оформити замовлення
                                         </button>
@@ -1003,7 +1033,7 @@ const Checkout = () => {
                                         {activePayment === 'На карту' ? (
                                             <button
                                                 type="button"
-                                                className="a-btn e--gold modal-payment-open"
+                                                className="a-btn e--gold modal-payment-open pe-4 ps-4"
                                                 onClick={() => {
                                                     if (!requiredField) {
                                                         setShowRequiredField(
@@ -1026,7 +1056,7 @@ const Checkout = () => {
                                         ) : (
                                             <button
                                                 type="submit"
-                                                className="a-btn e--gold modal-payment-open"
+                                                className="a-btn e--gold modal-payment-open pe-4 ps-4"
                                             >
                                                 Оформити замовлення
                                             </button>
@@ -1076,68 +1106,131 @@ const Checkout = () => {
                                 </div>
                                 <div className="m-modal-scroll">
                                     <div className="m-modal-content">
-                                        <div className="swiper m-payment-slider">
-                                            <div className="swiper-wrapper">
-                                                <div className="swiper-slide m-payment-card">
+                                        <Swiper
+                                            onSwiper={(swiper) => {
+                                                setCardNumber(
+                                                    cardList[swiper.realIndex]
+                                                        .number
+                                                )
+                                            }}
+                                            onSlideChange={(swiper) => {
+                                                setCardNumber(
+                                                    cardList[swiper.realIndex]
+                                                        .number
+                                                )
+                                            }}
+                                            style={{ width: '100%' }}
+                                            className="swiper m-payment-slider"
+                                            speed={400}
+                                            spaceBetween={0}
+                                            slidesPerView={1}
+                                            effect={'coverflow'}
+                                            watchOverflow={true}
+                                            centeredSlides={true}
+                                            coverflowEffect={{
+                                                rotate: -5,
+                                                stretch: 200,
+                                                depth: 450,
+                                                modifier: 1,
+                                                slideShadows: true,
+                                            }}
+                                            pagination={{
+                                                el: '.a-slider-pagination',
+                                                type: 'bullets',
+                                                clickable: true,
+                                            }}
+                                            modules={[
+                                                EffectCoverflow,
+                                                Pagination,
+                                            ]}
+                                        >
+                                            {cardList.map((card) => (
+                                                <SwiperSlide
+                                                    key={card.id}
+                                                    className="swiper-slide m-payment-card"
+                                                >
                                                     <div className="m-payment-card__inner">
                                                         <img
-                                                            src="../img/46.png"
-                                                            alt=""
+                                                            src={
+                                                                process.env
+                                                                    .REACT_APP_API_URL +
+                                                                card.img
+                                                            }
+                                                            alt="credit_card"
                                                         />
                                                     </div>
                                                     <div className="card-number">
-                                                        456456456345
+                                                        {card.number}
                                                     </div>
-                                                </div>
-                                                <div className="swiper-slide m-payment-card">
-                                                    <div className="m-payment-card__inner">
-                                                        <img
-                                                            src="../img/universalnaya_karta.png"
-                                                            alt=""
-                                                        />
-                                                    </div>
-                                                    <div className="card-number">
-                                                        1234568547965235
-                                                    </div>
-                                                </div>
-                                                <div className="swiper-slide m-payment-card">
-                                                    <div className="m-payment-card__inner">
-                                                        <img
-                                                            src="../img/46.png"
-                                                            alt=""
-                                                        />
-                                                    </div>
-                                                    <div className="card-number">
-                                                        4564564564564
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="a-slider-pagination"></div>
-                                        </div>
+                                                </SwiperSlide>
+                                            ))}
+
+                                            <div
+                                                className="a-slider-pagination"
+                                                style={{ width: 'fit-content' }}
+                                            ></div>
+                                        </Swiper>
                                         <div className="bottom pe-3 ps-3">
                                             <div className="m-cart-bottom pe-4 ps-4">
                                                 <div className="m-payment-card-number">
-                                                    <input
-                                                        type="text"
+                                                    <NumberFormat
+                                                        format="#### #### #### ####"
                                                         id="card-number"
                                                         className="card-number"
-                                                        value="2221123446802089"
+                                                        value={cardNumber}
+                                                        //value="121212121212121"
                                                         readOnly
                                                     />
-                                                    <div className="copy-card-number icon">
-                                                        <svg
-                                                            width="25"
-                                                            height="25"
-                                                            viewBox="0 0 25 25"
-                                                            fill="none"
-                                                            xmlns="http://www.w3.org/2000/svg"
+                                                    {copiedNumber === true ? (
+                                                        <div
+                                                            style={{
+                                                                padding:
+                                                                    '.375rem .625rem',
+                                                            }}
                                                         >
-                                                            <path
-                                                                d="M21.5 9.12188C21.4896 9.03002 21.4695 8.93952 21.44 8.85188V8.76188C21.3919 8.65906 21.3278 8.56455 21.25 8.48188L15.25 2.48188C15.1673 2.4041 15.0728 2.33997 14.97 2.29188C14.9402 2.28764 14.9099 2.28764 14.88 2.29188C14.7784 2.23363 14.6662 2.19623 14.55 2.18188H10.5C9.70435 2.18188 8.94129 2.49796 8.37868 3.06056C7.81607 3.62317 7.5 4.38624 7.5 5.18188V6.18188H6.5C5.70435 6.18188 4.94129 6.49796 4.37868 7.06056C3.81607 7.62317 3.5 8.38624 3.5 9.18188V19.1819C3.5 19.9775 3.81607 20.7406 4.37868 21.3032C4.94129 21.8658 5.70435 22.1819 6.5 22.1819H14.5C15.2956 22.1819 16.0587 21.8658 16.6213 21.3032C17.1839 20.7406 17.5 19.9775 17.5 19.1819V18.1819H18.5C19.2956 18.1819 20.0587 17.8658 20.6213 17.3032C21.1839 16.7406 21.5 15.9775 21.5 15.1819V9.18188C21.5 9.18188 21.5 9.18188 21.5 9.12188ZM15.5 5.59188L18.09 8.18188H16.5C16.2348 8.18188 15.9804 8.07653 15.7929 7.88899C15.6054 7.70146 15.5 7.4471 15.5 7.18188V5.59188ZM15.5 19.1819C15.5 19.4471 15.3946 19.7015 15.2071 19.889C15.0196 20.0765 14.7652 20.1819 14.5 20.1819H6.5C6.23478 20.1819 5.98043 20.0765 5.79289 19.889C5.60536 19.7015 5.5 19.4471 5.5 19.1819V9.18188C5.5 8.91667 5.60536 8.66231 5.79289 8.47478C5.98043 8.28724 6.23478 8.18188 6.5 8.18188H7.5V15.1819C7.5 15.9775 7.81607 16.7406 8.37868 17.3032C8.94129 17.8658 9.70435 18.1819 10.5 18.1819H15.5V19.1819ZM19.5 15.1819C19.5 15.4471 19.3946 15.7015 19.2071 15.889C19.0196 16.0765 18.7652 16.1819 18.5 16.1819H10.5C10.2348 16.1819 9.98043 16.0765 9.79289 15.889C9.60536 15.7015 9.5 15.4471 9.5 15.1819V5.18188C9.5 4.91667 9.60536 4.66231 9.79289 4.47478C9.98043 4.28724 10.2348 4.18188 10.5 4.18188H13.5V7.18188C13.5 7.97753 13.8161 8.7406 14.3787 9.30321C14.9413 9.86581 15.7044 10.1819 16.5 10.1819H19.5V15.1819Z"
-                                                                fill="white"
+                                                            <RiCheckboxMultipleLine
+                                                                color="green"
+                                                                style={{
+                                                                    width: '25px',
+                                                                    height: '25px',
+                                                                }}
                                                             />
-                                                        </svg>
-                                                    </div>
+                                                        </div>
+                                                    ) : (
+                                                        <div
+                                                            className="copy-card-number icon"
+                                                            onClick={() => {
+                                                                navigator.clipboard.writeText(
+                                                                    cardNumber
+                                                                )
+                                                                setCopiedNumber(
+                                                                    true
+                                                                )
+
+                                                                setTimeout(
+                                                                    () => {
+                                                                        setCopiedNumber(
+                                                                            false
+                                                                        )
+                                                                    },
+                                                                    3500
+                                                                )
+                                                            }}
+                                                        >
+                                                            <svg
+                                                                width="25"
+                                                                height="25"
+                                                                viewBox="0 0 25 25"
+                                                                fill="none"
+                                                                xmlns="http://www.w3.org/2000/svg"
+                                                            >
+                                                                <path
+                                                                    d="M21.5 9.12188C21.4896 9.03002 21.4695 8.93952 21.44 8.85188V8.76188C21.3919 8.65906 21.3278 8.56455 21.25 8.48188L15.25 2.48188C15.1673 2.4041 15.0728 2.33997 14.97 2.29188C14.9402 2.28764 14.9099 2.28764 14.88 2.29188C14.7784 2.23363 14.6662 2.19623 14.55 2.18188H10.5C9.70435 2.18188 8.94129 2.49796 8.37868 3.06056C7.81607 3.62317 7.5 4.38624 7.5 5.18188V6.18188H6.5C5.70435 6.18188 4.94129 6.49796 4.37868 7.06056C3.81607 7.62317 3.5 8.38624 3.5 9.18188V19.1819C3.5 19.9775 3.81607 20.7406 4.37868 21.3032C4.94129 21.8658 5.70435 22.1819 6.5 22.1819H14.5C15.2956 22.1819 16.0587 21.8658 16.6213 21.3032C17.1839 20.7406 17.5 19.9775 17.5 19.1819V18.1819H18.5C19.2956 18.1819 20.0587 17.8658 20.6213 17.3032C21.1839 16.7406 21.5 15.9775 21.5 15.1819V9.18188C21.5 9.18188 21.5 9.18188 21.5 9.12188ZM15.5 5.59188L18.09 8.18188H16.5C16.2348 8.18188 15.9804 8.07653 15.7929 7.88899C15.6054 7.70146 15.5 7.4471 15.5 7.18188V5.59188ZM15.5 19.1819C15.5 19.4471 15.3946 19.7015 15.2071 19.889C15.0196 20.0765 14.7652 20.1819 14.5 20.1819H6.5C6.23478 20.1819 5.98043 20.0765 5.79289 19.889C5.60536 19.7015 5.5 19.4471 5.5 19.1819V9.18188C5.5 8.91667 5.60536 8.66231 5.79289 8.47478C5.98043 8.28724 6.23478 8.18188 6.5 8.18188H7.5V15.1819C7.5 15.9775 7.81607 16.7406 8.37868 17.3032C8.94129 17.8658 9.70435 18.1819 10.5 18.1819H15.5V19.1819ZM19.5 15.1819C19.5 15.4471 19.3946 15.7015 19.2071 15.889C19.0196 16.0765 18.7652 16.1819 18.5 16.1819H10.5C10.2348 16.1819 9.98043 16.0765 9.79289 15.889C9.60536 15.7015 9.5 15.4471 9.5 15.1819V5.18188C9.5 4.91667 9.60536 4.66231 9.79289 4.47478C9.98043 4.28724 10.2348 4.18188 10.5 4.18188H13.5V7.18188C13.5 7.97753 13.8161 8.7406 14.3787 9.30321C14.9413 9.86581 15.7044 10.1819 16.5 10.1819H19.5V15.1819Z"
+                                                                    fill="white"
+                                                                />
+                                                            </svg>
+                                                        </div>
+                                                    )}
                                                 </div>
                                                 <div className="item sum">
                                                     <div className="label">
@@ -1225,7 +1318,8 @@ const Checkout = () => {
                                                 </div>
                                                 <button
                                                     type="submit"
-                                                    className="a-btn e--gold"
+                                                    className="a-btn e--gold pe-4 ps-4"
+                                                    style={{ width: '100%' }}
                                                 >
                                                     Готово
                                                 </button>

@@ -7,7 +7,6 @@ import './Promocode.scss'
 const Promocode = () => {
     const [showNewPromocode, setShowNewPromocode] = useState(false)
     const [promocodeList, setPromocodeList] = useState([])
-    useEffect(() => {})
     console.log(promocodeList)
     const [newPromocode, setNewPromocode] = useState({
         title: '',

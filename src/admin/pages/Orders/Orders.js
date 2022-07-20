@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { getOrdersPoster } from '../../../redux/slices/poster/orderSlice/OrderSlice'
 import { fetchProductsPoster } from '../../../redux/slices/poster/productsSlice/ProductsSlice'
+import Moment from 'react-moment'
 
 import './Orders.scss'
 
@@ -79,7 +80,9 @@ const Orders = () => {
                                             {item.address}
                                         </div>
                                         <div className="col-1">
-                                            {item.created_at}
+                                            <Moment format="DD.MM.YYYY">
+                                                {item.created_at}
+                                            </Moment>
                                         </div>
                                         <div className="status col-1">
                                             {item.status === 0 && (

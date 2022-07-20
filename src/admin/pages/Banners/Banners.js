@@ -12,9 +12,8 @@ import {
 //import { $authHost } from '../../../http'
 import './Banners.scss'
 
-const Hero = () => {
+const Banners = () => {
     const banners = useSelector((state) => state.banners)
-    console.log(banners)
     const dispatch = useDispatch()
     useEffect(() => {
         dispatch(fetchBanners())
@@ -89,4 +88,4 @@ const Hero = () => {
     )
 }
 
-export default Hero
+export default Banners

@@ -28,6 +28,9 @@ import Orders from '../../admin/pages/Orders/Orders'
 import Users from '../../admin/pages/Users/Users'
 import UsersReg from '../../admin/pages/Users/UsersReg'
 import UsersAll from '../../admin/pages/Users/UsersAll'
+import SubscriptionAdmin from '../../admin/pages/SubscroptionAdmin/SubscriptionAdmin'
+import CreditCards from '../../admin/pages/CreditCards/CreditCards'
+
 const Main = () => {
     const auth = useSelector((state) => state.auth)
     return (
@@ -81,13 +84,17 @@ const Main = () => {
                             </Route>
                         </Route>
                         <Route path="banners" element={<Banners />} />
+                        <Route path="creditcards" element={<CreditCards />} />
                         <Route path="users">
                             <Route index element={<Users />} />
                             <Route path="reg" element={<UsersReg />} />
                             <Route path="all" element={<UsersAll />} />
                         </Route>
                         <Route path="promocode" element={<Promocode />} />
-                        <Route path="subscription" element={<Banners />} />
+                        <Route
+                            path="subscription"
+                            element={<SubscriptionAdmin />}
+                        />
                         <Route path="other" element={<Banners />} />
                         <Route path="orders" element={<Orders />} />
                         <Route path="contacts">

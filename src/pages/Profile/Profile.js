@@ -429,6 +429,7 @@ const Profile = () => {
                                 <div className="m-cabinet-content__item m-cabinet-history active">
                                     <div className="m-history-items">
                                         {getOrdersStatus === 'loaded' &&
+                                        orders.length > 0 ? (
                                             orders
                                                 .map((item) => (
                                                     <div
@@ -705,7 +706,14 @@ const Profile = () => {
                                                     b.incoming_order_id
                                                         ? 1
                                                         : -1
-                                                )}
+                                                )
+                                        ) : (
+                                            <div
+                                                style={{ textAlign: 'center' }}
+                                            >
+                                                Немає замовлень
+                                            </div>
+                                        )}
                                     </div>
                                 </div>
                             )}

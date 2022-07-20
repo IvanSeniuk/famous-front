@@ -7,16 +7,20 @@ import './PagesList.scss'
 const PagesList = () => {
     return (
         <div className="pages">
-            <div className="pages-list">
-                <Link to="about" className="item">
-                    <FcAbout />
-                    <span>Про нас</span>
-                </Link>
-                <Link to="actions" className="item">
-                    <TbDiscount2 />
-                    <span>Акції</span>
-                </Link>
-            </div>
+            <ul className="pages-list">
+                <li>
+                    <Link to="about" className="item about">
+                        <FcAbout color="goldenrod" />
+                        <span>Про нас</span>
+                    </Link>
+                </li>
+                <li>
+                    <Link to="actions" className="item">
+                        <TbDiscount2 color="goldenrod" />
+                        <span>Акції</span>
+                    </Link>
+                </li>
+            </ul>
         </div>
     )
 }

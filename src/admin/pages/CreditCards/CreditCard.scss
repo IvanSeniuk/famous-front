@@ -1,0 +1,39 @@
+.credit-cards {
+    &__list {
+        .item {
+            &-inner {
+                .img {
+                    position: relative;
+                    display: block;
+                    width: 100%;
+                    height: 0;
+                    padding-bottom: 56%;
+                    border-radius: 18px;
+                    overflow: hidden;
+                    img {
+                        width: 100%;
+                        height: 100%;
+                        position: absolute;
+                        left: 0;
+                        top: 0;
+                        object-fit: cover;
+                        object-position: center;
+                    }
+                }
+                .number {
+                    text-align: center;
+                    margin-top: 0.5rem;
+                    font-size: 1.125rem;
+                    .admin-input {
+                        text-align: center;
+                    }
+                }
+                .add-banner.img {
+                    padding-top: 0;
+                    padding-left: 0;
+                    padding-right: 0;
+                }
+            }
+        }
+    }
+}

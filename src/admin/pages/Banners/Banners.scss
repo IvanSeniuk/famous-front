@@ -24,30 +24,37 @@
                 object-fit: cover;
             }
         }
-        button.add-banner {
-            svg {
-                width: 30%;
-                height: auto;
-                position: absolute;
-                display: block;
-                object-fit: cover;
-                left: 50%;
-                top: 50%;
-                transform: translate(-50%, -50%);
-            }
-            transition: 0.3s;
-            background-color: rgba(141, 141, 141, 0.753);
-            &:hover {
-                background-color: rgba(255, 255, 255, 0.7);
-            }
-            &:active {
-                transform: scale(0.96);
-            }
-        }
     }
-    @media screen and (max-width: 640px) {
+
+    @media screen and (max-width: 900px) {
         .item {
             width: 50%;
         }
+    }
+    @media screen and (max-width: 560px) {
+        .item {
+            width: 100%;
+        }
+    }
+}
+button.add-banner {
+    svg {
+        padding: 0;
+        width: 30%;
+        height: auto;
+        position: absolute;
+        display: block;
+        object-fit: cover;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+    }
+    transition: 0.3s;
+    background-color: rgba(141, 141, 141, 0.753);
+    &:hover {
+        background-color: rgba(255, 255, 255, 0.7);
+    }
+    &:active {
+        transform: scale(0.96);
     }
 }

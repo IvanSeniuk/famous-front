@@ -8,11 +8,11 @@ const Users = () => {
         <div className="pages">
             <div className="pages-list">
                 <Link to="reg" className="item">
-                    <ImUserCheck />
+                    <ImUserCheck color="goldenrod" />
                     <span>Зареєстровані</span>
                 </Link>
                 <Link to="all" className="item">
-                    <ImUser />
+                    <ImUser color="goldenrod" />
                     <span>Усі клієнти</span>
                 </Link>
             </div>
