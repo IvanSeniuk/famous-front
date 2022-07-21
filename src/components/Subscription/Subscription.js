@@ -4,7 +4,6 @@ import axios from '../../http/axios'
 const Subscription = () => {
     const [changeEmail, setChangeEmail] = useState('')
     const [sendEmail, setSendEmail] = useState(false)
-    console.log(sendEmail)
     const handleAddEmail = async (e) => {
         e.preventDefault()
         try {

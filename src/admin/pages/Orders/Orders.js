@@ -11,7 +11,7 @@ const Orders = () => {
         (state) => state.orderPosterSlice
     )
     const productsList = useSelector((state) => state.productsPoster.items)
-
+    //console.log(orders)
     const [showOrder, setShowOrder] = useState(0)
     const dispatch = useDispatch()
     //const getProduct = (id) => {

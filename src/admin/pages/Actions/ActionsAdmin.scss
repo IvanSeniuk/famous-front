@@ -40,7 +40,10 @@
             }
         }
     }
-    button {
+    button,
+    a.btn {
+        display: block;
+        width: fit-content;
         padding: 0.5rem 0.75rem;
         margin-right: 0.75rem;
         background-color: transparent;

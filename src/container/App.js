@@ -1,6 +1,4 @@
-//import Header from './Header/Header'
-//import Footer from './Footer/Footer'
-//import PropTypes from 'prop-types'
+//import axios from '../http/axios'
 import { useLocation } from 'react-router-dom'
 import Main from './Main/Main'
 //import ToolBarr from '../components/ToolBar/ToolBar'
@@ -50,13 +48,25 @@ const App = () => {
     const dispatch = useDispatch()
     useEffect(() => {
         dispatch(fetchContacts())
-    })
+    }, [dispatch])
+    //const [metatags, setMetatags] = useState([])
+    //console.log(metatags)
+    //useEffect(() => {
+    //    async function fetchData() {
+    //        try {
+    //            const { data } = await axios.get('api/metatags/2')
+    //            setMetatags(data)
+    //        } catch (error) {
+    //            console.log('Помилка при отриманні метатегу')
+    //        }
+    //    }
+    //    fetchData()
+    //}, [])
 
     return (
         <>
             <Helmet>
                 <meta charset="utf-8" />
-
                 <meta
                     name="viewport"
                     content="width=device-width, initial-scale=1"
@@ -68,6 +78,7 @@ const App = () => {
                 />
                 <title>Famous Lviv Sushi&Pizza</title>
             </Helmet>
+
             <Main />
         </>
     )

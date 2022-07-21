@@ -80,7 +80,14 @@ const Main = () => {
                             <Route path="about" element={<AboutAdmin />} />
                             <Route path="actions">
                                 <Route index element={<ActionsAdmin />} />
-                                <Route path=":id" element={<ActionsUpdate />} />
+                                <Route
+                                    path="create"
+                                    element={<ActionsUpdate />}
+                                />
+                                <Route
+                                    path="update/:actionsId"
+                                    element={<ActionsUpdate />}
+                                />
                             </Route>
                         </Route>
                         <Route path="banners" element={<Banners />} />

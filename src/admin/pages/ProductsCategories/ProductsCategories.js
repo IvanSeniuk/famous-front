@@ -6,9 +6,10 @@ import { fetchCategoriesPoster } from '../../../redux/slices/poster/productsSlic
 import './ProductsCategories.scss'
 
 const ProductsCategories = () => {
-    const dispatch = useDispatch()
     let [activeCat, setActiveCat] = useState()
     const categories = useSelector((state) => state.categoriesPoster)
+    const dispatch = useDispatch()
+
     useEffect(() => {
         dispatch(fetchCategoriesPoster())
     }, [dispatch])
@@ -26,12 +27,12 @@ const ProductsCategories = () => {
                         .map((item) => (
                             <>
                                 <div
+                                    key={item.category_id}
                                     className={
                                         activeCat === item.category_id
                                             ? 'item active'
                                             : 'item'
                                     }
-                                    key={item.category_id}
                                     onClick={() =>
                                         activeCat === item.category_id
                                             ? setActiveCat((activeCat = ''))

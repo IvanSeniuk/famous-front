@@ -231,7 +231,10 @@ const ContactsAdmin = () => {
                             </label>
                         </div>
                     </div>
-                    <div className="row address-list">
+                    <div
+                        className="row address-list"
+                        style={{ display: 'none' }}
+                    >
                         <div
                             className="row-title"
                             style={{
@@ -256,12 +259,7 @@ const ContactsAdmin = () => {
                                             className={`${
                                                 item != '' ? 'filled' : ''
                                             }`}
-                                            //onChange={(e) =>
-                                            //    setPasswordRepeat({
-                                            //        statusPassword: true,
-                                            //        password: e.target.value,
-                                            //    })
-                                            //}
+                                            readOnly
                                         />
                                         <span className="label">
                                             Адреса {index + 1}
@@ -320,6 +318,7 @@ const ContactsAdmin = () => {
                         )}
                     </div>
                     <button
+                        style={{ display: 'none' }}
                         className="button-add-address"
                         disabled={showNewAddress ? 'true' : ''}
                         onClick={() => setShowNewAddres(true)}

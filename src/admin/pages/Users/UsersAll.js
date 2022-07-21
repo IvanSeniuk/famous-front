@@ -6,7 +6,7 @@ import './Users.scss'
 
 const UsersAll = () => {
     const [usersPoster, setUsersPoster] = useState([])
-    console.log(usersPoster)
+
     useEffect(() => {
         async function fetchUsers() {
             try {

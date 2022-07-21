@@ -7,13 +7,12 @@ import './Promocode.scss'
 const Promocode = () => {
     const [showNewPromocode, setShowNewPromocode] = useState(false)
     const [promocodeList, setPromocodeList] = useState([])
-    console.log(promocodeList)
+
     const [newPromocode, setNewPromocode] = useState({
         title: '',
         promo: '',
         count: '',
     })
-    console.log(newPromocode)
     const handleCreatePromo = async (e) => {
         e.preventDefault()
 
@@ -35,8 +34,8 @@ const Promocode = () => {
     }
     const onClickRemove = async (id) => {
         try {
-            const { data } = await $authHost.delete(`api/promocode/${id}`)
-            console.log(data)
+            await $authHost.delete(`api/promocode/${id}`)
+
             //setPromocodeList(data)
             setPromocodeList([...promocodeList.filter((p) => p.id != id)])
         } catch (err) {

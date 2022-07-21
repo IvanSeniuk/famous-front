@@ -1,6 +1,10 @@
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetchActions } from '../../../redux/slices/actions/actionsSlice'
+import { Link } from 'react-router-dom'
+import {
+    deleteActions,
+    fetchActions,
+} from '../../../redux/slices/actions/actionsSlice'
 
 import './ActionsAdmin.scss'
 
@@ -11,6 +15,10 @@ const ActionsAdmin = () => {
     useEffect(() => {
         dispatch(fetchActions())
     }, [dispatch])
+
+    const handleDeleteAction = (id) => {
+        dispatch(deleteActions(id))
+    }
     return (
         <>
             <div className="actions">
@@ -34,15 +42,27 @@ const ActionsAdmin = () => {
                                 </div>
                                 <div>{item.title}</div>
                                 <div>
-                                    <button className="update">
+                                    <Link
+                                        className="update btn"
+                                        to={`/admin/pages/actions/update/${item.id}`}
+                                    >
                                         Редагувати
+                                    </Link>
+                                    <button
+                                        className="delete"
+                                        onClick={() =>
+                                            handleDeleteAction(item.id)
+                                        }
+                                    >
+                                        Видалити
                                     </button>
-                                    <button className="delete">Видалити</button>
                                 </div>
                             </div>
                         ))}
                 </div>
-                <button className="create">Додати акцію</button>
+                <Link className="create btn" to="/admin/pages/actions/create">
+                    Додати акцію
+                </Link>
             </div>
         </>
     )

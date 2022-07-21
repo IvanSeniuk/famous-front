@@ -3,7 +3,7 @@ import {
     GiSushis,
     GiShoppingCart,
     GiRotaryPhone,
-    GiCenturionHelmet,
+    //GiCenturionHelmet,
 } from 'react-icons/gi'
 
 import { MdDashboard } from 'react-icons/md'
@@ -100,12 +100,12 @@ const Sidebar = () => {
                             <span>Контактна інформація</span>
                         </NavLink>
                     </li>
-                    <li>
+                    {/*<li>
                         <NavLink to="other">
                             <GiCenturionHelmet />
                             <span>Інше</span>
                         </NavLink>
-                    </li>
+                    </li>*/}
                 </ul>
             </div>
         </div>

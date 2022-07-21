@@ -17,13 +17,11 @@ const Header = () => {
     }
     const navigate = useNavigate()
     const { totalCount, items } = useSelector((state) => state.cart)
-
     const auth = useSelector((state) => state.auth)
     const dispatch = useDispatch()
     const [change, setChange] = useState(false)
     let location = useLocation()
     const isMounted = useRef(false)
-
     useEffect(() => {
         setBurgerActive(false)
     }, [navigate])
@@ -33,7 +31,6 @@ const Header = () => {
             localStorage.setItem('cart', json)
             if (totalCount !== 0) {
                 setChange(true)
-
                 setTimeout(() => {
                     setChange(false)
                 }, 1000)

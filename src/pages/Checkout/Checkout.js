@@ -13,17 +13,11 @@ import NumberFormat from 'react-number-format'
 import { sendOrderPoster } from '../../redux/slices/poster/orderSlice/OrderSlice'
 import ReactTextareaAutosize from 'react-textarea-autosize'
 import { RiCheckboxMultipleLine } from 'react-icons/ri'
-
 import SwiperCore, { EffectCoverflow, Pagination } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/react'
 
-// swiper bundle styles
 import 'swiper/swiper-bundle.min.css'
-
-// swiper core styles
 import 'swiper/swiper.min.css'
-
-// modules styles
 import 'swiper/components/pagination/pagination.min.css'
 
 SwiperCore.use([EffectCoverflow, Pagination])
@@ -81,7 +75,6 @@ const Checkout = () => {
                 : null,
         })),
     })
-
     const [cardList, setCardList] = useState([])
     useEffect(() => {
         async function fetchData() {
@@ -113,7 +106,6 @@ const Checkout = () => {
             setSendOrder(false)
         }
     }, [setSendOrder, items, navigate])
-
     const onClickMinus = (item, indexCart) => {
         const itemMinus = {
             product_id: item.product_id,
@@ -135,23 +127,11 @@ const Checkout = () => {
         }
         dispatch(removeItem(itemRemove))
     }
-    //useEffect(() => {
-    //    if (totalCount === 0) {
-    //        dispatch(removeOrder())
-    //    }
-    //})
     const handleSendOrder = async (e) => {
         setSendOrder(true)
         e.preventDefault()
         dispatch(sendOrderPoster(order))
-
-        //if (orderPoster.statusPoster === 'succes') {
-        //    setSendOrder(true)
-        //} else {
-        //    setSendOrder(false)
-        //}
     }
-
     useEffect(() => {
         if (orderPoster.statusPoster === 'succes' && sendOrder === true) {
             dispatch(removeCart())
@@ -180,6 +160,19 @@ const Checkout = () => {
         promocode.promo,
         promocode.promocodeVerify,
     ])
+    const [restaurants, setRestaurants] = useState([])
+
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                const { data } = await axios.get('api/restaurants')
+                setRestaurants(data.response)
+            } catch (error) {
+                console.log('Помилка при отриманні даних про заклади')
+            }
+        }
+        fetchData()
+    }, [])
 
     return (
         <>
@@ -363,19 +356,26 @@ const Checkout = () => {
                                             <div className="m-ordering-item__title">
                                                 <h3>Адреси закладів</h3>
                                             </div>
-                                            <div className="data-list__item radio-btn">
-                                                <label className="me-sm-2 delivery-btn">
-                                                    <input
-                                                        type="radio"
-                                                        name="delivery"
-                                                        checked
-                                                    />
-                                                    <span></span>
-                                                    <p className="a-text">
-                                                        Вулиця 1256
-                                                    </p>
-                                                </label>
-                                            </div>
+                                            {restaurants?.map((item) => (
+                                                <div
+                                                    className="data-list__item radio-btn"
+                                                    key={item.spot_id}
+                                                >
+                                                    <label className="me-sm-2 delivery-btn">
+                                                        <input
+                                                            type="radio"
+                                                            name="delivery"
+                                                            value={item.spot_id}
+                                                            checked
+                                                        />
+                                                        <span></span>
+                                                        <p className="a-text">
+                                                            {item.spot_name}
+                                                        </p>
+                                                    </label>
+                                                </div>
+                                            ))}
+
                                             {/*<div className="data-list__item radio-btn">
                                             <label className="me-sm-2 delivery-btn">
                                                 <input

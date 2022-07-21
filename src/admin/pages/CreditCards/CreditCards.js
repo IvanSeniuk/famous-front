@@ -13,7 +13,6 @@ import '../Banners/Banners.scss'
 const CreditCards = () => {
     const [cardList, setCardList] = useState([])
     const [cardNumberChange, setCardNumberChange] = useState([])
-    console.log(cardList, cardNumberChange)
     useEffect(() => {
         async function fetchData() {
             try {
@@ -160,6 +159,7 @@ const CreditCards = () => {
                                     mask="_"
                                     placeholder="1111-2222-3333-4444"
                                     value={card.number}
+                                    required
                                     onChange={(e) =>
                                         setCardList(
                                             cardList.map((item) =>
@@ -187,6 +187,7 @@ const CreditCards = () => {
                                 ) : (
                                     <button
                                         onClick={() =>
+                                            card.number != '' &&
                                             handleChangeNumber(
                                                 card.number,
                                                 card.id

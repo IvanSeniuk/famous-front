@@ -57,7 +57,6 @@ const Profile = () => {
             (order) => order.phone === auth.phone.replace(/[^0-9]/g, '')
         )
     )
-    console.log(orders)
     const productsList = useSelector((state) => state.productsPoster.items)
 
     const [showOrder, setShowOrder] = useState(0)
