@@ -366,6 +366,7 @@ const Checkout = () => {
                                                             type="radio"
                                                             name="delivery"
                                                             value={item.spot_id}
+                                                            readOnly
                                                             checked
                                                         />
                                                         <span></span>
