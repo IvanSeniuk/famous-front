@@ -80,7 +80,11 @@ const Orders = () => {
                                             {item.address}
                                         </div>
                                         <div className="col-1">
-                                            <Moment format="DD.MM.YYYY">
+                                            <Moment
+                                                format="DD.MM.YYYY HH:mm"
+                                                //unix
+                                                //tz="Europe/Kiev"
+                                            >
                                                 {item.created_at}
                                             </Moment>
                                         </div>
