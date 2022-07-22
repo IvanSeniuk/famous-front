@@ -55,6 +55,22 @@ body {
     //     border-radius: 10px;
     // }
 }
+.sceleton-card {
+    svg {
+        max-width: 100%;
+        width: 100%;
+        height: auto;
+    }
+    .sceleton-desc {
+        display: none;
+    }
+}
+.sceleton-title {
+    svg {
+        max-width: 80%;
+        height: auto;
+    }
+}
 .login-error {
     margin-top: 1rem;
     text-align: center;
@@ -749,6 +765,14 @@ select:-webkit-autofill:focus {
         padding-top: 90px;
         &.scroll {
             padding-top: 76px;
+        }
+    }
+    .sceleton-card {
+        .sceleton-desc {
+            display: block;
+        }
+        .sceleton-mob {
+            display: none;
         }
     }
     ol {

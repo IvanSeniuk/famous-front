@@ -6,6 +6,7 @@ import { fetchCategoriesPoster } from '../../redux/slices/poster/productsSlice/C
 const ToolBarr = () => {
     const dispatch = useDispatch()
     const categories = useSelector((state) => state.categoriesPoster)
+    const scrollHeight = useSelector((state) => state.hero)
     useEffect(() => {
         dispatch(fetchCategoriesPoster())
     }, [dispatch])
@@ -18,7 +19,17 @@ const ToolBarr = () => {
                             .filter((item) => item.parent_category === '0')
                             .map((item) => (
                                 <li key={item.category_id}>
-                                    <NavLink to={item.category_id}>
+                                    <NavLink
+                                        to={item.category_id}
+                                        onClick={() =>
+                                            window.scrollTo(
+                                                0,
+                                                scrollHeight.heroHeight +
+                                                    scrollHeight.headerHeight -
+                                                    80
+                                            )
+                                        }
+                                    >
                                         <img
                                             src={
                                                 process.env

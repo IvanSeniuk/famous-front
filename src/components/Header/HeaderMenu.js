@@ -20,9 +20,9 @@ const HeaderMenu = ({ burgerActive }) => {
                     <li>
                         <Link to="/delivery"> Доставка </Link>
                     </li>
-                    <li>
+                    {/*<li>
                         <Link to="/contacts"> Контакти </Link>
-                    </li>
+                    </li>*/}
                     <li>
                         <Link to="/actions"> Акції </Link>
                     </li>

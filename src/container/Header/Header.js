@@ -6,6 +6,7 @@ import HeaderMenu from '../../components/Header/HeaderMenu'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useState, useEffect, useRef } from 'react'
 import { logoutUser } from '../../redux/slices/auth/authSlice'
+import { checkHeaderHeight } from '../../redux/slices/hero/heroSlice'
 
 const Header = () => {
     const [burgerActive, setBurgerActive] = useState(false)
@@ -38,11 +39,15 @@ const Header = () => {
         }
         isMounted.current = true
     }, [totalCount, items])
+    const headerRef = useRef(null)
+    useEffect(() => {
+        dispatch(checkHeaderHeight(headerRef.current.scrollHeight))
+    }, [dispatch])
 
     return (
         <>
             <header className={`o-header ${burgerActive ? 'active' : ''}`}>
-                <div className="container">
+                <div className="container" ref={headerRef}>
                     <div className="m-header row align-items-center justify-content-between">
                         <div className="col-4 col-lg-5 m-header-left">
                             <div className="m-header-left__inner d-flex align-items-center">

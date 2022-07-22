@@ -12,6 +12,7 @@ import { categoriesPoster } from './slices/poster/productsSlice/CategoriesSlice.
 import orderPosterSlice from './slices/poster/orderSlice/OrderSlice.js'
 import { actions } from './slices/actions/actionsSlice'
 import { contacts } from './slices/contacts/contactsSlice.js'
+import hero from './slices/hero/heroSlice'
 
 export const store = configureStore({
     reducer: {
@@ -28,5 +29,6 @@ export const store = configureStore({
         banners,
         actions,
         contacts,
+        hero,
     },
 })

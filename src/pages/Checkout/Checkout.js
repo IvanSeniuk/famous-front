@@ -40,12 +40,13 @@ const Checkout = () => {
         house: '',
         apartment: '',
     })
+    const auth = useSelector((state) => state.auth)
     const [order, setOrder] = useState({
         spot_id: 1,
-        phone: '',
-        first_name: '',
+        phone: `${auth.userLoaded ? `${auth.phone}` : ''}`,
+        first_name: `${auth.userLoaded ? `${auth.name}` : ''}`,
         last_name: '',
-        email: '',
+        email: `${auth.userLoaded ? `${auth.email}` : ''}`,
         service_mode: activeDelivery,
         address: 'Самовивіз',
         //payment: [{ type: 1, sum: 100, currency: 'UAH' }],

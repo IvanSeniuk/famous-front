@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux'
-import { useEffect } from 'react'
+import { useEffect, useRef } from 'react'
 import { fetchBanners } from '../../redux/slices/banners/bannersSlice'
 import SwiperCore, {
     EffectFade,
@@ -23,17 +23,21 @@ SwiperCore.use([EffectFade, Navigation, Pagination, Autoplay])
 
 import ButtonLeft from '../Icons/ButtonLeft.svg'
 import ButtonRight from '../Icons/ButtonRight.svg'
+import { checkHeroHeight } from '../../redux/slices/hero/heroSlice'
 
 const Hero = () => {
     const banners = useSelector((state) => state.banners)
-    //console.log(banners)
+    const heroRef = useRef(null)
     const dispatch = useDispatch()
+
     useEffect(() => {
         dispatch(fetchBanners())
     }, [dispatch])
-
+    useEffect(() => {
+        dispatch(checkHeroHeight(heroRef.current.scrollHeight))
+    }, [dispatch])
     return (
-        <section className="o-hero">
+        <section className="o-hero" ref={heroRef}>
             <div className="container">
                 <Swiper
                     className="o-hero-slider"

@@ -5,7 +5,17 @@ export default function ScrollToTop() {
     const { pathname } = useLocation()
 
     useEffect(() => {
-        window.scrollTo(0, 0)
+        if (
+            pathname === '/about' ||
+            pathname === '/delivery' ||
+            pathname === '/actions' ||
+            pathname === '/' ||
+            pathname === '/checkout' ||
+            pathname === '/profile' ||
+            pathname === '/admin'
+        ) {
+            window.scrollTo(0, 0)
+        }
     }, [pathname])
 
     return null

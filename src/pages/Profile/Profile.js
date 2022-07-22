@@ -38,12 +38,23 @@ const Profile = () => {
         password: '',
         phone: auth.phone,
     })
-
+    const [update, setUpdate] = useState('')
     const location = useLocation()
     const handleChangeUser = async (e) => {
         e.preventDefault()
         if (passwordRepeat.passwordRepeat === userChange.password) {
             dispatch(changeUser(userChange))
+            if (auth.updateStatus === 'pending') {
+                setUpdate('pending')
+            }
+            if (auth.updateStatus === 'success') {
+                setUpdate('success')
+                setUserChange({ ...userChange, password: '' })
+                setPasswordRepeat({ passwordRepeat: '', statusPassword: true })
+                setTimeout(() => {
+                    setUpdate('')
+                }, 3000)
+            }
         } else {
             setPasswordRepeat({ ...passwordRepeat, statusPassword: false })
         }
@@ -375,12 +386,33 @@ const Profile = () => {
                                                         </div>
 
                                                         <div className="button">
-                                                            <button
-                                                                type="submit"
-                                                                className="a-btn e--gold"
-                                                            >
-                                                                Змінити
-                                                            </button>
+                                                            {update ===
+                                                                'pending' && (
+                                                                <button
+                                                                    type="submit"
+                                                                    className="a-btn e--gold"
+                                                                >
+                                                                    .....
+                                                                </button>
+                                                            )}
+                                                            {update ===
+                                                                'success' && (
+                                                                <button
+                                                                    type="submit"
+                                                                    className="a-btn e--gold"
+                                                                >
+                                                                    Інформацію
+                                                                    оновлено
+                                                                </button>
+                                                            )}
+                                                            {update === '' && (
+                                                                <button
+                                                                    type="submit"
+                                                                    className="a-btn e--gold"
+                                                                >
+                                                                    Змінити
+                                                                </button>
+                                                            )}
                                                         </div>
                                                         {!passwordRepeat.statusPassword ? (
                                                             <p className="login-error">

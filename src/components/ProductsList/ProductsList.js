@@ -8,6 +8,9 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useEffect } from 'react'
 import { fetchProductsPoster } from '../../redux/slices/poster/productsSlice/ProductsSlice'
 import { fetchCategoriesPoster } from '../../redux/slices/poster/productsSlice/CategoriesSlice'
+import Sceleton from '../ProductCard/Sceleton/Sceleton'
+import SceletonTitle from '../ProductCard/Sceleton/SceletonTitle'
+import SceletonMobile from '../ProductCard/Sceleton/SceletonMobile'
 
 const ProductsList = () => {
     const { category } = useParams()
@@ -46,7 +49,13 @@ const ProductsList = () => {
             <div className="container-sm">
                 <div className="m-section-top">
                     <div className="a-section-title">
-                        <h1>{categoryObj.category_name}</h1>
+                        {products.status === 'loaded' ? (
+                            <h1>{categoryObj.category_name}</h1>
+                        ) : (
+                            <div className="sceleton-title">
+                                <SceletonTitle />
+                            </div>
+                        )}
                     </div>
                     <div className="m-sort"></div>
                 </div>
@@ -64,7 +73,8 @@ const ProductsList = () => {
                     <div className="o-products-list">
                         <div className="m-products-list">
                             <div className="row m-products-list__row ">
-                                {!subcategory &&
+                                {products.status === 'loaded' ? (
+                                    !subcategory &&
                                     (category === '4'
                                         ? categories.items
                                               .filter(
@@ -113,9 +123,34 @@ const ProductsList = () => {
                                                               {...obj}
                                                           />
                                                       ))
-                                              ))}
+                                              ))
+                                ) : (
+                                    <>
+                                        <div className="col-12 col-sm-6 col-lg-4 sceleton-card">
+                                            <Sceleton className="sceleton-desc mb-3" />
+                                            <SceletonMobile className="sceleton-mob mb-3" />
+                                        </div>
+                                        <div className="col-12 col-sm-6 col-lg-4 sceleton-card">
+                                            <Sceleton className="sceleton-desc mb-3" />
+                                            <SceletonMobile className="sceleton-mob mb-3" />
+                                        </div>
+                                        <div className="col-12 col-sm-6 col-lg-4 sceleton-card">
+                                            <Sceleton className="sceleton-desc mb-3" />
+                                            <SceletonMobile className="sceleton-mob mb-3" />
+                                        </div>
+                                        <div className="col-12 col-sm-6 col-lg-4 sceleton-card">
+                                            <Sceleton className="sceleton-desc mb-3" />
+                                            <SceletonMobile className="sceleton-mob mb-3" />
+                                        </div>
+                                        <div className="col-12 col-sm-6 col-lg-4 sceleton-card">
+                                            <Sceleton className="sceleton-desc mb-3" />
+                                            <SceletonMobile className="sceleton-mob mb-3" />
+                                        </div>
+                                    </>
+                                )}
 
-                                {subcategory &&
+                                {products.status === 'loaded' ? (
+                                    subcategory &&
                                     (category === '4'
                                         ? products.items
                                               .filter(
@@ -140,7 +175,31 @@ const ProductsList = () => {
                                                       key={obj.product_id}
                                                       {...obj}
                                                   />
-                                              )))}
+                                              )))
+                                ) : (
+                                    <>
+                                        <div className="col-12 col-sm-6 col-lg-4 sceleton-card">
+                                            <Sceleton className="sceleton-desc mb-3" />
+                                            <SceletonMobile className="sceleton-mob mb-3" />
+                                        </div>
+                                        <div className="col-12 col-sm-6 col-lg-4 sceleton-card">
+                                            <Sceleton className="sceleton-desc mb-3" />
+                                            <SceletonMobile className="sceleton-mob mb-3" />
+                                        </div>
+                                        <div className="col-12 col-sm-6 col-lg-4 sceleton-card">
+                                            <Sceleton className="sceleton-desc mb-3" />
+                                            <SceletonMobile className="sceleton-mob mb-3" />
+                                        </div>
+                                        <div className="col-12 col-sm-6 col-lg-4 sceleton-card">
+                                            <Sceleton className="sceleton-desc mb-3" />
+                                            <SceletonMobile className="sceleton-mob mb-3" />
+                                        </div>
+                                        <div className="col-12 col-sm-6 col-lg-4 sceleton-card">
+                                            <Sceleton className="sceleton-desc mb-3" />
+                                            <SceletonMobile className="sceleton-mob mb-3" />
+                                        </div>
+                                    </>
+                                )}
                             </div>
                         </div>
                     </div>

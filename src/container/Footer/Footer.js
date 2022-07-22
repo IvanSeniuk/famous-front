@@ -89,11 +89,11 @@ const Footer = () => {
                                     <li>
                                         <Link to="/delivery">Доставка</Link>
                                     </li>
-                                    <li>
+                                    {/*<li>
                                         <Link to="../about-us.html#contacts">
                                             Контакти
                                         </Link>
-                                    </li>
+                                    </li>*/}
                                     <li>
                                         <Link to="/actions">Акції</Link>
                                     </li>
@@ -133,7 +133,7 @@ const Footer = () => {
                         </div>
                         <div className="col-12 col-md-6">
                             <div className="dev pt-1 pb-3 pt-md-0 pb-md-0">
-                                <Link to="https://comebackagency.com/">
+                                <a href="https://comebackagency.com/">
                                     Created by Come Back Agency
                                     <svg
                                         width="17"
@@ -155,7 +155,7 @@ const Footer = () => {
                                             fill="white"
                                         />
                                     </svg>
-                                </Link>
+                                </a>
                             </div>
                         </div>
                     </div>
