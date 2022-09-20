@@ -27,6 +27,7 @@ const Categories = ({ categories, value }) => {
                         <li key={item.category_id}>
                             <NavLink
                                 to={`/${item.parent_category}/${item.category_id}`}
+                                
                             >
                                 <button>{item.category_name}</button>
                             </NavLink>

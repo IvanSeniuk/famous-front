@@ -75,7 +75,7 @@ const ProductsList = () => {
                             <div className="row m-products-list__row ">
                                 {products.status === 'loaded' ? (
                                     !subcategory &&
-                                    (category === '4'
+                                    (category === '11'
                                         ? categories.items
                                               .filter(
                                                   (cat) =>
@@ -151,7 +151,7 @@ const ProductsList = () => {
 
                                 {products.status === 'loaded' ? (
                                     subcategory &&
-                                    (category === '4'
+                                    (category === '11'
                                         ? products.items
                                               .filter(
                                                   (item) =>

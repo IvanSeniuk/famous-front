@@ -37,7 +37,7 @@ const Main = () => {
         <>
             <Routes>
                 <Route exact path="/" element={<Layout />}>
-                    <Route index element={<Navigate to="/2" />} />
+                    <Route index element={<Navigate to="/5" />} />
                     <Route path=":category" element={<Products />} />
                     <Route
                         exact
